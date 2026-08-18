@@ -32,7 +32,7 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
   onPreviewItem,
 }) => {
   const ensaios = cmsStore.getEnsaios(false);
-  const [criticas, setCriticas] = useState<Critica[]>(() => cmsStore.getCriticas(false));
+  const [criticas, setCriticas] = useState<Critica[]>([]);
   const umaImagem = cmsStore.getUmaImagemList(false);
   const especiais = cmsStore.getEspeciais(false);
   const listas = cmsStore.getListas(false);
@@ -46,13 +46,13 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
         setPessoasCount(data.length);
       }
     });
-    fetchFilmes().then(({ data }) => {
+    fetchFilmes({ allStatuses: true }).then(({ data }) => {
       if (data) {
         setFilmesCount(data.length);
       }
     });
     fetchCriticas({ allStatuses: true }).then(({ data }) => {
-      if (data && data.length > 0) {
+      if (data) {
         setCriticas(data.map(mapSupabaseCriticaToCritica));
       }
     });

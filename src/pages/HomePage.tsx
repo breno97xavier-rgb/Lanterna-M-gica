@@ -1,28 +1,75 @@
-import React from 'react';
-import { ArrowRight, Sparkles, Film } from 'lucide-react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { ArrowRight, Sparkles, Film, Loader2 } from 'lucide-react';
 import { cmsStore } from '../services/cmsStore';
 import { HeroCarousel } from '../components/HeroCarousel';
 import { ArticleCard } from '../components/ArticleCard';
 import { BrandLogo } from '../components/BrandLogo';
+import { fetchCriticas, mapSupabaseCriticaToCritica } from '../services/repositories/criticasRepository';
+import { Critica, HighlightItem } from '../types';
 
 interface HomePageProps {
   onNavigate: (path: string) => void;
 }
 
 export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
-  // Load data from CMS store
-  const highlights = cmsStore.getHomeHighlights();
+  const [supabaseCriticas, setSupabaseCriticas] = useState<Critica[]>([]);
+  const [loadingCriticas, setLoadingCriticas] = useState(true);
+
+  useEffect(() => {
+    let isMounted = true;
+    fetchCriticas({ allStatuses: false }).then(({ data }) => {
+      if (isMounted) {
+        if (data) {
+          setSupabaseCriticas(data.map(mapSupabaseCriticaToCritica));
+        }
+        setLoadingCriticas(false);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  // Load data from CMS store for unmigrated entities
   const currentWeekEstreias = cmsStore.getCurrentWeekEstreias();
   const ensaios = cmsStore.getEnsaios(true);
-  const criticas = cmsStore.getCriticas(true);
   const umaImagemList = cmsStore.getUmaImagemList(true);
   const especiais = cmsStore.getEspeciais(true);
   const cineastas = cmsStore.getCineastas();
 
+  // Combine highlights: Supabase highlighted critiques + cmsStore highlights
+  const highlights: HighlightItem[] = useMemo(() => {
+    const list: HighlightItem[] = [];
+
+    // Add highlighted critiques from Supabase
+    supabaseCriticas
+      .filter((c) => c.highlightHome)
+      .forEach((c) => list.push({ ...c, itemType: 'critica' }));
+
+    // Add highlights from other unmigrated entities
+    ensaios
+      .filter((e) => e.highlightHome)
+      .forEach((e) => list.push({ ...e, itemType: 'ensaio' }));
+
+    especiais
+      .filter((es) => es.highlightHome)
+      .forEach((es) => list.push({ ...es, itemType: 'especial' }));
+
+    cineastas
+      .filter((cin) => cin.highlightHome)
+      .forEach((cin) => list.push({ ...cin, itemType: 'cineasta' }));
+
+    umaImagemList
+      .filter((u) => u.highlightHome)
+      .forEach((u) => list.push({ ...u, itemType: 'uma_imagem' }));
+
+    return list.slice(0, 4);
+  }, [supabaseCriticas, ensaios, especiais, cineastas, umaImagemList]);
+
   // Current year for Críticas section
   const currentYear = new Date().getFullYear();
-  const currentYearCriticas = criticas.filter((c) => c.year === currentYear || c.isNewRelease);
-  const archiveCriticas = criticas.filter((c) => c.year < currentYear && !c.isNewRelease);
+  const currentYearCriticas = supabaseCriticas.filter((c) => c.year === currentYear || c.isNewRelease);
+  const archiveCriticas = supabaseCriticas.filter((c) => c.year < currentYear && !c.isNewRelease);
 
   const mainEnsaio = ensaios[0];
   const secondaryEnsaios = ensaios.slice(1, 3);
@@ -31,11 +78,24 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const mainEspecial = especiais[0];
 
   const isDatabaseEmpty =
+    !loadingCriticas &&
     ensaios.length === 0 &&
-    criticas.length === 0 &&
+    supabaseCriticas.length === 0 &&
     umaImagemList.length === 0 &&
     especiais.length === 0 &&
     cineastas.length === 0;
+
+  if (loadingCriticas) {
+    return (
+      <div className="min-h-screen bg-[#F5F2ED] text-[#1A1A1A] flex flex-col justify-center items-center p-8 text-center space-y-4">
+        <BrandLogo size="md" theme="light" />
+        <div className="flex items-center gap-2 text-xs font-mono text-[#1A1A1A]/70">
+          <Loader2 size={16} className="animate-spin text-[#D4AF37]" />
+          <span>Carregando acervo do Lanterna Mágica...</span>
+        </div>
+      </div>
+    );
+  }
 
   if (isDatabaseEmpty) {
     return (
@@ -44,7 +104,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         <div className="max-w-md space-y-3">
           <h1 className="text-3xl font-serif-display text-[#1A1A1A]">Acervo em Estado Inicial</h1>
           <p className="text-sm font-serif-body text-[#1A1A1A]/80 leading-relaxed">
-            Nenhuma publicação está visível no momento. Você pode acessar o painel administrativo para criar novas publicações ou restaurar o acervo demonstrativo com 1 clique.
+            Nenhuma publicação está visível no momento. Você pode acessar o painel administrativo para criar novas publicações.
           </p>
         </div>
         <div className="flex flex-wrap justify-center gap-4 pt-2">
@@ -53,15 +113,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             className="px-6 py-3 bg-[#1A1A1A] text-[#F5F2ED] text-xs font-sans font-bold uppercase tracking-wider hover:bg-[#1A1A1A]/80 transition-colors"
           >
             Acessar Painel / Publicar Conteúdo
-          </button>
-          <button
-            onClick={() => {
-              cmsStore.seedDemoData();
-              window.location.reload();
-            }}
-            className="px-6 py-3 bg-white border border-[#1A1A1A] text-[#1A1A1A] text-xs font-sans font-bold uppercase tracking-wider hover:bg-[#1A1A1A] hover:text-[#F5F2ED] transition-colors"
-          >
-            Restaurar Dados Demonstrativos
           </button>
         </div>
       </div>

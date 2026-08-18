@@ -79,7 +79,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate, onGoBack }) =>
   const loadCounts = async () => {
     const [pesRes, filmRes, critRes] = await Promise.all([
       fetchPessoas({ allStatuses: true }),
-      fetchFilmes(),
+      fetchFilmes({ allStatuses: true }),
       fetchCriticas({ allStatuses: true }),
     ]);
     if (pesRes.data) {

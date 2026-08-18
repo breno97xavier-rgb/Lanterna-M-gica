@@ -373,7 +373,7 @@ export async function fetchCriticas(options?: {
     if (!options?.allStatuses) {
       const nowIso = new Date().toISOString();
       query = query.or(
-        `and(status.eq.published,or(published_at.is.null,published_at.lte.${nowIso})),and(status.eq.scheduled,scheduled_at.not.is.null,scheduled_at.lte.${nowIso})`
+        `status.eq.published,and(status.eq.scheduled,scheduled_at.lte.${nowIso})`
       );
     }
 
