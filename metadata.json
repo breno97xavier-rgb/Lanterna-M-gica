@@ -1,0 +1,6 @@
+{
+  "name": "Lanterna Mágica",
+  "description": "Publicação independente sobre cinema, cultura e pensamento.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
