@@ -5,7 +5,8 @@ import { ArticleCard } from '../components/ArticleCard';
 import { fetchPessoas, SupabasePessoa } from '../services/repositories/pessoasRepository';
 import { fetchFilmes, SupabaseFilme } from '../services/repositories/filmesRepository';
 import { fetchCriticas, mapSupabaseCriticaToCritica } from '../services/repositories/criticasRepository';
-import { Critica } from '../types';
+import { fetchEnsaios, mapSupabaseEnsaioToEnsaio } from '../services/repositories/ensaiosRepository';
+import { Critica, Ensaio } from '../types';
 
 interface ArquivoPageProps {
   onNavigate: (path: string) => void;
@@ -24,6 +25,9 @@ export const ArquivoPage: React.FC<ArquivoPageProps> = ({ onNavigate }) => {
 
   const [criticas, setCriticas] = useState<Critica[]>([]);
   const [loadingCriticas, setLoadingCriticas] = useState(true);
+
+  const [ensaios, setEnsaios] = useState<Ensaio[]>([]);
+  const [loadingEnsaios, setLoadingEnsaios] = useState(true);
 
   useEffect(() => {
     let isMounted = true;
@@ -83,12 +87,21 @@ export const ArquivoPage: React.FC<ArquivoPageProps> = ({ onNavigate }) => {
       }
     });
 
+    setLoadingEnsaios(true);
+    fetchEnsaios({ allStatuses: false }).then(({ data }) => {
+      if (isMounted) {
+        if (data) {
+          setEnsaios(data.map(mapSupabaseEnsaioToEnsaio));
+        }
+        setLoadingEnsaios(false);
+      }
+    });
+
     return () => {
       isMounted = false;
     };
   }, []);
 
-  const ensaios = cmsStore.getEnsaios(true);
   const umaImagemList = cmsStore.getUmaImagemList(true);
   const especiais = cmsStore.getEspeciais(true);
   const estreias = cmsStore.getEstreias(true);

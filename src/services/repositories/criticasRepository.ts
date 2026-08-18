@@ -2,6 +2,7 @@ import { getSupabaseClient } from '../supabaseClient';
 import { ContentStatus, Critica } from '../../types';
 import { SupabaseFilme, fetchFilmes } from './filmesRepository';
 import { SupabaseTag, fetchTags, createTag } from './tagsRepository';
+import { getEditorialDateString } from '../../utils/dateUtils';
 
 export interface SupabaseCritica {
   id: string;
@@ -178,6 +179,35 @@ function mapRawCriticaToSupabaseCritica(row: any): SupabaseCritica {
 }
 
 /**
+ * Valida se uma crítica atende rigorosamente aos critérios de visibilidade pública:
+ * (
+ *   status = 'published' AND (published_at IS NULL OR published_at <= now)
+ * )
+ * OR
+ * (
+ *   status = 'scheduled' AND scheduled_at IS NOT NULL AND scheduled_at <= now
+ * )
+ */
+export function isCriticaPubliclyVisible(
+  critica: Pick<SupabaseCritica, 'status' | 'published_at' | 'scheduled_at'>,
+  nowTime: number = Date.now()
+): boolean {
+  if (critica.status === 'published') {
+    if (!critica.published_at) return true;
+    const pubTime = new Date(critica.published_at).getTime();
+    return !isNaN(pubTime) && pubTime <= nowTime;
+  }
+
+  if (critica.status === 'scheduled') {
+    if (!critica.scheduled_at) return false;
+    const schTime = new Date(critica.scheduled_at).getTime();
+    return !isNaN(schTime) && schTime <= nowTime;
+  }
+
+  return false;
+}
+
+/**
  * Converte um SupabaseCritica no formato da interface Critica do frontend
  */
 export function mapSupabaseCriticaToCritica(item: SupabaseCritica): Critica {
@@ -194,6 +224,12 @@ export function mapSupabaseCriticaToCritica(item: SupabaseCritica): Critica {
     : [];
 
   const genreStr = genresList.length > 0 ? genresList.join(', ') : 'Cinema';
+
+  const sourceDate = item.status === 'scheduled' && item.scheduled_at
+    ? item.scheduled_at
+    : item.published_at || item.created_at;
+
+  const editorialDate = getEditorialDateString(sourceDate);
 
   return {
     id: item.id,
@@ -213,7 +249,7 @@ export function mapSupabaseCriticaToCritica(item: SupabaseCritica): Critica {
     tags: item.tags?.map((t) => t.name) || [],
     isNewRelease: item.is_new_release,
     highlightHome: item.highlight_home,
-    date: item.published_at ? item.published_at.slice(0, 10) : item.created_at.slice(0, 10),
+    date: editorialDate,
     seoTitle: item.seo_title || undefined,
     seoDescription: item.seo_description || undefined,
     status: item.status,
@@ -358,6 +394,7 @@ export async function fetchCriticas(options?: {
   filmId?: string;
   highlightHome?: boolean;
   isNewRelease?: boolean;
+  limit?: number;
 }): Promise<{ data: SupabaseCritica[] | null; error: Error | null }> {
   const supabase = getSupabaseClient();
   if (!supabase) {
@@ -369,12 +406,9 @@ export async function fetchCriticas(options?: {
       .from('criticas')
       .select(CRITICAS_SELECT_QUERY);
 
-    // Filtros de status
+    // Filtros de status no Supabase
     if (!options?.allStatuses) {
-      const nowIso = new Date().toISOString();
-      query = query.or(
-        `status.eq.published,and(status.eq.scheduled,scheduled_at.lte.${nowIso})`
-      );
+      query = query.in('status', ['published', 'scheduled']);
     }
 
     if (options?.filmId) {
@@ -402,7 +436,18 @@ export async function fetchCriticas(options?: {
       return { data: null, error: new Error(error.message) };
     }
 
-    const mapped = (data || []).map(mapRawCriticaToSupabaseCritica);
+    let mapped = (data || []).map(mapRawCriticaToSupabaseCritica);
+
+    // Validação temporal rigorosa de visibilidade pública (data + hora + minuto)
+    if (!options?.allStatuses) {
+      const nowTime = Date.now();
+      mapped = mapped.filter((item) => isCriticaPubliclyVisible(item, nowTime));
+    }
+
+    if (options?.limit && options.limit > 0) {
+      mapped = mapped.slice(0, options.limit);
+    }
+
     return { data: mapped, error: null };
   } catch (err: any) {
     return { data: null, error: new Error(err?.message || 'Erro inesperado ao buscar críticas.') };
@@ -412,7 +457,10 @@ export async function fetchCriticas(options?: {
 /**
  * Busca uma crítica pelo ID com todos os joins
  */
-export async function fetchCriticaById(id: string): Promise<{ data: SupabaseCritica | null; error: Error | null }> {
+export async function fetchCriticaById(
+  id: string,
+  options?: { allStatuses?: boolean }
+): Promise<{ data: SupabaseCritica | null; error: Error | null }> {
   const supabase = getSupabaseClient();
   if (!supabase) {
     return { data: null, error: new Error('Cliente Supabase não configurado.') };
@@ -429,7 +477,13 @@ export async function fetchCriticaById(id: string): Promise<{ data: SupabaseCrit
       return { data: null, error: new Error(error.message) };
     }
 
-    return { data: mapRawCriticaToSupabaseCritica(data), error: null };
+    const mapped = mapRawCriticaToSupabaseCritica(data);
+
+    if (!options?.allStatuses && !isCriticaPubliclyVisible(mapped)) {
+      return { data: null, error: new Error('Crítica não disponível publicamente.') };
+    }
+
+    return { data: mapped, error: null };
   } catch (err: any) {
     return { data: null, error: new Error(err?.message || 'Erro ao buscar crítica por ID.') };
   }
@@ -438,7 +492,10 @@ export async function fetchCriticaById(id: string): Promise<{ data: SupabaseCrit
 /**
  * Busca uma crítica pelo slug com todos os joins
  */
-export async function fetchCriticaBySlug(slug: string): Promise<{ data: SupabaseCritica | null; error: Error | null }> {
+export async function fetchCriticaBySlug(
+  slug: string,
+  options?: { allStatuses?: boolean }
+): Promise<{ data: SupabaseCritica | null; error: Error | null }> {
   const supabase = getSupabaseClient();
   if (!supabase) {
     return { data: null, error: new Error('Cliente Supabase não configurado.') };
@@ -455,7 +512,13 @@ export async function fetchCriticaBySlug(slug: string): Promise<{ data: Supabase
       return { data: null, error: new Error(error.message) };
     }
 
-    return { data: mapRawCriticaToSupabaseCritica(data), error: null };
+    const mapped = mapRawCriticaToSupabaseCritica(data);
+
+    if (!options?.allStatuses && !isCriticaPubliclyVisible(mapped)) {
+      return { data: null, error: new Error('Esta crítica não está disponível publicamente.') };
+    }
+
+    return { data: mapped, error: null };
   } catch (err: any) {
     return { data: null, error: new Error(err?.message || 'Erro ao buscar crítica por slug.') };
   }
@@ -503,8 +566,8 @@ export async function createCritica(input: CreateCriticaInput): Promise<{ data: 
     publishedAt = input.published_at || new Date().toISOString();
     scheduledAt = null;
   } else if (status === 'scheduled') {
-    scheduledAt = input.scheduled_at || input.published_at || new Date().toISOString();
-    publishedAt = scheduledAt;
+    scheduledAt = input.scheduled_at || new Date().toISOString();
+    publishedAt = null;
   } else {
     publishedAt = input.published_at || null;
     scheduledAt = null;
@@ -632,10 +695,10 @@ export async function updateCritica(
         payload.published_at = input.published_at || new Date().toISOString();
         payload.scheduled_at = null;
       } else if (input.status === 'scheduled') {
-        payload.scheduled_at = input.scheduled_at || input.published_at || new Date().toISOString();
-        payload.published_at = payload.scheduled_at;
+        payload.scheduled_at = input.scheduled_at || null;
+        payload.published_at = null;
       } else {
-        if (input.published_at !== undefined) payload.published_at = input.published_at || null;
+        payload.published_at = null;
         payload.scheduled_at = null;
       }
     } else {

@@ -37,6 +37,15 @@ import {
   SupabaseCritica
 } from '../../services/repositories/criticasRepository';
 import { fetchFilmes, SupabaseFilme } from '../../services/repositories/filmesRepository';
+import {
+  getTodayLocalDateString,
+  getNowDateTimeLocalString,
+  getEditorialDateString,
+  formatEditorialDate,
+  formatIsoForDateTimeInput,
+  parseDateInputToIso,
+  parseDateTimeInputToIso,
+} from '../../utils/dateUtils';
 
 interface CriticasAdminProps {
   onNotify: (msg: string) => void;
@@ -64,6 +73,7 @@ interface FormState {
   isNewRelease: boolean;
   highlightHome: boolean;
   date: string;
+  scheduledAt?: string;
   status: ContentStatus;
   seoTitle?: string;
   seoDescription?: string;
@@ -143,7 +153,8 @@ export const CriticasAdmin: React.FC<CriticasAdminProps> = ({ onNotify, autoCrea
       tags: ['Crítica'],
       isNewRelease: false,
       highlightHome: false,
-      date: new Date().toISOString().slice(0, 10),
+      date: getTodayLocalDateString(),
+      scheduledAt: getNowDateTimeLocalString(30),
       status: 'published',
       seoTitle: '',
       seoDescription: '',
@@ -154,6 +165,10 @@ export const CriticasAdmin: React.FC<CriticasAdminProps> = ({ onNotify, autoCrea
 
   const handleEdit = (raw: SupabaseCritica) => {
     const mapped = mapSupabaseCriticaToCritica(raw);
+    const sourceDate = raw.status === 'scheduled' && raw.scheduled_at
+      ? raw.scheduled_at
+      : raw.published_at || raw.created_at;
+
     setEditing({
       id: raw.id,
       film_id: raw.film_id || '',
@@ -172,7 +187,8 @@ export const CriticasAdmin: React.FC<CriticasAdminProps> = ({ onNotify, autoCrea
       tags: raw.tags?.map((t) => t.name) || mapped.tags || [],
       isNewRelease: raw.is_new_release,
       highlightHome: raw.highlight_home,
-      date: raw.published_at ? raw.published_at.slice(0, 10) : raw.created_at.slice(0, 10),
+      date: getEditorialDateString(sourceDate),
+      scheduledAt: formatIsoForDateTimeInput(raw.scheduled_at) || getNowDateTimeLocalString(30),
       status: raw.status,
       seoTitle: raw.seo_title || '',
       seoDescription: raw.seo_description || '',
@@ -256,15 +272,18 @@ export const CriticasAdmin: React.FC<CriticasAdminProps> = ({ onNotify, autoCrea
     // Format dates according to status
     let publishedAt: string | null = null;
     let scheduledAt: string | null = null;
-    const isoDateStr = editing.date ? `${editing.date}T12:00:00.000Z` : new Date().toISOString();
 
     if (editing.status === 'published') {
-      publishedAt = isoDateStr;
+      publishedAt = editing.date ? parseDateInputToIso(editing.date) : new Date().toISOString();
+      scheduledAt = null;
     } else if (editing.status === 'scheduled') {
-      scheduledAt = isoDateStr;
-      publishedAt = isoDateStr;
+      scheduledAt = editing.scheduledAt
+        ? parseDateTimeInputToIso(editing.scheduledAt)
+        : (editing.date ? parseDateTimeInputToIso(`${editing.date}T12:00`) : new Date().toISOString());
+      publishedAt = null;
     } else {
-      publishedAt = editing.date ? isoDateStr : null;
+      publishedAt = null;
+      scheduledAt = null;
     }
 
     if (editing.id) {
@@ -802,17 +821,44 @@ export const CriticasAdmin: React.FC<CriticasAdminProps> = ({ onNotify, autoCrea
               <select
                 value={editing.status}
                 onChange={(e) => {
-                  setEditing({ ...editing, status: e.target.value as ContentStatus });
+                  const newStatus = e.target.value as ContentStatus;
+                  setEditing({
+                    ...editing,
+                    status: newStatus,
+                    scheduledAt: newStatus === 'scheduled' && !editing.scheduledAt
+                      ? getNowDateTimeLocalString(30)
+                      : editing.scheduledAt,
+                  });
                   setIsUnsaved(true);
                 }}
                 className="w-full bg-[#F5F2ED] border border-[#1A1A1A]/15 p-2.5 text-xs font-mono text-[#1A1A1A]"
               >
                 <option value="published">Publicado (Visível no site)</option>
                 <option value="draft">Rascunho (Apenas CMS)</option>
-                <option value="scheduled">Agendado (Publica automaticamente na data)</option>
+                <option value="scheduled">Agendado (Publica automaticamente na data e hora)</option>
                 <option value="archived">Arquivado</option>
               </select>
             </div>
+
+            {editing.status === 'scheduled' && (
+              <div className="md:col-span-2 bg-[#F5F2ED] p-3 border border-[#1A1A1A]/10 space-y-1">
+                <label className="block text-[#1A1A1A]/80 font-bold uppercase text-[11px]">
+                  Data e Hora do Agendamento *
+                </label>
+                <input
+                  type="datetime-local"
+                  value={editing.scheduledAt || ''}
+                  onChange={(e) => {
+                    setEditing({ ...editing, scheduledAt: e.target.value });
+                    setIsUnsaved(true);
+                  }}
+                  className="w-full bg-white border border-[#1A1A1A]/15 p-2 text-xs font-mono"
+                />
+                <p className="text-[10px] text-[#1A1A1A]/60 font-mono">
+                  A crítica ficará acessível publicamente assim que o horário estipulado for atingido.
+                </p>
+              </div>
+            )}
 
             <div className="md:col-span-2 pt-3 border-t border-[#1A1A1A]/10 space-y-3">
               <div>
@@ -1106,6 +1152,7 @@ export const CriticasAdmin: React.FC<CriticasAdminProps> = ({ onNotify, autoCrea
                 <th className="py-3 px-4">Gênero</th>
                 <th className="py-3 px-4">Estrelas</th>
                 <th className="py-3 px-4">Status</th>
+                <th className="py-3 px-4">Data</th>
                 <th className="py-3 px-4">Tipo / Selo</th>
                 <th className="py-3 px-4 text-right">Ações</th>
               </tr>
@@ -1170,6 +1217,12 @@ export const CriticasAdmin: React.FC<CriticasAdminProps> = ({ onNotify, autoCrea
                         <span className="px-2 py-0.5 bg-gray-200 text-gray-800 font-bold">
                           ARQUIVADO
                         </span>
+                      )}
+                    </td>
+                    <td className="py-3 px-4 font-mono text-[#1A1A1A]/70">
+                      {formatEditorialDate(
+                        raw.status === 'scheduled' ? raw.scheduled_at : raw.published_at || raw.created_at,
+                        'short'
                       )}
                     </td>
                     <td className="py-3 px-4">

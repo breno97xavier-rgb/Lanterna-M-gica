@@ -20,7 +20,9 @@ import { cmsStore } from '../../services/cmsStore';
 import { fetchPessoas } from '../../services/repositories/pessoasRepository';
 import { fetchFilmes } from '../../services/repositories/filmesRepository';
 import { fetchCriticas, mapSupabaseCriticaToCritica } from '../../services/repositories/criticasRepository';
-import { Critica } from '../../types';
+import { fetchEnsaios, mapSupabaseEnsaioToEnsaio } from '../../services/repositories/ensaiosRepository';
+import { Critica, Ensaio } from '../../types';
+import { formatEditorialDate } from '../../utils/dateUtils';
 
 interface DashboardOverviewProps {
   onNavigateTab: (tab: any, create?: boolean) => void;
@@ -31,7 +33,7 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
   onNavigateTab,
   onPreviewItem,
 }) => {
-  const ensaios = cmsStore.getEnsaios(false);
+  const [ensaios, setEnsaios] = useState<Ensaio[]>([]);
   const [criticas, setCriticas] = useState<Critica[]>([]);
   const umaImagem = cmsStore.getUmaImagemList(false);
   const especiais = cmsStore.getEspeciais(false);
@@ -54,6 +56,11 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
     fetchCriticas({ allStatuses: true }).then(({ data }) => {
       if (data) {
         setCriticas(data.map(mapSupabaseCriticaToCritica));
+      }
+    });
+    fetchEnsaios({ allStatuses: true }).then(({ data }) => {
+      if (data) {
+        setEnsaios(data.map(mapSupabaseEnsaioToEnsaio));
       }
     });
   }, []);
@@ -269,7 +276,12 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
                       </span>
                     )}
                   </td>
-                  <td className="py-3 px-3 font-mono text-[#1A1A1A]/70">{('date' in item && item.date) ? item.date : item.createdAt.slice(0, 10)}</td>
+                  <td className="py-3 px-3 font-mono text-[#1A1A1A]/70">
+                    {formatEditorialDate(
+                      ('date' in item && item.date) ? item.date : (item as any).publishedAt || item.createdAt,
+                      'short'
+                    )}
+                  </td>
                   <td className="py-3 px-3 text-right">
                     <div className="flex items-center justify-end gap-2">
                       {onPreviewItem && (

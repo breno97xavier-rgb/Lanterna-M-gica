@@ -5,7 +5,8 @@ import { HeroCarousel } from '../components/HeroCarousel';
 import { ArticleCard } from '../components/ArticleCard';
 import { BrandLogo } from '../components/BrandLogo';
 import { fetchCriticas, mapSupabaseCriticaToCritica } from '../services/repositories/criticasRepository';
-import { Critica, HighlightItem } from '../types';
+import { fetchEnsaios, mapSupabaseEnsaioToEnsaio } from '../services/repositories/ensaiosRepository';
+import { Critica, Ensaio, HighlightItem } from '../types';
 
 interface HomePageProps {
   onNavigate: (path: string) => void;
@@ -13,16 +14,23 @@ interface HomePageProps {
 
 export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const [supabaseCriticas, setSupabaseCriticas] = useState<Critica[]>([]);
-  const [loadingCriticas, setLoadingCriticas] = useState(true);
+  const [supabaseEnsaios, setSupabaseEnsaios] = useState<Ensaio[]>([]);
+  const [loadingContent, setLoadingContent] = useState(true);
 
   useEffect(() => {
     let isMounted = true;
-    fetchCriticas({ allStatuses: false }).then(({ data }) => {
+    Promise.all([
+      fetchCriticas({ allStatuses: false }),
+      fetchEnsaios({ allStatuses: false }),
+    ]).then(([critRes, ensRes]) => {
       if (isMounted) {
-        if (data) {
-          setSupabaseCriticas(data.map(mapSupabaseCriticaToCritica));
+        if (critRes.data) {
+          setSupabaseCriticas(critRes.data.map(mapSupabaseCriticaToCritica));
         }
-        setLoadingCriticas(false);
+        if (ensRes.data) {
+          setSupabaseEnsaios(ensRes.data.map(mapSupabaseEnsaioToEnsaio));
+        }
+        setLoadingContent(false);
       }
     });
     return () => {
@@ -32,12 +40,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
   // Load data from CMS store for unmigrated entities
   const currentWeekEstreias = cmsStore.getCurrentWeekEstreias();
-  const ensaios = cmsStore.getEnsaios(true);
+  const ensaios = supabaseEnsaios;
   const umaImagemList = cmsStore.getUmaImagemList(true);
   const especiais = cmsStore.getEspeciais(true);
   const cineastas = cmsStore.getCineastas();
 
-  // Combine highlights: Supabase highlighted critiques + cmsStore highlights
+  // Combine highlights: Supabase highlighted critiques + Supabase highlighted ensaios + cmsStore highlights
   const highlights: HighlightItem[] = useMemo(() => {
     const list: HighlightItem[] = [];
 
@@ -46,11 +54,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       .filter((c) => c.highlightHome)
       .forEach((c) => list.push({ ...c, itemType: 'critica' }));
 
-    // Add highlights from other unmigrated entities
-    ensaios
+    // Add highlighted ensaios from Supabase
+    supabaseEnsaios
       .filter((e) => e.highlightHome)
       .forEach((e) => list.push({ ...e, itemType: 'ensaio' }));
 
+    // Add highlights from other unmigrated entities
     especiais
       .filter((es) => es.highlightHome)
       .forEach((es) => list.push({ ...es, itemType: 'especial' }));
@@ -64,7 +73,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       .forEach((u) => list.push({ ...u, itemType: 'uma_imagem' }));
 
     return list.slice(0, 4);
-  }, [supabaseCriticas, ensaios, especiais, cineastas, umaImagemList]);
+  }, [supabaseCriticas, supabaseEnsaios, especiais, cineastas, umaImagemList]);
 
   // Current year for Críticas section
   const currentYear = new Date().getFullYear();
@@ -78,14 +87,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const mainEspecial = especiais[0];
 
   const isDatabaseEmpty =
-    !loadingCriticas &&
+    !loadingContent &&
     ensaios.length === 0 &&
     supabaseCriticas.length === 0 &&
     umaImagemList.length === 0 &&
     especiais.length === 0 &&
     cineastas.length === 0;
 
-  if (loadingCriticas) {
+  if (loadingContent) {
     return (
       <div className="min-h-screen bg-[#F5F2ED] text-[#1A1A1A] flex flex-col justify-center items-center p-8 text-center space-y-4">
         <BrandLogo size="md" theme="light" />

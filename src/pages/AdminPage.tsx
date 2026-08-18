@@ -23,6 +23,7 @@ import { getSupabaseClient } from '../services/supabaseClient';
 import { fetchPessoas } from '../services/repositories/pessoasRepository';
 import { fetchFilmes } from '../services/repositories/filmesRepository';
 import { fetchCriticas } from '../services/repositories/criticasRepository';
+import { fetchEnsaios } from '../services/repositories/ensaiosRepository';
 import { DashboardOverview } from './admin/DashboardOverview';
 import { EnsaiosAdmin } from './admin/EnsaiosAdmin';
 import { CriticasAdmin } from './admin/CriticasAdmin';
@@ -75,12 +76,14 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate, onGoBack }) =>
   const [pessoasCount, setPessoasCount] = useState<number | null>(null);
   const [filmesCount, setFilmesCount] = useState<number | null>(null);
   const [criticasCount, setCriticasCount] = useState<number | null>(null);
+  const [ensaiosCount, setEnsaiosCount] = useState<number | null>(null);
 
   const loadCounts = async () => {
-    const [pesRes, filmRes, critRes] = await Promise.all([
+    const [pesRes, filmRes, critRes, ensRes] = await Promise.all([
       fetchPessoas({ allStatuses: true }),
       fetchFilmes({ allStatuses: true }),
       fetchCriticas({ allStatuses: true }),
+      fetchEnsaios({ allStatuses: true }),
     ]);
     if (pesRes.data) {
       setPessoasCount(pesRes.data.length);
@@ -90,6 +93,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate, onGoBack }) =>
     }
     if (critRes.data) {
       setCriticasCount(critRes.data.length);
+    }
+    if (ensRes.data) {
+      setEnsaiosCount(ensRes.data.length);
     }
   };
 
@@ -414,7 +420,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate, onGoBack }) =>
             }`}
           >
             <FileText size={14} />
-            <span>Ensaios ({cmsStore.getEnsaios(false).length})</span>
+            <span>Ensaios ({ensaiosCount !== null ? ensaiosCount : '...'})</span>
           </button>
 
           <button

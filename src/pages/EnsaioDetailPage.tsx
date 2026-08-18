@@ -1,7 +1,9 @@
-import React from 'react';
-import { ArrowLeft, Clock, Calendar, User, Share2 } from 'lucide-react';
-import { cmsStore } from '../services/cmsStore';
+import React, { useState, useEffect } from 'react';
+import { ArrowLeft, Clock, Calendar, User, Share2, Loader2, AlertTriangle } from 'lucide-react';
+import { fetchEnsaioBySlug, fetchEnsaios, mapSupabaseEnsaioToEnsaio } from '../services/repositories/ensaiosRepository';
 import { ArticleCard } from '../components/ArticleCard';
+import { Ensaio } from '../types';
+import { formatEditorialDate } from '../utils/dateUtils';
 
 interface EnsaioDetailPageProps {
   slug: string;
@@ -14,42 +16,56 @@ export const EnsaioDetailPage: React.FC<EnsaioDetailPageProps> = ({
   onNavigate,
   onGoBack,
 }) => {
-  const ensaio = cmsStore.getEnsaioBySlug(slug);
+  const [ensaio, setEnsaio] = useState<Ensaio | null>(null);
+  const [relatedEnsaios, setRelatedEnsaios] = useState<Ensaio[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  if (!ensaio) {
-    return (
-      <div className="min-h-screen bg-[#F5F2ED] text-[#1A1A1A] pt-32 text-center space-y-4 px-4">
-        <h1 className="text-3xl font-serif-display">Ensaio não encontrado.</h1>
-        <button
-          onClick={() => onNavigate('/ensaios')}
-          className="text-xs uppercase tracking-[0.2em] px-4 py-2 bg-[#1A1A1A] text-[#F5F2ED] hover:bg-[#D4AF37] hover:text-[#1A1A1A] transition-colors"
-        >
-          Voltar para Ensaios
-        </button>
-      </div>
-    );
-  }
+  useEffect(() => {
+    let isMounted = true;
+    setLoading(true);
+    setError(null);
 
-  // Related ensaios
-  const otherEnsaios = cmsStore
-    .getEnsaios(true)
-    .filter((e) => e.id !== ensaio.id)
-    .slice(0, 2);
+    async function loadData() {
+      const { data, error: fetchErr } = await fetchEnsaioBySlug(slug);
+      if (!isMounted) return;
+
+      if (fetchErr || !data) {
+        setError(fetchErr?.message || 'Ensaio não encontrado ou indisponível.');
+        setEnsaio(null);
+        setLoading(false);
+        return;
+      }
+
+      const mappedEnsaio = mapSupabaseEnsaioToEnsaio(data);
+      setEnsaio(mappedEnsaio);
+
+      // Carregar ensaios relacionados reais do Supabase (apenas publicados/disponíveis)
+      const { data: allEnsaios } = await fetchEnsaios({ limit: 5 });
+      if (isMounted && allEnsaios) {
+        const others = allEnsaios
+          .filter((e) => e.id !== data.id)
+          .map(mapSupabaseEnsaioToEnsaio)
+          .slice(0, 2);
+        setRelatedEnsaios(others);
+      }
+
+      setLoading(false);
+    }
+
+    loadData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [slug]);
 
   const formatDate = (dateStr: string) => {
-    try {
-      const d = new Date(dateStr);
-      return d.toLocaleDateString('pt-BR', {
-        day: '2-digit',
-        month: 'long',
-        year: 'numeric',
-      });
-    } catch {
-      return dateStr;
-    }
+    return formatEditorialDate(dateStr, 'long');
   };
 
   const handleShare = () => {
+    if (!ensaio) return;
     if (navigator.share) {
       navigator.share({
         title: ensaio.title,
@@ -61,6 +77,34 @@ export const EnsaioDetailPage: React.FC<EnsaioDetailPageProps> = ({
       alert('Link copiado para a área de transferência!');
     }
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#F5F2ED] text-[#1A1A1A] pt-36 pb-24 text-center space-y-4 px-4">
+        <Loader2 size={36} className="animate-spin text-[#D4AF37] mx-auto" />
+        <p className="text-xs font-mono text-[#1A1A1A]/60 uppercase tracking-widest">
+          Carregando ensaio editorial...
+        </p>
+      </div>
+    );
+  }
+
+  if (error || !ensaio) {
+    return (
+      <div className="min-h-screen bg-[#F5F2ED] text-[#1A1A1A] pt-32 text-center space-y-4 px-4">
+        <h1 className="text-3xl font-serif-display">Ensaio não encontrado.</h1>
+        <p className="text-sm font-serif-body text-[#1A1A1A]/60 max-w-md mx-auto">
+          O ensaio solicitado pode ter sido despublicado ou a URL pode estar incorreta.
+        </p>
+        <button
+          onClick={() => onNavigate('/ensaios')}
+          className="text-xs uppercase tracking-[0.2em] px-4 py-2 bg-[#1A1A1A] text-[#F5F2ED] hover:bg-[#D4AF37] hover:text-[#1A1A1A] transition-colors font-bold"
+        >
+          Voltar para Ensaios
+        </button>
+      </div>
+    );
+  }
 
   return (
     <article className="min-h-screen bg-[#F5F2ED] text-[#1A1A1A] pt-28 pb-24">
@@ -78,16 +122,18 @@ export const EnsaioDetailPage: React.FC<EnsaioDetailPageProps> = ({
       {/* Header section */}
       <header className="max-w-4xl mx-auto px-4 sm:px-6 space-y-6 text-center">
         <div className="inline-block border-b border-[#1A1A1A]/15 pb-1 text-[10px] font-sans font-bold uppercase tracking-[0.25em] text-[#1A1A1A]/90">
-          ENSAIO · {ensaio.category || 'FILOSOFIA & CINEMA'}
+          ENSAIO · {ensaio.category || 'FILOSOFIA & ESTÉTICA'}
         </div>
 
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif-display font-normal text-[#1A1A1A] leading-tight">
           {ensaio.title}
         </h1>
 
-        <p className="text-lg sm:text-xl font-serif-body text-[#1A1A1A]/80 max-w-2xl mx-auto leading-relaxed">
-          {ensaio.subtitle}
-        </p>
+        {ensaio.subtitle && (
+          <p className="text-lg sm:text-xl font-serif-body text-[#1A1A1A]/80 max-w-2xl mx-auto leading-relaxed">
+            {ensaio.subtitle}
+          </p>
+        )}
 
         {/* Metadata bar */}
         <div className="flex flex-wrap items-center justify-center gap-6 text-xs font-sans-ui text-[#1A1A1A]/70 pt-4 border-t border-b border-[#1A1A1A]/15 py-4">
@@ -116,15 +162,17 @@ export const EnsaioDetailPage: React.FC<EnsaioDetailPageProps> = ({
       </header>
 
       {/* Cover Image */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 my-10">
-        <div className="overflow-hidden border border-[#1A1A1A]/15 bg-white shadow-sm">
-          <img
-            src={ensaio.coverImage}
-            alt={ensaio.title}
-            className="w-full h-auto max-h-[600px] object-cover"
-          />
+      {ensaio.coverImage && (
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 my-10">
+          <div className="overflow-hidden border border-[#1A1A1A]/15 bg-white shadow-sm">
+            <img
+              src={ensaio.coverImage}
+              alt={ensaio.title}
+              className="w-full h-auto max-h-[600px] object-cover"
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Main Text Body — Constrained comfortable reading width */}
       <main className="max-w-[700px] mx-auto px-4 sm:px-6 space-y-6 font-serif-body text-base sm:text-lg text-[#1A1A1A]/90 leading-relaxed">
@@ -181,13 +229,13 @@ export const EnsaioDetailPage: React.FC<EnsaioDetailPageProps> = ({
       </main>
 
       {/* Related articles */}
-      {otherEnsaios.length > 0 && (
+      {relatedEnsaios.length > 0 && (
         <section className="max-w-4xl mx-auto px-4 sm:px-6 pt-20 mt-20 border-t border-[#1A1A1A]/15 space-y-8">
           <h3 className="text-2xl font-serif-display text-[#1A1A1A]">
             Outros Ensaios Relacionados
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {otherEnsaios.map((e) => (
+            {relatedEnsaios.map((e) => (
               <ArticleCard
                 key={e.id}
                 type="ensaio"

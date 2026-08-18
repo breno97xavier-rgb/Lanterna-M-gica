@@ -1,6 +1,7 @@
 import React from 'react';
 import { StarRating } from './StarRating';
 import { ArrowRight } from 'lucide-react';
+import { formatEditorialDate } from '../utils/dateUtils';
 
 interface ArticleCardProps {
   type: 'ensaio' | 'critica' | 'uma_imagem' | 'especial' | 'cineasta' | 'lista';
@@ -59,17 +60,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
   };
 
   const formatDate = (dateStr?: string) => {
-    if (!dateStr) return '';
-    try {
-      const d = new Date(dateStr);
-      return d.toLocaleDateString('pt-BR', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-      });
-    } catch {
-      return dateStr;
-    }
+    return formatEditorialDate(dateStr, 'short');
   };
 
   const isDark = theme === 'dark';
