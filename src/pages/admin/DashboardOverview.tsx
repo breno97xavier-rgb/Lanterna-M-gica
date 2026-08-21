@@ -23,6 +23,7 @@ import { fetchCriticas, mapSupabaseCriticaToCritica } from '../../services/repos
 import { fetchEnsaios, mapSupabaseEnsaioToEnsaio } from '../../services/repositories/ensaiosRepository';
 import { Critica, Ensaio } from '../../types';
 import { formatEditorialDate } from '../../utils/dateUtils';
+import { getEffectiveEditorialStatus } from '../../utils/statusUtils';
 
 interface DashboardOverviewProps {
   onNavigateTab: (tab: any, create?: boolean) => void;
@@ -77,10 +78,10 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
     ...listas.map((l) => ({ ...l, _type: 'lista' as const, _title: l.title })),
   ];
 
-  const draftsCount = allItems.filter((i) => i.status === 'draft').length;
-  const scheduledCount = allItems.filter((i) => i.status === 'scheduled').length;
-  const publishedCount = allItems.filter((i) => i.status === 'published').length;
-  const archivedCount = allItems.filter((i) => i.status === 'archived').length;
+  const draftsCount = allItems.filter((i) => getEffectiveEditorialStatus(i) === 'draft').length;
+  const scheduledCount = allItems.filter((i) => getEffectiveEditorialStatus(i) === 'scheduled').length;
+  const publishedCount = allItems.filter((i) => getEffectiveEditorialStatus(i) === 'published').length;
+  const archivedCount = allItems.filter((i) => getEffectiveEditorialStatus(i) === 'archived').length;
 
   const recentItems = [...allItems]
     .sort(
@@ -255,26 +256,38 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
                     {item._type}
                   </td>
                   <td className="py-3 px-3 font-mono text-[10px] uppercase">
-                    {item.status === 'published' && (
-                      <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 font-bold">
-                        PUBLICADO
-                      </span>
-                    )}
-                    {item.status === 'draft' && (
-                      <span className="px-2 py-0.5 bg-amber-100 text-amber-800 font-bold">
-                        RASCUNHO
-                      </span>
-                    )}
-                    {item.status === 'scheduled' && (
-                      <span className="px-2 py-0.5 bg-blue-100 text-blue-800 font-bold">
-                        AGENDADO
-                      </span>
-                    )}
-                    {item.status === 'archived' && (
-                      <span className="px-2 py-0.5 bg-gray-200 text-gray-800 font-bold">
-                        ARQUIVADO
-                      </span>
-                    )}
+                    {(() => {
+                      const effectiveStatus = getEffectiveEditorialStatus(item);
+                      if (effectiveStatus === 'published') {
+                        return (
+                          <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 font-bold">
+                            PUBLICADO
+                          </span>
+                        );
+                      }
+                      if (effectiveStatus === 'draft') {
+                        return (
+                          <span className="px-2 py-0.5 bg-amber-100 text-amber-800 font-bold">
+                            RASCUNHO
+                          </span>
+                        );
+                      }
+                      if (effectiveStatus === 'scheduled') {
+                        return (
+                          <span className="px-2 py-0.5 bg-blue-100 text-blue-800 font-bold">
+                            AGENDADO
+                          </span>
+                        );
+                      }
+                      if (effectiveStatus === 'archived') {
+                        return (
+                          <span className="px-2 py-0.5 bg-gray-200 text-gray-800 font-bold">
+                            ARQUIVADO
+                          </span>
+                        );
+                      }
+                      return null;
+                    })()}
                   </td>
                   <td className="py-3 px-3 font-mono text-[#1A1A1A]/70">
                     {formatEditorialDate(

@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Plus, Edit2, Trash2, Save, Eye, ArrowLeft, AlertTriangle, Loader2 } from 'lucide-react';
+import { Plus, Edit2, Trash2, Save, Eye, ArrowLeft, AlertTriangle, Loader2, Search } from 'lucide-react';
 import { ContentStatus, Ensaio } from '../../types';
 import { RichTextToolbar } from '../../components/admin/RichTextToolbar';
 import { ImageUploader } from '../../components/admin/ImageUploader';
 import { TagInput } from '../../components/admin/TagInput';
 import { ArticlePreviewModal } from '../../components/admin/ArticlePreviewModal';
 import { ConfirmModal } from '../../components/admin/ConfirmModal';
+import { EditorialCreditsEditor, EditorialCreditItem } from '../../components/admin/EditorialCreditsEditor';
 import {
   fetchEnsaios,
   createEnsaio,
@@ -17,6 +18,10 @@ import {
   SupabaseEnsaio,
 } from '../../services/repositories/ensaiosRepository';
 import {
+  fetchEnsaioAuthors,
+  syncEnsaioAuthors,
+} from '../../services/repositories/editorialAuthorsRepository';
+import {
   getTodayLocalDateString,
   getNowDateTimeLocalString,
   getEditorialDateString,
@@ -25,6 +30,7 @@ import {
   parseDateInputToIso,
   parseDateTimeInputToIso,
 } from '../../utils/dateUtils';
+import { getEffectiveEditorialStatus } from '../../utils/statusUtils';
 
 interface EnsaiosAdminProps {
   onNotify: (msg: string) => void;
@@ -56,11 +62,15 @@ export const EnsaiosAdmin: React.FC<EnsaiosAdminProps> = ({ onNotify, autoCreate
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [editing, setEditing] = useState<EditingEnsaioForm | null>(null);
+  const [credits, setCredits] = useState<EditorialCreditItem[]>([]);
   const [isUnsaved, setIsUnsaved] = useState(false);
   const [previewItem, setPreviewItem] = useState<Ensaio | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<{ id: string; title: string } | null>(null);
   const [slugWarning, setSlugWarning] = useState('');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [tableSearch, setTableSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState('todos');
+  const [categoryFilter, setCategoryFilter] = useState('todos');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const loadData = async () => {
@@ -104,11 +114,12 @@ export const EnsaiosAdmin: React.FC<EnsaiosAdminProps> = ({ onNotify, autoCreate
       seoTitle: '',
       seoDescription: '',
     });
+    setCredits([]);
     setIsUnsaved(false);
     setSlugWarning('');
   };
 
-  const handleEdit = (item: SupabaseEnsaio) => {
+  const handleEdit = async (item: SupabaseEnsaio) => {
     const sourceDate = item.status === 'scheduled' && item.scheduled_at
       ? item.scheduled_at
       : item.published_at || item.created_at;
@@ -131,6 +142,31 @@ export const EnsaiosAdmin: React.FC<EnsaiosAdminProps> = ({ onNotify, autoCreate
       seoTitle: item.seo_title || '',
       seoDescription: item.seo_description || '',
     });
+
+    if (item.authors && item.authors.length > 0) {
+      setCredits(
+        item.authors.map((a) => ({
+          memberId: a.memberId,
+          roleName: a.roleName,
+          orderIndex: a.orderIndex,
+        }))
+      );
+    } else {
+      // Busca autores vinculados caso não estejam pré-carregados
+      const { data: authorCredits } = await fetchEnsaioAuthors(item.id);
+      if (authorCredits && authorCredits.length > 0) {
+        setCredits(
+          authorCredits.map((a) => ({
+            memberId: a.memberId,
+            roleName: a.roleName,
+            orderIndex: a.orderIndex,
+          }))
+        );
+      } else {
+        setCredits([]);
+      }
+    }
+
     setIsUnsaved(false);
     setSlugWarning('');
   };
@@ -194,6 +230,8 @@ export const EnsaiosAdmin: React.FC<EnsaiosAdminProps> = ({ onNotify, autoCreate
       scheduledAt = null;
     }
 
+    let ensaioId = editing.id;
+
     if (editing.id) {
       // Atualizar ensaio existente
       const { data, error } = await updateEnsaio(editing.id, {
@@ -214,14 +252,12 @@ export const EnsaiosAdmin: React.FC<EnsaiosAdminProps> = ({ onNotify, autoCreate
         tags: editing.tags,
       });
 
-      setSaving(false);
-
       if (error) {
+        setSaving(false);
         onNotify(`Erro ao salvar: ${error.message}`);
         return;
       }
-
-      onNotify('Ensaio atualizado com sucesso no Supabase!');
+      ensaioId = editing.id;
     } else {
       // Criar novo ensaio
       const { data, error } = await createEnsaio({
@@ -242,14 +278,40 @@ export const EnsaiosAdmin: React.FC<EnsaiosAdminProps> = ({ onNotify, autoCreate
         tags: editing.tags,
       });
 
-      setSaving(false);
-
-      if (error) {
-        onNotify(`Erro ao criar: ${error.message}`);
+      if (error || !data) {
+        setSaving(false);
+        onNotify(`Erro ao criar: ${error?.message || 'Falha desconhecida.'}`);
         return;
       }
+      ensaioId = data.id;
+    }
 
-      onNotify('Ensaio publicado com sucesso no Supabase!');
+    // Sincroniza créditos de autoria relacional via RPC transacional
+    if (ensaioId) {
+      const { success: syncOk, error: syncErr } = await syncEnsaioAuthors(
+        ensaioId,
+        credits.map((c) => ({
+          member_id: c.memberId,
+          role_name: c.roleName,
+          order_index: c.orderIndex,
+        }))
+      );
+
+      setSaving(false);
+
+      if (!syncOk && syncErr) {
+        onNotify(
+          `Ensaio salvo com sucesso, porém ocorreu um erro ao salvar os créditos de equipe: ${syncErr.message}. Por favor, edite o ensaio para salvar os autores.`
+        );
+      } else {
+        onNotify(
+          editing.id
+            ? 'Ensaio e créditos de autoria atualizados com sucesso!'
+            : 'Ensaio publicado e créditos vinculados com sucesso!'
+        );
+      }
+    } else {
+      setSaving(false);
     }
 
     setEditing(null);
@@ -297,6 +359,38 @@ export const EnsaiosAdmin: React.FC<EnsaiosAdminProps> = ({ onNotify, autoCreate
     };
     setPreviewItem(tempEnsaio);
   };
+
+  const filteredEnsaios = ensaios.filter((e) => {
+    // Search query
+    if (tableSearch.trim()) {
+      const q = tableSearch.toLowerCase();
+      const matchTitle = e.title.toLowerCase().includes(q);
+      const matchSubtitle = (e.subtitle || '').toLowerCase().includes(q);
+      const matchAuthor = (e.author || '').toLowerCase().includes(q);
+      const matchCategory = (e.category || '').toLowerCase().includes(q);
+      const matchContent = (e.content || '').toLowerCase().includes(q);
+      if (!matchTitle && !matchSubtitle && !matchAuthor && !matchCategory && !matchContent) {
+        return false;
+      }
+    }
+
+    // Status filter (utiliza status editorial efetivo para agendamentos já liberados)
+    if (statusFilter !== 'todos') {
+      const effectiveStatus = getEffectiveEditorialStatus(e);
+      if (effectiveStatus !== statusFilter) {
+        return false;
+      }
+    }
+
+    // Category filter
+    if (categoryFilter !== 'todos' && e.category !== categoryFilter) {
+      return false;
+    }
+
+    return true;
+  });
+
+  const categories = Array.from(new Set(ensaios.map((e) => e.category).filter(Boolean)));
 
   if (editing) {
     return (
@@ -418,6 +512,20 @@ export const EnsaiosAdmin: React.FC<EnsaiosAdminProps> = ({ onNotify, autoCreate
               </div>
             </div>
 
+            {/* Gestão de Autoria Relacional (Equipe Editorial) */}
+            <div className="md:col-span-2">
+              <EditorialCreditsEditor
+                credits={credits}
+                onChange={(newCredits) => {
+                  setCredits(newCredits);
+                  setIsUnsaved(true);
+                }}
+                defaultRole="Texto"
+                title="Autoria & Créditos Editoriais (Equipe)"
+                disabled={saving}
+              />
+            </div>
+
             <div>
               <label className="block text-[#1A1A1A]/80 mb-1 font-bold uppercase">Categoria</label>
               <input
@@ -433,7 +541,9 @@ export const EnsaiosAdmin: React.FC<EnsaiosAdminProps> = ({ onNotify, autoCreate
             </div>
 
             <div>
-              <label className="block text-[#1A1A1A]/80 mb-1 font-bold uppercase">Autor</label>
+              <label className="block text-[#1A1A1A]/80 mb-1 font-bold uppercase">
+                Assinatura Textual Alternativa / Legada
+              </label>
               <input
                 type="text"
                 value={editing.author}
@@ -441,9 +551,12 @@ export const EnsaiosAdmin: React.FC<EnsaiosAdminProps> = ({ onNotify, autoCreate
                   setEditing({ ...editing, author: e.target.value });
                   setIsUnsaved(true);
                 }}
-                placeholder="Nome do autor ou Redação"
+                placeholder="Nome do autor ou Redação (Fallback textual)"
                 className="w-full bg-[#F5F2ED] border border-[#1A1A1A]/15 p-2.5 text-xs font-sans text-[#1A1A1A]"
               />
+              <span className="text-[10px] text-[#1A1A1A]/60 font-sans block mt-1">
+                Utilizado apenas como fallback quando nenhum integrante da equipe for associado acima.
+              </span>
             </div>
 
             <div className="md:col-span-2">
@@ -621,16 +734,77 @@ export const EnsaiosAdmin: React.FC<EnsaiosAdminProps> = ({ onNotify, autoCreate
         </div>
       )}
 
+      {/* Search & Filters */}
+      <div className="bg-white border border-[#1A1A1A]/15 p-3 flex flex-wrap items-center justify-between gap-3">
+        <div className="relative flex-1 min-w-[240px]">
+          <Search size={14} className="absolute left-3 top-2.5 text-[#1A1A1A]/40" />
+          <input
+            type="text"
+            placeholder="Pesquisar por título, subtítulo, autor ou conteúdo..."
+            value={tableSearch}
+            onChange={(e) => setTableSearch(e.target.value)}
+            className="w-full bg-[#F5F2ED] border border-[#1A1A1A]/15 pl-9 pr-3 py-1.5 text-xs font-sans text-[#1A1A1A] focus:outline-none focus:border-[#1A1A1A]"
+          />
+        </div>
+
+        <div className="flex items-center gap-2 text-xs font-sans">
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="bg-[#F5F2ED] border border-[#1A1A1A]/15 px-2.5 py-1.5 font-mono text-xs"
+          >
+            <option value="todos">Todos os Status ({ensaios.length})</option>
+            <option value="published">
+              Publicados ({ensaios.filter((e) => getEffectiveEditorialStatus(e) === 'published').length})
+            </option>
+            <option value="draft">
+              Rascunhos ({ensaios.filter((e) => getEffectiveEditorialStatus(e) === 'draft').length})
+            </option>
+            <option value="scheduled">
+              Agendados ({ensaios.filter((e) => getEffectiveEditorialStatus(e) === 'scheduled').length})
+            </option>
+            <option value="archived">
+              Arquivados ({ensaios.filter((e) => getEffectiveEditorialStatus(e) === 'archived').length})
+            </option>
+          </select>
+
+          {categories.length > 0 && (
+            <select
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(e.target.value)}
+              className="bg-[#F5F2ED] border border-[#1A1A1A]/15 px-2.5 py-1.5 font-mono text-xs"
+            >
+              <option value="todos">Todas as Categorias</option>
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+          )}
+
+          <span className="text-xs font-mono text-[#1A1A1A]/60 ml-2">
+            Total: {filteredEnsaios.length}
+          </span>
+        </div>
+      </div>
+
       {loading ? (
         <div className="bg-white border border-[#1A1A1A]/15 p-12 text-center space-y-3">
           <Loader2 size={24} className="animate-spin text-[#D4AF37] mx-auto" />
           <p className="text-xs font-mono text-[#1A1A1A]/60">Carregando ensaios do Supabase...</p>
         </div>
-      ) : ensaios.length === 0 ? (
+      ) : filteredEnsaios.length === 0 ? (
         <div className="bg-white border border-[#1A1A1A]/15 p-12 text-center space-y-4">
-          <h3 className="font-serif-display text-lg text-[#1A1A1A]">Nenhum ensaio cadastrado no banco</h3>
+          <h3 className="font-serif-display text-lg text-[#1A1A1A]">
+            {tableSearch || statusFilter !== 'todos' || categoryFilter !== 'todos'
+              ? 'Nenhum ensaio encontrado com os filtros selecionados.'
+              : 'Nenhum ensaio cadastrado no banco'}
+          </h3>
           <p className="text-xs font-serif-body text-[#1A1A1A]/60 max-w-md mx-auto">
-            Cadastre um novo ensaio para publicá-lo diretamente no catálogo do Lanterna Mágica.
+            {tableSearch || statusFilter !== 'todos' || categoryFilter !== 'todos'
+              ? 'Tente ajustar os termos de pesquisa ou os filtros de status e categoria.'
+              : 'Cadastre um novo ensaio para publicá-lo diretamente no catálogo do Lanterna Mágica.'}
           </p>
           <button
             onClick={handleCreateNew}
@@ -643,7 +817,7 @@ export const EnsaiosAdmin: React.FC<EnsaiosAdminProps> = ({ onNotify, autoCreate
         <div className="bg-white border border-[#1A1A1A]/15 overflow-x-auto">
           <table className="w-full text-left text-xs font-sans text-[#1A1A1A]">
             <thead>
-              <tr className="border-b border-[#1A1A1A]/15 text-[10px] uppercase font-bold text-[#1A1A1A]/60">
+              <tr className="border-b border-[#1A1A1A]/15 text-[10px] uppercase font-bold text-[#1A1A1A]/60 bg-[#F5F2ED]/60">
                 <th className="py-3 px-4">Título</th>
                 <th className="py-3 px-4">Categoria</th>
                 <th className="py-3 px-4">Status</th>
@@ -654,7 +828,7 @@ export const EnsaiosAdmin: React.FC<EnsaiosAdminProps> = ({ onNotify, autoCreate
               </tr>
             </thead>
             <tbody className="divide-y divide-[#1A1A1A]/10">
-              {ensaios.map((e) => (
+              {filteredEnsaios.map((e) => (
                 <tr key={e.id} className="hover:bg-[#F5F2ED]/50 transition-colors">
                   <td className="py-3 px-4 font-medium text-[#1A1A1A] max-w-sm truncate">
                     <div>
@@ -664,18 +838,38 @@ export const EnsaiosAdmin: React.FC<EnsaiosAdminProps> = ({ onNotify, autoCreate
                   </td>
                   <td className="py-3 px-4 text-[#1A1A1A]/70">{e.category}</td>
                   <td className="py-3 px-4 font-mono text-[10px] uppercase">
-                    {e.status === 'published' && (
-                      <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 font-bold">PUBLICADO</span>
-                    )}
-                    {e.status === 'draft' && (
-                      <span className="px-2 py-0.5 bg-amber-100 text-amber-800 font-bold">RASCUNHO</span>
-                    )}
-                    {e.status === 'scheduled' && (
-                      <span className="px-2 py-0.5 bg-blue-100 text-blue-800 font-bold">AGENDADO</span>
-                    )}
-                    {e.status === 'archived' && (
-                      <span className="px-2 py-0.5 bg-gray-200 text-gray-800 font-bold">ARQUIVADO</span>
-                    )}
+                    {(() => {
+                      const effectiveStatus = getEffectiveEditorialStatus(e);
+                      if (effectiveStatus === 'published') {
+                        return (
+                          <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 font-bold">
+                            PUBLICADO
+                          </span>
+                        );
+                      }
+                      if (effectiveStatus === 'draft') {
+                        return (
+                          <span className="px-2 py-0.5 bg-amber-100 text-amber-800 font-bold">
+                            RASCUNHO
+                          </span>
+                        );
+                      }
+                      if (effectiveStatus === 'scheduled') {
+                        return (
+                          <span className="px-2 py-0.5 bg-blue-100 text-blue-800 font-bold">
+                            AGENDADO
+                          </span>
+                        );
+                      }
+                      if (effectiveStatus === 'archived') {
+                        return (
+                          <span className="px-2 py-0.5 bg-gray-200 text-gray-800 font-bold">
+                            ARQUIVADO
+                          </span>
+                        );
+                      }
+                      return null;
+                    })()}
                   </td>
                   <td className="py-3 px-4 font-mono text-[#1A1A1A]/70">
                     {formatEditorialDate(

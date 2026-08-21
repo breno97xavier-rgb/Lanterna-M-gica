@@ -1,15 +1,105 @@
-import React from 'react';
-import { ArrowRight, BookOpen } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ArrowRight, BookOpen, Users, Loader2 } from 'lucide-react';
 import { BrandLogo } from '../components/BrandLogo';
+import { TeamMemberCard } from '../components/TeamMemberCard';
+import { TeamMember } from '../types';
+import { fetchTeamMembers } from '../services/repositories/teamMembersRepository';
 
 interface SobrePageProps {
   onNavigate: (path: string) => void;
 }
 
+const CATEGORY_NAMES: Record<string, string> = {
+  direcao: 'Direção Editorial',
+  redacao: 'Corpo Redatorial',
+  critica: 'Crítica Cinematográfica',
+  ensaios: 'Ensaios & Pesquisa',
+  colaboracao: 'Colaboradores',
+  producao: 'Produção Editorial',
+  pesquisa: 'Pesquisa & Documentação',
+};
+
 export const SobrePage: React.FC<SobrePageProps> = ({ onNavigate }) => {
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [loadingTeam, setLoadingTeam] = useState(true);
+
+  useEffect(() => {
+    let isMounted = true;
+    setLoadingTeam(true);
+
+    fetchTeamMembers({
+      status: 'published',
+      displayOnAboutOnly: true,
+      orderBy: 'order_index',
+    })
+      .then(({ data, error }) => {
+        if (!isMounted) return;
+        if (!error && data) {
+          setTeamMembers(data);
+        }
+        setLoadingTeam(false);
+      })
+      .catch(() => {
+        if (!isMounted) return;
+        setLoadingTeam(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  // Agrupamento dinâmico de integrantes por função institucional / groupCategory
+  const groupsMap = new Map<
+    string,
+    { categoryTitle: string; minOrder: number; members: TeamMember[] }
+  >();
+
+  teamMembers.forEach((member) => {
+    const primaryRole = member.roles?.find((r) => r.isPrimary)?.role || member.roles?.[0]?.role;
+    const categoryKey = primaryRole?.groupCategory?.toLowerCase().trim() || 'geral';
+    const categoryTitle =
+      CATEGORY_NAMES[categoryKey] ||
+      (categoryKey !== 'geral'
+        ? categoryKey.charAt(0).toUpperCase() + categoryKey.slice(1).replace(/[-_]/g, ' ')
+        : (primaryRole?.name || 'Equipe Editorial'));
+    const roleOrder = primaryRole?.orderIndex ?? 99;
+
+    if (!groupsMap.has(categoryKey)) {
+      groupsMap.set(categoryKey, {
+        categoryTitle,
+        minOrder: roleOrder,
+        members: [],
+      });
+    } else {
+      const existing = groupsMap.get(categoryKey)!;
+      if (roleOrder < existing.minOrder) {
+        existing.minOrder = roleOrder;
+      }
+    }
+
+    groupsMap.get(categoryKey)!.members.push(member);
+  });
+
+  const sortedGroups = Array.from(groupsMap.entries())
+    .map(([key, value]) => ({
+      key,
+      ...value,
+      members: value.members.sort((a, b) => {
+        if (a.orderIndex !== b.orderIndex) {
+          return a.orderIndex - b.orderIndex;
+        }
+        return a.name.localeCompare(b.name);
+      }),
+    }))
+    .sort((a, b) => {
+      if (a.minOrder !== b.minOrder) return a.minOrder - b.minOrder;
+      return a.categoryTitle.localeCompare(b.categoryTitle);
+    });
+
   return (
     <div className="min-h-screen bg-[#F5F2ED] text-[#1A1A1A] pt-28 pb-24">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 space-y-12">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 space-y-16">
         
         {/* Header */}
         <div className="space-y-6 text-center border-b border-[#1A1A1A]/15 pb-10">
@@ -93,7 +183,58 @@ export const SobrePage: React.FC<SobrePageProps> = ({ onNavigate }) => {
           </div>
         </main>
 
+        {/* Seção Equipe Editorial */}
+        {loadingTeam ? (
+          <div className="pt-10 flex flex-col items-center justify-center space-y-2 text-[#1A1A1A]/50">
+            <Loader2 size={24} className="animate-spin text-[#1A1A1A]/40" />
+            <span className="text-xs font-mono tracking-widest uppercase">Carregando quadro de equipe...</span>
+          </div>
+        ) : teamMembers.length > 0 ? (
+          <section className="pt-10 border-t border-[#1A1A1A]/15 space-y-10">
+            {/* Header da Seção Equipe */}
+            <div className="text-center space-y-2">
+              <div className="flex items-center justify-center gap-2 text-[10px] font-sans font-bold uppercase tracking-[0.25em] text-[#D4AF37]">
+                <Users size={14} />
+                <span>Quadro Editorial</span>
+              </div>
+              <h2 className="text-3xl font-serif-display text-[#1A1A1A]">
+                Equipe & Colaboradores
+              </h2>
+              <p className="text-sm font-serif-body text-[#1A1A1A]/70 max-w-lg mx-auto">
+                As vozes e olhares responsáveis pela curadoria, ensaios, críticas e condução do Lanterna Mágica.
+              </p>
+            </div>
+
+            {/* Grupos Editoriais Dinâmicos */}
+            <div className="space-y-12">
+              {sortedGroups.map((group) => (
+                <div key={group.key} className="space-y-6">
+                  <div className="flex items-center gap-3 border-b border-[#1A1A1A]/10 pb-2">
+                    <h3 className="text-lg sm:text-xl font-serif-display text-[#1A1A1A]">
+                      {group.categoryTitle}
+                    </h3>
+                    <span className="text-[10px] font-mono text-[#1A1A1A]/50 uppercase tracking-widest">
+                      ({group.members.length} {group.members.length === 1 ? 'integrante' : 'integrantes'})
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    {group.members.map((member) => (
+                      <TeamMemberCard
+                        key={member.id}
+                        member={member}
+                        onNavigate={onNavigate}
+                      />
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        ) : null}
+
       </div>
     </div>
   );
 };
+

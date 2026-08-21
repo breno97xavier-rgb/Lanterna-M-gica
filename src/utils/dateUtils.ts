@@ -167,3 +167,48 @@ export function parseDateTimeInputToIso(datetimeLocalInput?: string | null): str
   return isNaN(fallback.getTime()) ? new Date().toISOString() : fallback.toISOString();
 }
 
+/**
+ * Calcula a idade de uma pessoa a partir de birth_date e opcional death_date.
+ * Se a pessoa estiver viva, compara birth_date com a data atual (considerando se o aniversário já ocorreu).
+ * Se a pessoa estiver falecida (death_date presente), calcula a idade na data do falecimento.
+ * Requer data completa válida (YYYY-MM-DD) para precisão.
+ */
+export function calculatePersonAge(birthDateStr?: string | null, deathDateStr?: string | null): number | null {
+  if (!birthDateStr) return null;
+
+  const birthMatch = String(birthDateStr).trim().match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (!birthMatch) return null;
+
+  const birthYear = parseInt(birthMatch[1], 10);
+  const birthMonth = parseInt(birthMatch[2], 10); // 1-12
+  const birthDay = parseInt(birthMatch[3], 10);   // 1-31
+
+  let targetYear: number;
+  let targetMonth: number;
+  let targetDay: number;
+
+  if (deathDateStr) {
+    const deathMatch = String(deathDateStr).trim().match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (!deathMatch) return null;
+    targetYear = parseInt(deathMatch[1], 10);
+    targetMonth = parseInt(deathMatch[2], 10);
+    targetDay = parseInt(deathMatch[3], 10);
+  } else {
+    const now = new Date();
+    targetYear = now.getFullYear();
+    targetMonth = now.getMonth() + 1; // 1-12
+    targetDay = now.getDate();
+  }
+
+  let age = targetYear - birthYear;
+
+  if (
+    targetMonth < birthMonth ||
+    (targetMonth === birthMonth && targetDay < birthDay)
+  ) {
+    age -= 1;
+  }
+
+  return age >= 0 ? age : null;
+}
+

@@ -19,6 +19,7 @@ import { PessoasPage } from './pages/PessoasPage';
 import { EstreiasPage } from './pages/EstreiasPage';
 import { ArquivoPage } from './pages/ArquivoPage';
 import { SobrePage } from './pages/SobrePage';
+import { TeamMemberDetailPage } from './pages/TeamMemberDetailPage';
 import { ManifestoPage } from './pages/ManifestoPage';
 import { AdminPage } from './pages/AdminPage';
 
@@ -155,6 +156,15 @@ export default function App() {
     // Arquivo
     if (currentPath === '/arquivo') {
       return <ArquivoPage onNavigate={navigate} />;
+    }
+
+    // Equipe detail
+    if (currentPath.startsWith('/equipe/')) {
+      const slug = currentPath.replace('/equipe/', '');
+      return <TeamMemberDetailPage slug={slug} onNavigate={navigate} onGoBack={goBack} />;
+    }
+    if (currentPath === '/equipe') {
+      return <SobrePage onNavigate={navigate} />;
     }
 
     // Sobre

@@ -59,6 +59,8 @@ export interface Filme {
   credits?: FilmCredit[];
   tags?: string[];
   status?: ContentStatus;
+  scheduledAt?: string;
+  publishedAt?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -118,12 +120,15 @@ export interface Ensaio {
   category: string;
   tags: string[];
   author: string;
+  authors?: EditorialAuthorCredit[];
   date: string;
   readTimeMinutes: number;
   highlightHome: boolean;
   seoTitle?: string;
   seoDescription?: string;
   status: ContentStatus;
+  scheduledAt?: string;
+  publishedAt?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -146,12 +151,16 @@ export interface Critica {
   content: string;
   starRating: number; // 0.5 to 5.0 in steps of 0.5
   tags: string[];
+  authors?: EditorialAuthorCredit[];
+  author?: string;
   isNewRelease: boolean;
   highlightHome: boolean;
   date: string;
   seoTitle?: string;
   seoDescription?: string;
   status: ContentStatus;
+  scheduledAt?: string;
+  publishedAt?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -242,3 +251,69 @@ export interface SearchResult {
   image?: string;
   tags?: string[];
 }
+
+// ---------------------------------------------------------------------------
+// Domínio de Equipe Editorial e Autoria (Fase 6)
+// ---------------------------------------------------------------------------
+
+export type TeamMemberStatus = 'draft' | 'published' | 'archived';
+
+export interface TeamMemberSocialLinks {
+  instagram?: string;
+  twitter?: string;
+  letterboxd?: string;
+  website?: string;
+  email?: string;
+  bluesky?: string;
+  linkedin?: string;
+  [key: string]: string | undefined;
+}
+
+export interface EditorialRole {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string | null;
+  groupCategory: string;
+  orderIndex: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface TeamMemberRole {
+  memberId: string;
+  roleId: string;
+  isPrimary: boolean;
+  orderIndex: number;
+  createdAt?: string;
+  role?: EditorialRole;
+}
+
+export interface TeamMember {
+  id: string;
+  legacyId?: string | null;
+  name: string;
+  slug: string;
+  photoUrl?: string | null;
+  birthDate?: string | null;
+  bio?: string | null;
+  shortBio?: string | null;
+  socialLinks: TeamMemberSocialLinks;
+  displayOnAbout: boolean;
+  orderIndex: number;
+  status: TeamMemberStatus;
+  roles?: TeamMemberRole[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface EditorialAuthorCredit {
+  id: string;
+  publicationId?: string;
+  memberId: string;
+  roleName: string;
+  orderIndex: number;
+  createdAt?: string;
+  member?: TeamMember;
+}
+

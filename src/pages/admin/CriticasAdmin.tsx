@@ -26,6 +26,7 @@ import { TagInput } from '../../components/admin/TagInput';
 import { StarRatingPicker } from '../../components/admin/StarRatingPicker';
 import { ArticlePreviewModal } from '../../components/admin/ArticlePreviewModal';
 import { ConfirmModal } from '../../components/admin/ConfirmModal';
+import { EditorialCreditsEditor, EditorialCreditItem } from '../../components/admin/EditorialCreditsEditor';
 import {
   fetchCriticas,
   fetchCriticaById,
@@ -36,6 +37,10 @@ import {
   mapSupabaseCriticaToCritica,
   SupabaseCritica
 } from '../../services/repositories/criticasRepository';
+import {
+  fetchCriticaAuthors,
+  syncCriticaAuthors,
+} from '../../services/repositories/editorialAuthorsRepository';
 import { fetchFilmes, SupabaseFilme } from '../../services/repositories/filmesRepository';
 import {
   getTodayLocalDateString,
@@ -46,6 +51,7 @@ import {
   parseDateInputToIso,
   parseDateTimeInputToIso,
 } from '../../utils/dateUtils';
+import { getEffectiveEditorialStatus } from '../../utils/statusUtils';
 
 interface CriticasAdminProps {
   onNotify: (msg: string) => void;
@@ -90,6 +96,7 @@ export const CriticasAdmin: React.FC<CriticasAdminProps> = ({ onNotify, autoCrea
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const [editing, setEditing] = useState<FormState | null>(null);
+  const [credits, setCredits] = useState<EditorialCreditItem[]>([]);
   const [isUnsaved, setIsUnsaved] = useState(false);
   const [previewItem, setPreviewItem] = useState<Critica | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<{ id: string; title: string } | null>(null);
@@ -159,11 +166,12 @@ export const CriticasAdmin: React.FC<CriticasAdminProps> = ({ onNotify, autoCrea
       seoTitle: '',
       seoDescription: '',
     });
+    setCredits([]);
     setFilmSearchQuery('');
     setIsUnsaved(false);
   };
 
-  const handleEdit = (raw: SupabaseCritica) => {
+  const handleEdit = async (raw: SupabaseCritica) => {
     const mapped = mapSupabaseCriticaToCritica(raw);
     const sourceDate = raw.status === 'scheduled' && raw.scheduled_at
       ? raw.scheduled_at
@@ -194,6 +202,30 @@ export const CriticasAdmin: React.FC<CriticasAdminProps> = ({ onNotify, autoCrea
       seoDescription: raw.seo_description || '',
       legacyId: raw.legacy_id || undefined,
     });
+
+    if (raw.authors && raw.authors.length > 0) {
+      setCredits(
+        raw.authors.map((a) => ({
+          memberId: a.memberId,
+          roleName: a.roleName,
+          orderIndex: a.orderIndex,
+        }))
+      );
+    } else {
+      const { data: authorCredits } = await fetchCriticaAuthors(raw.id);
+      if (authorCredits && authorCredits.length > 0) {
+        setCredits(
+          authorCredits.map((a) => ({
+            memberId: a.memberId,
+            roleName: a.roleName,
+            orderIndex: a.orderIndex,
+          }))
+        );
+      } else {
+        setCredits([]);
+      }
+    }
+
     setFilmSearchQuery('');
     setIsUnsaved(false);
   };
@@ -286,6 +318,8 @@ export const CriticasAdmin: React.FC<CriticasAdminProps> = ({ onNotify, autoCrea
       scheduledAt = null;
     }
 
+    let criticaId = editing.id;
+
     if (editing.id) {
       // Update
       const { data, error } = await updateCritica(editing.id, {
@@ -309,15 +343,13 @@ export const CriticasAdmin: React.FC<CriticasAdminProps> = ({ onNotify, autoCrea
         tags: editing.tags,
       });
 
-      setSaving(false);
-
       if (error) {
+        setSaving(false);
         setErrorMessage(error.message);
         onNotify(`Erro ao salvar crítica: ${error.message}`);
         return;
       }
-
-      onNotify('Crítica atualizada no Supabase com sucesso!');
+      criticaId = editing.id;
     } else {
       // Create
       const { data, error } = await createCritica({
@@ -341,15 +373,41 @@ export const CriticasAdmin: React.FC<CriticasAdminProps> = ({ onNotify, autoCrea
         tags: editing.tags,
       });
 
-      setSaving(false);
-
-      if (error) {
-        setErrorMessage(error.message);
-        onNotify(`Erro ao criar crítica: ${error.message}`);
+      if (error || !data) {
+        setSaving(false);
+        setErrorMessage(error?.message || 'Erro ao criar crítica.');
+        onNotify(`Erro ao criar crítica: ${error?.message || 'Falha ao salvar'}`);
         return;
       }
+      criticaId = data.id;
+    }
 
-      onNotify('Nova crítica criada no Supabase com sucesso!');
+    // Sincroniza autores editoriais da crítica via RPC transacional
+    if (criticaId) {
+      const { success: syncOk, error: syncErr } = await syncCriticaAuthors(
+        criticaId,
+        credits.map((c) => ({
+          member_id: c.memberId,
+          role_name: c.roleName,
+          order_index: c.orderIndex,
+        }))
+      );
+
+      setSaving(false);
+
+      if (!syncOk && syncErr) {
+        onNotify(
+          `Crítica salva com sucesso, porém ocorreu um erro ao salvar os autores: ${syncErr.message}. Abra a crítica novamente para salvar os autores.`
+        );
+      } else {
+        onNotify(
+          editing.id
+            ? 'Crítica e créditos atualizados no Supabase com sucesso!'
+            : 'Nova crítica publicada com autoria vinculada no Supabase!'
+        );
+      }
+    } else {
+      setSaving(false);
     }
 
     setEditing(null);
@@ -433,9 +491,12 @@ export const CriticasAdmin: React.FC<CriticasAdminProps> = ({ onNotify, autoCrea
       if (!matchMovie && !matchEditorial && !matchDirector && !matchContent) return false;
     }
 
-    // Status filter
-    if (statusFilter !== 'todos' && c.status !== statusFilter) {
-      return false;
+    // Status filter (utiliza status editorial efetivo para agendamentos já liberados)
+    if (statusFilter !== 'todos') {
+      const effectiveStatus = getEffectiveEditorialStatus(c);
+      if (effectiveStatus !== statusFilter) {
+        return false;
+      }
     }
 
     // Type filter (is_new_release)
@@ -793,6 +854,20 @@ export const CriticasAdmin: React.FC<CriticasAdminProps> = ({ onNotify, autoCrea
               </div>
             </div>
 
+            {/* Gestão de Autoria Relacional da Crítica */}
+            <div className="md:col-span-2">
+              <EditorialCreditsEditor
+                credits={credits}
+                onChange={(newCredits) => {
+                  setCredits(newCredits);
+                  setIsUnsaved(true);
+                }}
+                defaultRole="Crítica"
+                title="Autoria & Créditos da Crítica (Equipe)"
+                disabled={saving}
+              />
+            </div>
+
             <div className="md:col-span-2">
               <TagInput
                 tags={editing.tags || []}
@@ -1097,11 +1172,19 @@ export const CriticasAdmin: React.FC<CriticasAdminProps> = ({ onNotify, autoCrea
             onChange={(e) => setStatusFilter(e.target.value)}
             className="bg-[#F5F2ED] border border-[#1A1A1A]/15 px-2.5 py-1.5 font-mono text-xs"
           >
-            <option value="todos">Todos os Status</option>
-            <option value="published">Publicados</option>
-            <option value="draft">Rascunhos</option>
-            <option value="scheduled">Agendados</option>
-            <option value="archived">Arquivados</option>
+            <option value="todos">Todos os Status ({criticas.length})</option>
+            <option value="published">
+              Publicados ({criticas.filter((c) => getEffectiveEditorialStatus(c) === 'published').length})
+            </option>
+            <option value="draft">
+              Rascunhos ({criticas.filter((c) => getEffectiveEditorialStatus(c) === 'draft').length})
+            </option>
+            <option value="scheduled">
+              Agendados ({criticas.filter((c) => getEffectiveEditorialStatus(c) === 'scheduled').length})
+            </option>
+            <option value="archived">
+              Arquivados ({criticas.filter((c) => getEffectiveEditorialStatus(c) === 'archived').length})
+            </option>
           </select>
 
           <select
@@ -1198,26 +1281,38 @@ export const CriticasAdmin: React.FC<CriticasAdminProps> = ({ onNotify, autoCrea
                       ★ {Number(raw.star_rating).toFixed(1)}
                     </td>
                     <td className="py-3 px-4 font-mono text-[10px] uppercase">
-                      {raw.status === 'published' && (
-                        <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 font-bold">
-                          PUBLICADO
-                        </span>
-                      )}
-                      {raw.status === 'draft' && (
-                        <span className="px-2 py-0.5 bg-amber-100 text-amber-800 font-bold">
-                          RASCUNHO
-                        </span>
-                      )}
-                      {raw.status === 'scheduled' && (
-                        <span className="px-2 py-0.5 bg-blue-100 text-blue-800 font-bold">
-                          AGENDADO
-                        </span>
-                      )}
-                      {raw.status === 'archived' && (
-                        <span className="px-2 py-0.5 bg-gray-200 text-gray-800 font-bold">
-                          ARQUIVADO
-                        </span>
-                      )}
+                      {(() => {
+                        const effectiveStatus = getEffectiveEditorialStatus(raw);
+                        if (effectiveStatus === 'published') {
+                          return (
+                            <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 font-bold">
+                              PUBLICADO
+                            </span>
+                          );
+                        }
+                        if (effectiveStatus === 'draft') {
+                          return (
+                            <span className="px-2 py-0.5 bg-amber-100 text-amber-800 font-bold">
+                              RASCUNHO
+                            </span>
+                          );
+                        }
+                        if (effectiveStatus === 'scheduled') {
+                          return (
+                            <span className="px-2 py-0.5 bg-blue-100 text-blue-800 font-bold">
+                              AGENDADO
+                            </span>
+                          );
+                        }
+                        if (effectiveStatus === 'archived') {
+                          return (
+                            <span className="px-2 py-0.5 bg-gray-200 text-gray-800 font-bold">
+                              ARQUIVADO
+                            </span>
+                          );
+                        }
+                        return null;
+                      })()}
                     </td>
                     <td className="py-3 px-4 font-mono text-[#1A1A1A]/70">
                       {formatEditorialDate(

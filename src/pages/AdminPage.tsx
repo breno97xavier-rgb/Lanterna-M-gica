@@ -17,6 +17,7 @@ import {
   HelpCircle,
   X,
   Plus,
+  Users,
 } from 'lucide-react';
 import { cmsStore } from '../services/cmsStore';
 import { getSupabaseClient } from '../services/supabaseClient';
@@ -24,6 +25,7 @@ import { fetchPessoas } from '../services/repositories/pessoasRepository';
 import { fetchFilmes } from '../services/repositories/filmesRepository';
 import { fetchCriticas } from '../services/repositories/criticasRepository';
 import { fetchEnsaios } from '../services/repositories/ensaiosRepository';
+import { fetchTeamMembers } from '../services/repositories/teamMembersRepository';
 import { DashboardOverview } from './admin/DashboardOverview';
 import { EnsaiosAdmin } from './admin/EnsaiosAdmin';
 import { CriticasAdmin } from './admin/CriticasAdmin';
@@ -37,6 +39,7 @@ import { EspeciaisAdmin } from './admin/EspeciaisAdmin';
 import { TagsAdmin } from './admin/TagsAdmin';
 import { MediaAdmin } from './admin/MediaAdmin';
 import { DataBackupAdmin } from './admin/DataBackupAdmin';
+import { TeamAdmin } from './admin/TeamAdmin';
 import { ArticlePreviewModal } from '../components/admin/ArticlePreviewModal';
 
 interface AdminPageProps {
@@ -61,6 +64,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate, onGoBack }) =>
     | 'estreias'
     | 'filmes'
     | 'pessoas'
+    | 'equipe'
     | 'cineastas'
     | 'uma_imagem'
     | 'listas'
@@ -77,13 +81,15 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate, onGoBack }) =>
   const [filmesCount, setFilmesCount] = useState<number | null>(null);
   const [criticasCount, setCriticasCount] = useState<number | null>(null);
   const [ensaiosCount, setEnsaiosCount] = useState<number | null>(null);
+  const [equipeCount, setEquipeCount] = useState<number | null>(null);
 
   const loadCounts = async () => {
-    const [pesRes, filmRes, critRes, ensRes] = await Promise.all([
+    const [pesRes, filmRes, critRes, ensRes, eqRes] = await Promise.all([
       fetchPessoas({ allStatuses: true }),
       fetchFilmes({ allStatuses: true }),
       fetchCriticas({ allStatuses: true }),
       fetchEnsaios({ allStatuses: true }),
+      fetchTeamMembers({ status: 'all' }),
     ]);
     if (pesRes.data) {
       setPessoasCount(pesRes.data.length);
@@ -96,6 +102,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate, onGoBack }) =>
     }
     if (ensRes.data) {
       setEnsaiosCount(ensRes.data.length);
+    }
+    if (eqRes.data) {
+      setEquipeCount(eqRes.data.length);
     }
   };
 
@@ -472,6 +481,18 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate, onGoBack }) =>
           </button>
 
           <button
+            onClick={() => handleNavigateTab('equipe')}
+            className={`px-3 py-2 border whitespace-nowrap flex items-center gap-1.5 transition-colors ${
+              activeTab === 'equipe'
+                ? 'bg-[#1A1A1A] text-[#F5F2ED] border-[#1A1A1A]'
+                : 'bg-white text-[#1A1A1A]/70 border-[#1A1A1A]/15 hover:border-[#1A1A1A]'
+            }`}
+          >
+            <Users size={14} />
+            <span>Equipe ({equipeCount !== null ? equipeCount : '...'})</span>
+          </button>
+
+          <button
             onClick={() => handleNavigateTab('cineastas')}
             className={`px-3 py-2 border whitespace-nowrap flex items-center gap-1.5 transition-colors ${
               activeTab === 'cineastas'
@@ -590,6 +611,13 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate, onGoBack }) =>
 
           {activeTab === 'pessoas' && (
             <PessoasAdmin
+              onNotify={showToast}
+              autoCreate={autoCreateTab}
+            />
+          )}
+
+          {activeTab === 'equipe' && (
+            <TeamAdmin
               onNotify={showToast}
               autoCreate={autoCreateTab}
             />

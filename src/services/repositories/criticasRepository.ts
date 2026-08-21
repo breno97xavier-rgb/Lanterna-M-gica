@@ -1,7 +1,8 @@
 import { getSupabaseClient } from '../supabaseClient';
-import { ContentStatus, Critica } from '../../types';
+import { ContentStatus, Critica, EditorialAuthorCredit } from '../../types';
 import { SupabaseFilme, fetchFilmes } from './filmesRepository';
 import { SupabaseTag, fetchTags, createTag } from './tagsRepository';
+import { mapSupabaseTeamMemberToDomain } from './teamMembersRepository';
 import { getEditorialDateString } from '../../utils/dateUtils';
 
 export interface SupabaseCritica {
@@ -31,6 +32,7 @@ export interface SupabaseCritica {
   // Joined relational data
   film?: SupabaseFilme | null;
   tags?: SupabaseTag[];
+  authors?: EditorialAuthorCredit[];
 }
 
 export interface CreateCriticaInput {
@@ -111,6 +113,26 @@ function mapRawCriticaToSupabaseCritica(row: any): SupabaseCritica {
       .filter(Boolean);
   }
 
+  // Map authors from join
+  const authors: EditorialAuthorCredit[] = [];
+  if (Array.isArray(row.critica_authors)) {
+    row.critica_authors.forEach((ca: any) => {
+      if (ca) {
+        const memberRaw = Array.isArray(ca.team_members) ? ca.team_members[0] : ca.team_members;
+        authors.push({
+          id: ca.id,
+          publicationId: row.id,
+          memberId: ca.member_id,
+          roleName: ca.role_name || 'Crítica',
+          orderIndex: typeof ca.order_index === 'number' ? ca.order_index : 0,
+          createdAt: ca.created_at,
+          member: memberRaw ? mapSupabaseTeamMemberToDomain(memberRaw) : undefined,
+        });
+      }
+    });
+    authors.sort((a, b) => a.orderIndex - b.orderIndex);
+  }
+
   // Map film from join
   let film: SupabaseFilme | null = null;
   if (row.film && typeof row.film === 'object') {
@@ -175,6 +197,7 @@ function mapRawCriticaToSupabaseCritica(row: any): SupabaseCritica {
     legacy_country: row.legacy_country || null,
     film,
     tags,
+    authors,
   };
 }
 
@@ -231,6 +254,10 @@ export function mapSupabaseCriticaToCritica(item: SupabaseCritica): Critica {
 
   const editorialDate = getEditorialDateString(sourceDate);
 
+  const primaryAuthor = (item.authors && item.authors.length > 0)
+    ? item.authors[0].member?.name
+    : undefined;
+
   return {
     id: item.id,
     filmId: item.film_id || undefined,
@@ -247,19 +274,23 @@ export function mapSupabaseCriticaToCritica(item: SupabaseCritica): Critica {
     content: item.content,
     starRating: item.star_rating,
     tags: item.tags?.map((t) => t.name) || [],
+    authors: item.authors,
+    author: primaryAuthor,
     isNewRelease: item.is_new_release,
     highlightHome: item.highlight_home,
     date: editorialDate,
     seoTitle: item.seo_title || undefined,
     seoDescription: item.seo_description || undefined,
     status: item.status,
+    scheduledAt: item.scheduled_at || undefined,
+    publishedAt: item.published_at || undefined,
     createdAt: item.created_at,
     updatedAt: item.updated_at,
   };
 }
 
 /**
- * Consulta padrão com relacionamentos aninhados
+ * Consulta padrão com relacionamentos aninhados (filme, tags e autores editoriais)
  */
 const CRITICAS_SELECT_QUERY = `
   id,
@@ -324,6 +355,29 @@ const CRITICAS_SELECT_QUERY = `
   ),
   critica_tags(
     tag:tags(id, name, slug, created_at)
+  ),
+  critica_authors(
+    id,
+    member_id,
+    role_name,
+    order_index,
+    created_at,
+    team_members(
+      id,
+      legacy_id,
+      name,
+      slug,
+      photo_url,
+      birth_date,
+      bio,
+      short_bio,
+      social_links,
+      display_on_about,
+      order_index,
+      status,
+      created_at,
+      updated_at
+    )
   )
 `;
 

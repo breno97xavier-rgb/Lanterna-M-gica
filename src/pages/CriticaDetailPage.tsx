@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Share2, Film, Calendar, Clock, Globe, Loader2, AlertCircle } from 'lucide-react';
+import { ArrowLeft, Share2, Film, Calendar, Clock, Globe, Loader2, AlertCircle, User } from 'lucide-react';
 import { cmsStore } from '../services/cmsStore';
 import { StarRating } from '../components/StarRating';
 import { ArticleCard } from '../components/ArticleCard';
 import { fetchCriticaBySlug, fetchCriticas, mapSupabaseCriticaToCritica } from '../services/repositories/criticasRepository';
 import { Critica } from '../types';
+import { formatEditorialDate } from '../utils/dateUtils';
 
 interface CriticaDetailPageProps {
   slug: string;
@@ -148,12 +149,54 @@ export const CriticaDetailPage: React.FC<CriticaDetailPageProps> = ({
           &ldquo;{critica.editorialTitle}&rdquo;
         </h2>
 
-        {/* Rating & Share */}
-        <div className="flex items-center justify-center gap-6 pt-4 border-t border-b border-[#1A1A1A]/15 py-4">
+        {/* Rating, Author, Date & Share */}
+        <div className="flex flex-wrap items-center justify-center gap-6 pt-4 border-t border-b border-[#1A1A1A]/15 py-4 text-xs font-sans-ui text-[#1A1A1A]/70">
           <StarRating rating={critica.starRating} size="lg" />
+
+          {/* Autoria */}
+          {critica.authors && critica.authors.length > 0 ? (
+            <div className="flex items-center gap-2">
+              <User size={14} className="text-[#1A1A1A]/80 flex-shrink-0" />
+              <div className="flex items-center gap-2 flex-wrap">
+                {critica.authors.map((auth, idx) => (
+                  <span key={auth.id || idx} className="inline-flex items-center gap-1.5">
+                    {auth.member ? (
+                      <button
+                        onClick={() => onNavigate(`/equipe/${auth.member!.slug}`)}
+                        className="font-medium text-[#1A1A1A] hover:text-[#D4AF37] transition-colors underline underline-offset-2"
+                      >
+                        {auth.member.name}
+                      </button>
+                    ) : (
+                      <strong className="text-[#1A1A1A] font-medium">{critica.author || 'Redação'}</strong>
+                    )}
+                    {auth.roleName && auth.roleName !== 'Crítica' && (
+                      <span className="text-[10px] font-mono text-[#1A1A1A]/60 bg-[#1A1A1A]/5 px-1.5 py-0.5 rounded">
+                        {auth.roleName}
+                      </span>
+                    )}
+                    {idx < critica.authors!.length - 1 && <span className="text-[#1A1A1A]/40">·</span>}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ) : critica.author ? (
+            <div className="flex items-center gap-1.5">
+              <User size={14} className="text-[#1A1A1A]/80" />
+              <span>Por <strong className="text-[#1A1A1A] font-medium">{critica.author}</strong></span>
+            </div>
+          ) : null}
+
+          {critica.date && (
+            <div className="flex items-center gap-1.5">
+              <Calendar size={14} className="text-[#1A1A1A]/80" />
+              <span>{formatEditorialDate(critica.date, 'long')}</span>
+            </div>
+          )}
+
           <button
             onClick={handleShare}
-            className="flex items-center gap-1.5 text-xs font-sans text-[#1A1A1A]/70 hover:text-[#1A1A1A] transition-colors font-semibold"
+            className="flex items-center gap-1.5 text-xs font-sans text-[#1A1A1A]/70 hover:text-[#1A1A1A] transition-colors font-semibold ml-auto sm:ml-0"
           >
             <Share2 size={14} />
             <span>Compartilhar</span>
@@ -229,6 +272,66 @@ export const CriticaDetailPage: React.FC<CriticaDetailPageProps> = ({
                 #{tag}
               </span>
             ))}
+          </div>
+        )}
+
+        {/* Bloco de Autoria / Equipe Editorial */}
+        {critica.authors && critica.authors.filter((a) => !!a.member).length > 0 && (
+          <div className="pt-10 mt-10 border-t border-[#1A1A1A]/15 space-y-4">
+            <span className="text-[10px] font-sans font-bold uppercase tracking-[0.25em] text-[#1A1A1A]/60 block">
+              Sobre quem assina esta crítica
+            </span>
+            <div className="space-y-3">
+              {critica.authors
+                .filter((a) => !!a.member)
+                .map((auth) => {
+                  const member = auth.member!;
+                  return (
+                    <div
+                      key={auth.id || member.id}
+                      className="p-5 bg-white border border-[#1A1A1A]/15 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+                    >
+                      <div className="flex items-center gap-4">
+                        {member.photoUrl ? (
+                          <img
+                            src={member.photoUrl}
+                            alt={member.name}
+                            className="w-14 h-14 rounded-full object-cover border border-[#1A1A1A]/15 flex-shrink-0"
+                          />
+                        ) : (
+                          <div className="w-14 h-14 rounded-full bg-[#1A1A1A]/10 text-[#1A1A1A] font-serif-display font-bold text-lg flex items-center justify-center flex-shrink-0">
+                            {member.name.charAt(0)}
+                          </div>
+                        )}
+                        <div>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <button
+                              onClick={() => onNavigate(`/equipe/${member.slug}`)}
+                              className="font-serif-display text-lg text-[#1A1A1A] hover:text-[#D4AF37] transition-colors font-bold text-left"
+                            >
+                              {member.name}
+                            </button>
+                            <span className="text-[10px] font-mono uppercase bg-[#F5F2ED] border border-[#1A1A1A]/15 px-2 py-0.5 text-[#1A1A1A]/80 font-semibold">
+                              {auth.roleName || 'Crítica'}
+                            </span>
+                          </div>
+                          {member.shortBio && (
+                            <p className="text-xs font-serif-body text-[#1A1A1A]/70 mt-1 max-w-xl leading-relaxed">
+                              {member.shortBio}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => onNavigate(`/equipe/${member.slug}`)}
+                        className="text-xs uppercase tracking-wider font-sans font-bold text-[#1A1A1A] hover:text-[#D4AF37] flex-shrink-0 flex items-center gap-1 self-end sm:self-center"
+                      >
+                        Ver perfil →
+                      </button>
+                    </div>
+                  );
+                })}
+            </div>
           </div>
         )}
       </main>

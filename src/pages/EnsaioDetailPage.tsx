@@ -137,10 +137,39 @@ export const EnsaioDetailPage: React.FC<EnsaioDetailPageProps> = ({
 
         {/* Metadata bar */}
         <div className="flex flex-wrap items-center justify-center gap-6 text-xs font-sans-ui text-[#1A1A1A]/70 pt-4 border-t border-b border-[#1A1A1A]/15 py-4">
-          <div className="flex items-center gap-1.5">
-            <User size={14} className="text-[#1A1A1A]/80" />
-            <span>Por <strong className="text-[#1A1A1A] font-medium">{ensaio.author}</strong></span>
-          </div>
+          {ensaio.authors && ensaio.authors.length > 0 ? (
+            <div className="flex items-center gap-2">
+              <User size={14} className="text-[#1A1A1A]/80 flex-shrink-0" />
+              <div className="flex items-center gap-2 flex-wrap">
+                {ensaio.authors.map((auth, idx) => (
+                  <span key={auth.id || idx} className="inline-flex items-center gap-1.5">
+                    {auth.member ? (
+                      <button
+                        onClick={() => onNavigate(`/equipe/${auth.member!.slug}`)}
+                        className="font-medium text-[#1A1A1A] hover:text-[#D4AF37] transition-colors underline underline-offset-2"
+                      >
+                        {auth.member.name}
+                      </button>
+                    ) : (
+                      <strong className="text-[#1A1A1A] font-medium">{ensaio.author}</strong>
+                    )}
+                    {auth.roleName && auth.roleName !== 'Texto' && (
+                      <span className="text-[10px] font-mono text-[#1A1A1A]/60 bg-[#1A1A1A]/5 px-1.5 py-0.5 rounded">
+                        {auth.roleName}
+                      </span>
+                    )}
+                    {idx < ensaio.authors!.length - 1 && <span className="text-[#1A1A1A]/40">·</span>}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center gap-1.5">
+              <User size={14} className="text-[#1A1A1A]/80" />
+              <span>Por <strong className="text-[#1A1A1A] font-medium">{ensaio.author}</strong></span>
+            </div>
+          )}
+
           <div className="flex items-center gap-1.5">
             <Calendar size={14} className="text-[#1A1A1A]/80" />
             <span>{formatDate(ensaio.date)}</span>
@@ -224,6 +253,66 @@ export const EnsaioDetailPage: React.FC<EnsaioDetailPageProps> = ({
                 #{tag}
               </span>
             ))}
+          </div>
+        )}
+
+        {/* Bloco de Autoria / Equipe Editorial */}
+        {ensaio.authors && ensaio.authors.filter((a) => !!a.member).length > 0 && (
+          <div className="pt-10 mt-10 border-t border-[#1A1A1A]/15 space-y-4">
+            <span className="text-[10px] font-sans font-bold uppercase tracking-[0.25em] text-[#1A1A1A]/60 block">
+              Sobre quem assina este ensaio
+            </span>
+            <div className="space-y-3">
+              {ensaio.authors
+                .filter((a) => !!a.member)
+                .map((auth) => {
+                  const member = auth.member!;
+                  return (
+                    <div
+                      key={auth.id || member.id}
+                      className="p-5 bg-white border border-[#1A1A1A]/15 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+                    >
+                      <div className="flex items-center gap-4">
+                        {member.photoUrl ? (
+                          <img
+                            src={member.photoUrl}
+                            alt={member.name}
+                            className="w-14 h-14 rounded-full object-cover border border-[#1A1A1A]/15 flex-shrink-0"
+                          />
+                        ) : (
+                          <div className="w-14 h-14 rounded-full bg-[#1A1A1A]/10 text-[#1A1A1A] font-serif-display font-bold text-lg flex items-center justify-center flex-shrink-0">
+                            {member.name.charAt(0)}
+                          </div>
+                        )}
+                        <div>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <button
+                              onClick={() => onNavigate(`/equipe/${member.slug}`)}
+                              className="font-serif-display text-lg text-[#1A1A1A] hover:text-[#D4AF37] transition-colors font-bold text-left"
+                            >
+                              {member.name}
+                            </button>
+                            <span className="text-[10px] font-mono uppercase bg-[#F5F2ED] border border-[#1A1A1A]/15 px-2 py-0.5 text-[#1A1A1A]/80 font-semibold">
+                              {auth.roleName || 'Texto'}
+                            </span>
+                          </div>
+                          {member.shortBio && (
+                            <p className="text-xs font-serif-body text-[#1A1A1A]/70 mt-1 max-w-xl leading-relaxed">
+                              {member.shortBio}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => onNavigate(`/equipe/${member.slug}`)}
+                        className="text-xs uppercase tracking-wider font-sans font-bold text-[#1A1A1A] hover:text-[#D4AF37] flex-shrink-0 flex items-center gap-1 self-end sm:self-center"
+                      >
+                        Ver perfil →
+                      </button>
+                    </div>
+                  );
+                })}
+            </div>
           </div>
         )}
       </main>

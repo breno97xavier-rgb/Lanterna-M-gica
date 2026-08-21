@@ -1,6 +1,7 @@
 import { getSupabaseClient } from '../supabaseClient';
-import { ContentStatus, Ensaio } from '../../types';
+import { ContentStatus, Ensaio, EditorialAuthorCredit } from '../../types';
 import { SupabaseTag, fetchTags, createTag } from './tagsRepository';
+import { mapSupabaseTeamMemberToDomain } from './teamMembersRepository';
 import { getEditorialDateString } from '../../utils/dateUtils';
 
 export interface SupabaseEnsaio {
@@ -25,6 +26,7 @@ export interface SupabaseEnsaio {
 
   // Relational data
   tags?: SupabaseTag[];
+  authors?: EditorialAuthorCredit[];
 }
 
 export interface CreateEnsaioInput {
@@ -134,6 +136,25 @@ function mapRawEnsaioToSupabaseEnsaio(row: any): SupabaseEnsaio {
     });
   }
 
+  const authors: EditorialAuthorCredit[] = [];
+  if (Array.isArray(row.ensaio_authors)) {
+    row.ensaio_authors.forEach((ea: any) => {
+      if (ea) {
+        const memberRaw = Array.isArray(ea.team_members) ? ea.team_members[0] : ea.team_members;
+        authors.push({
+          id: ea.id,
+          publicationId: row.id,
+          memberId: ea.member_id,
+          roleName: ea.role_name || 'Texto',
+          orderIndex: typeof ea.order_index === 'number' ? ea.order_index : 0,
+          createdAt: ea.created_at,
+          member: memberRaw ? mapSupabaseTeamMemberToDomain(memberRaw) : undefined,
+        });
+      }
+    });
+    authors.sort((a, b) => a.orderIndex - b.orderIndex);
+  }
+
   return {
     id: row.id,
     legacy_id: row.legacy_id || null,
@@ -154,6 +175,7 @@ function mapRawEnsaioToSupabaseEnsaio(row: any): SupabaseEnsaio {
     created_at: row.created_at,
     updated_at: row.updated_at,
     tags,
+    authors,
   };
 }
 
@@ -169,6 +191,11 @@ export function mapSupabaseEnsaioToEnsaio(item: SupabaseEnsaio): Ensaio {
 
   const editorialDate = getEditorialDateString(sourceDate);
 
+  // Nome do autor principal a partir de relacionamentos reais, com fallback transparente para item.author legado
+  const primaryAuthorName = (item.authors && item.authors.length > 0)
+    ? (item.authors[0].member?.name || item.author || 'Redação Lanterna Mágica')
+    : (item.author || 'Redação Lanterna Mágica');
+
   return {
     id: item.id,
     title: item.title,
@@ -178,20 +205,23 @@ export function mapSupabaseEnsaioToEnsaio(item: SupabaseEnsaio): Ensaio {
     content: item.content,
     category: item.category,
     tags: tagNames,
-    author: item.author,
+    author: primaryAuthorName,
+    authors: item.authors,
     date: editorialDate,
     readTimeMinutes: item.read_time_minutes,
     highlightHome: item.highlight_home,
     seoTitle: item.seo_title || undefined,
     seoDescription: item.seo_description || undefined,
     status: item.status,
+    scheduledAt: item.scheduled_at || undefined,
+    publishedAt: item.published_at || undefined,
     createdAt: item.created_at,
     updatedAt: item.updated_at,
   };
 }
 
 /**
- * Query padrão com relacionamentos aninhados
+ * Query padrão com relacionamentos aninhados (tags e autores editoriais)
  */
 const ENSAIOS_SELECT_QUERY = `
   id,
@@ -214,6 +244,29 @@ const ENSAIOS_SELECT_QUERY = `
   updated_at,
   ensaio_tags(
     tag:tags(id, name, slug, created_at)
+  ),
+  ensaio_authors(
+    id,
+    member_id,
+    role_name,
+    order_index,
+    created_at,
+    team_members(
+      id,
+      legacy_id,
+      name,
+      slug,
+      photo_url,
+      birth_date,
+      bio,
+      short_bio,
+      social_links,
+      display_on_about,
+      order_index,
+      status,
+      created_at,
+      updated_at
+    )
   )
 `;
 

@@ -52,6 +52,7 @@ import {
 import { ImageUploader } from '../../components/admin/ImageUploader';
 import { ConfirmModal } from '../../components/admin/ConfirmModal';
 import { ContentStatus } from '../../types';
+import { getEffectiveEditorialStatus } from '../../utils/statusUtils';
 
 interface FilmesAdminProps {
   onNotify: (msg: string) => void;
@@ -570,7 +571,7 @@ export const FilmesAdmin: React.FC<FilmesAdminProps> = ({ onNotify, autoCreate =
   // Filtered film list
   const displayedFilmes = useMemo(() => {
     return filmes.filter((f) => {
-      if (statusFilter !== 'all' && f.status !== statusFilter) return false;
+      if (statusFilter !== 'all' && getEffectiveEditorialStatus(f) !== statusFilter) return false;
       if (searchTerm.trim()) {
         const term = searchTerm.toLowerCase().trim();
         const matchTitle = f.title.toLowerCase().includes(term);
@@ -1404,17 +1405,13 @@ export const FilmesAdmin: React.FC<FilmesAdminProps> = ({ onNotify, autoCreate =
 
         {/* Status filters */}
         <div className="flex items-center gap-1 text-xs font-sans w-full sm:w-auto overflow-x-auto">
-          {(['all', 'published', 'draft', 'scheduled', 'archived'] as const).map((st) => (
-            <button
-              key={st}
-              onClick={() => setStatusFilter(st)}
-              className={`px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider border transition-colors ${
-                statusFilter === st
-                  ? 'bg-[#1A1A1A] text-[#F5F2ED] border-[#1A1A1A]'
-                  : 'bg-white text-[#1A1A1A]/70 border-[#1A1A1A]/15 hover:border-[#1A1A1A]'
-              }`}
-            >
-              {st === 'all'
+          {(['all', 'published', 'draft', 'scheduled', 'archived'] as const).map((st) => {
+            const count =
+              st === 'all'
+                ? filmes.length
+                : filmes.filter((f) => getEffectiveEditorialStatus(f) === st).length;
+            const label =
+              st === 'all'
                 ? 'Todos'
                 : st === 'published'
                 ? 'Publicados'
@@ -1422,9 +1419,22 @@ export const FilmesAdmin: React.FC<FilmesAdminProps> = ({ onNotify, autoCreate =
                 ? 'Rascunhos'
                 : st === 'scheduled'
                 ? 'Agendados'
-                : 'Arquivados'}
-            </button>
-          ))}
+                : 'Arquivados';
+
+            return (
+              <button
+                key={st}
+                onClick={() => setStatusFilter(st)}
+                className={`px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider border transition-colors whitespace-nowrap ${
+                  statusFilter === st
+                    ? 'bg-[#1A1A1A] text-[#F5F2ED] border-[#1A1A1A]'
+                    : 'bg-white text-[#1A1A1A]/70 border-[#1A1A1A]/15 hover:border-[#1A1A1A]'
+                }`}
+              >
+                {label} ({count})
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -1542,19 +1552,30 @@ export const FilmesAdmin: React.FC<FilmesAdminProps> = ({ onNotify, autoCreate =
                       </span>
                     </td>
                     <td className="py-3 px-4">
-                      <span
-                        className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 border ${
-                          f.status === 'published'
-                            ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
-                            : f.status === 'draft'
-                            ? 'bg-amber-50 text-amber-800 border-amber-300'
-                            : f.status === 'scheduled'
-                            ? 'bg-blue-50 text-blue-800 border-blue-300'
-                            : 'bg-stone-100 text-stone-700 border-stone-300'
-                        }`}
-                      >
-                        {f.status}
-                      </span>
+                      {(() => {
+                        const eff = getEffectiveEditorialStatus(f);
+                        return (
+                          <span
+                            className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 border ${
+                              eff === 'published'
+                                ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                                : eff === 'draft'
+                                ? 'bg-amber-50 text-amber-800 border-amber-300'
+                                : eff === 'scheduled'
+                                ? 'bg-blue-50 text-blue-800 border-blue-300'
+                                : 'bg-stone-100 text-stone-700 border-stone-300'
+                            }`}
+                          >
+                            {eff === 'published'
+                              ? 'Publicado'
+                              : eff === 'draft'
+                              ? 'Rascunho'
+                              : eff === 'scheduled'
+                              ? 'Agendado'
+                              : 'Arquivado'}
+                          </span>
+                        );
+                      })()}
                     </td>
                     <td className="py-3 px-4 text-right">
                       <div className="flex items-center justify-end gap-1.5">
