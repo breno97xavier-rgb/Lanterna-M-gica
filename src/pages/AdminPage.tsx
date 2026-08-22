@@ -25,7 +25,9 @@ import { fetchPessoas } from '../services/repositories/pessoasRepository';
 import { fetchFilmes } from '../services/repositories/filmesRepository';
 import { fetchCriticas } from '../services/repositories/criticasRepository';
 import { fetchEnsaios } from '../services/repositories/ensaiosRepository';
+import { fetchUmaImagem } from '../services/repositories/umaImagemRepository';
 import { fetchTeamMembers } from '../services/repositories/teamMembersRepository';
+import { fetchEspeciais } from '../services/repositories/especiaisRepository';
 import { DashboardOverview } from './admin/DashboardOverview';
 import { EnsaiosAdmin } from './admin/EnsaiosAdmin';
 import { CriticasAdmin } from './admin/CriticasAdmin';
@@ -82,14 +84,18 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate, onGoBack }) =>
   const [criticasCount, setCriticasCount] = useState<number | null>(null);
   const [ensaiosCount, setEnsaiosCount] = useState<number | null>(null);
   const [equipeCount, setEquipeCount] = useState<number | null>(null);
+  const [umaImagemCount, setUmaImagemCount] = useState<number | null>(null);
+  const [especiaisCount, setEspeciaisCount] = useState<number | null>(null);
 
   const loadCounts = async () => {
-    const [pesRes, filmRes, critRes, ensRes, eqRes] = await Promise.all([
+    const [pesRes, filmRes, critRes, ensRes, eqRes, umaRes, espRes] = await Promise.all([
       fetchPessoas({ allStatuses: true }),
       fetchFilmes({ allStatuses: true }),
       fetchCriticas({ allStatuses: true }),
       fetchEnsaios({ allStatuses: true }),
       fetchTeamMembers({ status: 'all' }),
+      fetchUmaImagem({ allStatuses: true }),
+      fetchEspeciais({ allStatuses: true }),
     ]);
     if (pesRes.data) {
       setPessoasCount(pesRes.data.length);
@@ -105,6 +111,12 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate, onGoBack }) =>
     }
     if (eqRes.data) {
       setEquipeCount(eqRes.data.length);
+    }
+    if (umaRes.data) {
+      setUmaImagemCount(umaRes.data.length);
+    }
+    if (espRes.data) {
+      setEspeciaisCount(espRes.count ?? espRes.data.length);
     }
   };
 
@@ -513,7 +525,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate, onGoBack }) =>
             }`}
           >
             <Sparkles size={14} />
-            <span>Uma Imagem ({cmsStore.getUmaImagemList(false).length})</span>
+            <span>Uma Imagem ({umaImagemCount !== null ? umaImagemCount : '...'})</span>
           </button>
 
           <button
@@ -537,7 +549,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate, onGoBack }) =>
             }`}
           >
             <Folder size={14} />
-            <span>Especiais ({cmsStore.getEspeciais(false).length})</span>
+            <span>Especiais ({especiaisCount !== null ? especiaisCount : '...'})</span>
           </button>
 
           <button

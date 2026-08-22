@@ -6,7 +6,9 @@ import { ArticleCard } from '../components/ArticleCard';
 import { BrandLogo } from '../components/BrandLogo';
 import { fetchCriticas, mapSupabaseCriticaToCritica } from '../services/repositories/criticasRepository';
 import { fetchEnsaios, mapSupabaseEnsaioToEnsaio } from '../services/repositories/ensaiosRepository';
-import { Critica, Ensaio, HighlightItem } from '../types';
+import { fetchUmaImagem, mapSupabaseUmaImagemToDomain } from '../services/repositories/umaImagemRepository';
+import { fetchEspeciais } from '../services/repositories/especiaisRepository';
+import { Critica, Ensaio, Especial, HighlightItem, UmaImagemUmaIdeia } from '../types';
 
 interface HomePageProps {
   onNavigate: (path: string) => void;
@@ -15,6 +17,8 @@ interface HomePageProps {
 export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const [supabaseCriticas, setSupabaseCriticas] = useState<Critica[]>([]);
   const [supabaseEnsaios, setSupabaseEnsaios] = useState<Ensaio[]>([]);
+  const [supabaseUmaImagem, setSupabaseUmaImagem] = useState<UmaImagemUmaIdeia[]>([]);
+  const [supabaseEspeciais, setSupabaseEspeciais] = useState<Especial[]>([]);
   const [loadingContent, setLoadingContent] = useState(true);
 
   useEffect(() => {
@@ -22,13 +26,21 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     Promise.all([
       fetchCriticas({ allStatuses: false }),
       fetchEnsaios({ allStatuses: false }),
-    ]).then(([critRes, ensRes]) => {
+      fetchUmaImagem({ allStatuses: false }),
+      fetchEspeciais({ allStatuses: false }),
+    ]).then(([critRes, ensRes, umaRes, espRes]) => {
       if (isMounted) {
         if (critRes.data) {
           setSupabaseCriticas(critRes.data.map(mapSupabaseCriticaToCritica));
         }
         if (ensRes.data) {
           setSupabaseEnsaios(ensRes.data.map(mapSupabaseEnsaioToEnsaio));
+        }
+        if (umaRes.data) {
+          setSupabaseUmaImagem(umaRes.data.map(mapSupabaseUmaImagemToDomain));
+        }
+        if (espRes.data) {
+          setSupabaseEspeciais(espRes.data);
         }
         setLoadingContent(false);
       }
@@ -41,39 +53,57 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   // Load data from CMS store for unmigrated entities
   const currentWeekEstreias = cmsStore.getCurrentWeekEstreias();
   const ensaios = supabaseEnsaios;
-  const umaImagemList = cmsStore.getUmaImagemList(true);
-  const especiais = cmsStore.getEspeciais(true);
+  const umaImagemList = supabaseUmaImagem;
+  const especiais = supabaseEspeciais;
   const cineastas = cmsStore.getCineastas();
 
-  // Combine highlights: Supabase highlighted critiques + Supabase highlighted ensaios + cmsStore highlights
+  // Helper para obter timestamp de ordenação editorial/cronológica
+  const getItemTimestamp = (item: HighlightItem): number => {
+    const rawDate =
+      ('publishedAt' in item && item.publishedAt) ||
+      ('scheduledAt' in item && item.scheduledAt) ||
+      ('createdAt' in item && item.createdAt) ||
+      ('date' in item && item.date);
+    if (rawDate) {
+      const time = new Date(rawDate).getTime();
+      if (!isNaN(time)) return time;
+    }
+    return 0;
+  };
+
+  // Combine highlights: Supabase highlighted critiques + Supabase highlighted ensaios + Supabase Uma Imagem + cmsStore highlights
   const highlights: HighlightItem[] = useMemo(() => {
     const list: HighlightItem[] = [];
 
     // Add highlighted critiques from Supabase
     supabaseCriticas
-      .filter((c) => c.highlightHome)
+      .filter((c) => Boolean(c.highlightHome))
       .forEach((c) => list.push({ ...c, itemType: 'critica' }));
 
     // Add highlighted ensaios from Supabase
     supabaseEnsaios
-      .filter((e) => e.highlightHome)
+      .filter((e) => Boolean(e.highlightHome))
       .forEach((e) => list.push({ ...e, itemType: 'ensaio' }));
+
+    // Add highlights from Supabase Uma Imagem
+    supabaseUmaImagem
+      .filter((u) => Boolean(u.highlightHome))
+      .forEach((u) => list.push({ ...u, itemType: 'uma_imagem' }));
 
     // Add highlights from other unmigrated entities
     especiais
-      .filter((es) => es.highlightHome)
+      .filter((es) => Boolean(es.highlightHome))
       .forEach((es) => list.push({ ...es, itemType: 'especial' }));
 
     cineastas
-      .filter((cin) => cin.highlightHome)
+      .filter((cin) => Boolean(cin.highlightHome))
       .forEach((cin) => list.push({ ...cin, itemType: 'cineasta' }));
 
-    umaImagemList
-      .filter((u) => u.highlightHome)
-      .forEach((u) => list.push({ ...u, itemType: 'uma_imagem' }));
+    // Ordenação editorial unificada: as publicações mais recentes marcadas com destaque na Home
+    list.sort((a, b) => getItemTimestamp(b) - getItemTimestamp(a));
 
     return list.slice(0, 4);
-  }, [supabaseCriticas, supabaseEnsaios, especiais, cineastas, umaImagemList]);
+  }, [supabaseCriticas, supabaseEnsaios, supabaseUmaImagem, especiais, cineastas]);
 
   // Current year for Críticas section
   const currentYear = new Date().getFullYear();
@@ -317,27 +347,62 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         {mainUmaImagem && (
           <section className="bg-white border border-[#1A1A1A]/15 p-6 sm:p-10 lg:p-12 animate-in fade-in duration-500">
             <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              <div className="lg:col-span-6 overflow-hidden border border-[#1A1A1A]/12">
+              <div
+                onClick={() => onNavigate(`/uma-imagem/${mainUmaImagem.slug}`)}
+                className="lg:col-span-6 overflow-hidden border border-[#1A1A1A]/12 cursor-pointer group"
+              >
                 <img
                   src={mainUmaImagem.image}
                   alt={mainUmaImagem.title}
-                  className="w-full h-auto max-h-[450px] object-cover hover:scale-[1.02] transition-transform duration-700"
+                  className="w-full h-auto max-h-[450px] object-cover group-hover:scale-[1.02] transition-transform duration-700"
                 />
               </div>
 
               <div className="lg:col-span-6 space-y-4">
-                <div className="flex items-center gap-2 text-[10px] font-sans font-bold uppercase tracking-[0.25em] text-[#1A1A1A]/90">
-                  <Sparkles size={13} className="text-[#1A1A1A]" />
-                  <span>Uma Imagem, Uma Ideia</span>
+                <div className="flex items-center justify-between">
+                  <div
+                    onClick={() => onNavigate('/uma-imagem')}
+                    className="flex items-center gap-2 text-[10px] font-sans font-bold uppercase tracking-[0.25em] text-[#1A1A1A]/90 hover:text-[#D4AF37] cursor-pointer transition-colors"
+                  >
+                    <Sparkles size={13} className="text-[#D4AF37]" />
+                    <span>Uma Imagem, Uma Ideia</span>
+                  </div>
+                  <button
+                    onClick={() => onNavigate('/uma-imagem')}
+                    className="text-[10px] font-sans font-bold uppercase tracking-[0.18em] text-[#1A1A1A]/60 hover:text-[#1A1A1A] transition-colors"
+                  >
+                    Ver todas
+                  </button>
                 </div>
 
-                <h3 className="text-2xl sm:text-3xl font-serif-display font-normal text-[#1A1A1A] leading-tight">
+                <h3
+                  onClick={() => onNavigate(`/uma-imagem/${mainUmaImagem.slug}`)}
+                  className="text-2xl sm:text-3xl font-serif-display font-normal text-[#1A1A1A] leading-tight hover:text-[#D4AF37] cursor-pointer transition-colors"
+                >
                   {mainUmaImagem.title}
                 </h3>
 
-                <p className="text-sm sm:text-base font-serif-body text-[#1A1A1A]/80 leading-relaxed whitespace-pre-line">
+                <p className="text-sm sm:text-base font-serif-body text-[#1A1A1A]/80 leading-relaxed whitespace-pre-line line-clamp-6">
                   {mainUmaImagem.content}
                 </p>
+
+                <div className="pt-2 flex flex-wrap items-center justify-between gap-3">
+                  <button
+                    onClick={() => onNavigate(`/uma-imagem/${mainUmaImagem.slug}`)}
+                    className="inline-flex items-center gap-1.5 text-xs font-sans font-bold uppercase tracking-[0.15em] text-[#1A1A1A] hover:text-[#D4AF37] transition-colors"
+                  >
+                    <span>Ler reflexão completa</span>
+                    <ArrowRight size={13} />
+                  </button>
+
+                  <button
+                    onClick={() => onNavigate('/uma-imagem')}
+                    className="inline-flex items-center gap-1 text-xs font-sans font-bold uppercase tracking-[0.15em] text-[#1A1A1A]/60 hover:text-[#1A1A1A] transition-colors"
+                  >
+                    <span>Explorar catálogo</span>
+                    <ArrowRight size={12} />
+                  </button>
+                </div>
 
                 {mainUmaImagem.relatedMovie && (
                   <p className="text-xs font-sans-ui text-[#1A1A1A]/60 pt-3 border-t border-[#1A1A1A]/10">

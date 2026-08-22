@@ -75,7 +75,7 @@ export const HeroCarousel: React.FC<HeroCarouselProps> = ({
       case 'cineasta':
         return `/cineastas/${item.slug}`;
       case 'uma_imagem':
-        return `/ensaios`;
+        return `/uma-imagem/${item.slug}`;
       default:
         return '/';
     }
@@ -120,7 +120,14 @@ export const HeroCarousel: React.FC<HeroCarouselProps> = ({
       return `${item.country}${dates} · Retrospectiva, filmografia e perfil crítico`;
     }
     if (item.itemType === 'uma_imagem') {
-      return item.relatedMovie ? `Reflexão sobre ${item.relatedMovie}` : '';
+      if (item.relatedMovie) {
+        return `Reflexão visual sobre ${item.relatedMovie}${item.relatedFilmmaker ? ` · Dir. ${item.relatedFilmmaker}` : ''}`;
+      }
+      if (item.content) {
+        const cleanExcerpt = item.content.replace(/\s+/g, ' ').trim();
+        return cleanExcerpt.length > 130 ? cleanExcerpt.slice(0, 130) + '...' : cleanExcerpt;
+      }
+      return 'Uma imagem, uma reflexão sobre a potência do instante cinematográfico.';
     }
     return '';
   };

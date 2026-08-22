@@ -4,7 +4,9 @@ import { cmsStore } from '../services/cmsStore';
 import { ArticleCard } from '../components/ArticleCard';
 import { fetchPessoaBySlug, SupabasePessoa } from '../services/repositories/pessoasRepository';
 import { fetchFilmes, SupabaseFilme } from '../services/repositories/filmesRepository';
-import { Pessoa } from '../types';
+import { fetchUmaImagem, mapSupabaseUmaImagemToDomain } from '../services/repositories/umaImagemRepository';
+import { fetchEspeciais } from '../services/repositories/especiaisRepository';
+import { Especial, Pessoa, UmaImagemUmaIdeia } from '../types';
 
 import { calculatePersonAge } from '../utils/dateUtils';
 export { calculatePersonAge };
@@ -22,6 +24,8 @@ export const PessoaDetailPage: React.FC<PessoaDetailPageProps> = ({
 }) => {
   const [supabasePessoa, setSupabasePessoa] = useState<SupabasePessoa | null>(null);
   const [supabaseFilmes, setSupabaseFilmes] = useState<SupabaseFilme[]>([]);
+  const [umaImagemList, setUmaImagemList] = useState<UmaImagemUmaIdeia[]>([]);
+  const [supabaseEspeciais, setSupabaseEspeciais] = useState<Especial[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -30,11 +34,25 @@ export const PessoaDetailPage: React.FC<PessoaDetailPageProps> = ({
     Promise.all([
       fetchPessoaBySlug(slug),
       fetchFilmes({ allStatuses: false }),
-    ]).then(([pesRes, filmRes]) => {
+    ]).then(async ([pesRes, filmRes]) => {
       if (!isMounted) return;
       setSupabasePessoa(pesRes.data);
       if (filmRes.data) {
         setSupabaseFilmes(filmRes.data);
+      }
+      if (pesRes.data?.id) {
+        const [umaRes, espRes] = await Promise.all([
+          fetchUmaImagem({ personId: pesRes.data.id, allStatuses: false }),
+          fetchEspeciais({ relatedPersonId: pesRes.data.id, allStatuses: false }),
+        ]);
+        if (isMounted) {
+          if (umaRes.data) {
+            setUmaImagemList(umaRes.data.map(mapSupabaseUmaImagemToDomain));
+          }
+          if (espRes.data) {
+            setSupabaseEspeciais(espRes.data);
+          }
+        }
       }
       setLoading(false);
     });
@@ -410,13 +428,24 @@ export const PessoaDetailPage: React.FC<PessoaDetailPageProps> = ({
         )}
 
         {/* Especiais & Listas */}
-        {(related.especiais.length > 0 || related.listas.length > 0) && (
+        {(supabaseEspeciais.length > 0 || related.especiais.length > 0 || related.listas.length > 0) && (
           <div className="space-y-4">
             <h3 className="text-xs font-sans font-bold uppercase tracking-[0.2em] text-[#D4AF37]">
               ESPECIAIS & LISTAS
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {related.especiais.map((es) => (
+              {supabaseEspeciais.map((es) => (
+                <ArticleCard
+                  key={es.id}
+                  type="especial"
+                  variant="medium"
+                  title={es.title}
+                  subtitle={es.subtitle}
+                  image={es.coverImage}
+                  onClick={() => onNavigate(`/especiais/${es.slug}`)}
+                />
+              ))}
+              {supabaseEspeciais.length === 0 && related.especiais.map((es) => (
                 <ArticleCard
                   key={es.id}
                   type="especial"
@@ -443,13 +472,13 @@ export const PessoaDetailPage: React.FC<PessoaDetailPageProps> = ({
         )}
 
         {/* Uma Imagem */}
-        {related.umaImagem.length > 0 && (
+        {umaImagemList.length > 0 && (
           <div className="space-y-4">
             <h3 className="text-xs font-sans font-bold uppercase tracking-[0.2em] text-[#D4AF37]">
-              UMA IMAGEM, UMA IDEIA
+              UMA IMAGEM, UMA IDEIA ({umaImagemList.length})
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {related.umaImagem.map((u) => (
+              {umaImagemList.map((u) => (
                 <ArticleCard
                   key={u.id}
                   type="uma_imagem"
@@ -458,7 +487,7 @@ export const PessoaDetailPage: React.FC<PessoaDetailPageProps> = ({
                   subtitle={u.relatedMovie ? `Filme: ${u.relatedMovie}` : 'Uma imagem, uma ideia'}
                   image={u.image}
                   date={u.date}
-                  onClick={() => onNavigate('/ensaios')}
+                  onClick={() => onNavigate(`/uma-imagem/${u.slug}`)}
                 />
               ))}
             </div>

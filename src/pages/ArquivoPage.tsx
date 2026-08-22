@@ -6,7 +6,9 @@ import { fetchPessoas, SupabasePessoa } from '../services/repositories/pessoasRe
 import { fetchFilmes, SupabaseFilme } from '../services/repositories/filmesRepository';
 import { fetchCriticas, mapSupabaseCriticaToCritica } from '../services/repositories/criticasRepository';
 import { fetchEnsaios, mapSupabaseEnsaioToEnsaio } from '../services/repositories/ensaiosRepository';
-import { Critica, Ensaio } from '../types';
+import { fetchUmaImagem, mapSupabaseUmaImagemToDomain } from '../services/repositories/umaImagemRepository';
+import { fetchEspeciais } from '../services/repositories/especiaisRepository';
+import { Critica, Ensaio, Especial, UmaImagemUmaIdeia } from '../types';
 
 interface ArquivoPageProps {
   onNavigate: (path: string) => void;
@@ -28,6 +30,12 @@ export const ArquivoPage: React.FC<ArquivoPageProps> = ({ onNavigate }) => {
 
   const [ensaios, setEnsaios] = useState<Ensaio[]>([]);
   const [loadingEnsaios, setLoadingEnsaios] = useState(true);
+
+  const [umaImagemList, setUmaImagemList] = useState<UmaImagemUmaIdeia[]>([]);
+  const [loadingUmaImagem, setLoadingUmaImagem] = useState(true);
+
+  const [especiais, setEspeciais] = useState<Especial[]>([]);
+  const [loadingEspeciais, setLoadingEspeciais] = useState(true);
 
   useEffect(() => {
     let isMounted = true;
@@ -97,13 +105,31 @@ export const ArquivoPage: React.FC<ArquivoPageProps> = ({ onNavigate }) => {
       }
     });
 
+    setLoadingUmaImagem(true);
+    fetchUmaImagem({ allStatuses: false }).then(({ data }) => {
+      if (isMounted) {
+        if (data) {
+          setUmaImagemList(data.map(mapSupabaseUmaImagemToDomain));
+        }
+        setLoadingUmaImagem(false);
+      }
+    });
+
+    setLoadingEspeciais(true);
+    fetchEspeciais({ allStatuses: false }).then(({ data }) => {
+      if (isMounted) {
+        if (data) {
+          setEspeciais(data);
+        }
+        setLoadingEspeciais(false);
+      }
+    });
+
     return () => {
       isMounted = false;
     };
   }, []);
 
-  const umaImagemList = cmsStore.getUmaImagemList(true);
-  const especiais = cmsStore.getEspeciais(true);
   const estreias = cmsStore.getEstreias(true);
 
   // Combine all items into a unified archive list for editorial publications
@@ -111,7 +137,18 @@ export const ArquivoPage: React.FC<ArquivoPageProps> = ({ onNavigate }) => {
     ...ensaios.map((e) => ({ ...e, archiveType: 'ensaio' as const, displayTitle: e.title, displaySub: e.subtitle, displayDate: e.date, displayImg: e.coverImage, yearNum: new Date(e.date).getFullYear() })),
     ...criticas.map((c) => ({ ...c, archiveType: 'critica' as const, displayTitle: `${c.movieTitle} — ${c.editorialTitle}`, displaySub: `Dir. ${c.director} (${c.year})`, displayDate: c.date, displayImg: c.coverImage, yearNum: c.year })),
     ...umaImagemList.map((u) => ({ ...u, archiveType: 'uma_imagem' as const, displayTitle: u.title, displaySub: u.relatedMovie ? `Filme: ${u.relatedMovie}` : 'Uma imagem', displayDate: u.date, displayImg: u.image, yearNum: new Date(u.date).getFullYear() })),
-    ...especiais.map((es) => ({ ...es, archiveType: 'especial' as const, displayTitle: es.title, displaySub: es.subtitle, displayDate: es.createdAt.slice(0, 10), displayImg: es.coverImage, yearNum: new Date(es.createdAt).getFullYear() })),
+    ...especiais.map((es) => {
+      const pubDate = es.publishedAt || es.createdAt;
+      return {
+        ...es,
+        archiveType: 'especial' as const,
+        displayTitle: es.title,
+        displaySub: es.subtitle,
+        displayDate: pubDate.slice(0, 10),
+        displayImg: es.coverImage,
+        yearNum: new Date(pubDate).getFullYear(),
+      };
+    }),
   ];
 
   // Unique years for publications
@@ -233,7 +270,8 @@ export const ArquivoPage: React.FC<ArquivoPageProps> = ({ onNavigate }) => {
                       if (item.archiveType === 'ensaio') onNavigate(`/ensaios/${item.slug}`);
                       else if (item.archiveType === 'critica') onNavigate(`/criticas/${item.slug}`);
                       else if (item.archiveType === 'especial') onNavigate(`/especiais/${item.slug}`);
-                      else onNavigate('/ensaios');
+                      else if (item.archiveType === 'uma_imagem') onNavigate(`/uma-imagem/${item.slug}`);
+                      else onNavigate('/arquivo');
                     }}
                   />
                 ))}

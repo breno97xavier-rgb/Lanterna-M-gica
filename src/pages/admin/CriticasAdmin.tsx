@@ -51,7 +51,7 @@ import {
   parseDateInputToIso,
   parseDateTimeInputToIso,
 } from '../../utils/dateUtils';
-import { getEffectiveEditorialStatus } from '../../utils/statusUtils';
+import { getEffectiveEditorialStatus, useEditorialTicker } from '../../utils/statusUtils';
 
 interface CriticasAdminProps {
   onNotify: (msg: string) => void;
@@ -89,6 +89,7 @@ interface FormState {
 const DEFAULT_COVER = 'https://images.unsplash.com/photo-1518676590629-3dcbd9c7a5c1?auto=format&fit=crop&q=80&w=1600';
 
 export const CriticasAdmin: React.FC<CriticasAdminProps> = ({ onNotify, autoCreate = false }) => {
+  const currentTime = useEditorialTicker(30000);
   const [criticas, setCriticas] = useState<SupabaseCritica[]>([]);
   const [filmes, setFilmes] = useState<SupabaseFilme[]>([]);
   const [loading, setLoading] = useState(true);
@@ -493,7 +494,7 @@ export const CriticasAdmin: React.FC<CriticasAdminProps> = ({ onNotify, autoCrea
 
     // Status filter (utiliza status editorial efetivo para agendamentos já liberados)
     if (statusFilter !== 'todos') {
-      const effectiveStatus = getEffectiveEditorialStatus(c);
+      const effectiveStatus = getEffectiveEditorialStatus(c, undefined, currentTime);
       if (effectiveStatus !== statusFilter) {
         return false;
       }
@@ -1174,16 +1175,16 @@ export const CriticasAdmin: React.FC<CriticasAdminProps> = ({ onNotify, autoCrea
           >
             <option value="todos">Todos os Status ({criticas.length})</option>
             <option value="published">
-              Publicados ({criticas.filter((c) => getEffectiveEditorialStatus(c) === 'published').length})
+              Publicados ({criticas.filter((c) => getEffectiveEditorialStatus(c, undefined, currentTime) === 'published').length})
             </option>
             <option value="draft">
-              Rascunhos ({criticas.filter((c) => getEffectiveEditorialStatus(c) === 'draft').length})
+              Rascunhos ({criticas.filter((c) => getEffectiveEditorialStatus(c, undefined, currentTime) === 'draft').length})
             </option>
             <option value="scheduled">
-              Agendados ({criticas.filter((c) => getEffectiveEditorialStatus(c) === 'scheduled').length})
+              Agendados ({criticas.filter((c) => getEffectiveEditorialStatus(c, undefined, currentTime) === 'scheduled').length})
             </option>
             <option value="archived">
-              Arquivados ({criticas.filter((c) => getEffectiveEditorialStatus(c) === 'archived').length})
+              Arquivados ({criticas.filter((c) => getEffectiveEditorialStatus(c, undefined, currentTime) === 'archived').length})
             </option>
           </select>
 
@@ -1282,7 +1283,7 @@ export const CriticasAdmin: React.FC<CriticasAdminProps> = ({ onNotify, autoCrea
                     </td>
                     <td className="py-3 px-4 font-mono text-[10px] uppercase">
                       {(() => {
-                        const effectiveStatus = getEffectiveEditorialStatus(raw);
+                        const effectiveStatus = getEffectiveEditorialStatus(raw, undefined, currentTime);
                         if (effectiveStatus === 'published') {
                           return (
                             <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 font-bold">

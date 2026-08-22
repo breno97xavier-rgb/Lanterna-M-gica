@@ -37,14 +37,18 @@ export const TeamMemberDetailPage: React.FC<TeamMemberDetailPageProps> = ({
   const [publications, setPublications] = useState<{
     ensaios: MemberPublicationItem[];
     criticas: MemberPublicationItem[];
+    umaImagem: MemberPublicationItem[];
+    especiais: MemberPublicationItem[];
     all: MemberPublicationItem[];
   }>({
     ensaios: [],
     criticas: [],
+    umaImagem: [],
+    especiais: [],
     all: [],
   });
   const [loadingPubs, setLoadingPubs] = useState(false);
-  const [pubFilter, setPubFilter] = useState<'all' | 'ensaio' | 'critica'>('all');
+  const [pubFilter, setPubFilter] = useState<'all' | 'ensaio' | 'critica' | 'uma_imagem' | 'especial'>('all');
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
@@ -77,6 +81,8 @@ export const TeamMemberDetailPage: React.FC<TeamMemberDetailPageProps> = ({
             setPublications({
               ensaios: pubsRes.ensaios,
               criticas: pubsRes.criticas,
+              umaImagem: pubsRes.umaImagem || [],
+              especiais: pubsRes.especiais || [],
               all: pubsRes.all,
             });
             setLoadingPubs(false);
@@ -391,7 +397,7 @@ export const TeamMemberDetailPage: React.FC<TeamMemberDetailPageProps> = ({
 
             {/* Filter Tabs */}
             {publications.all.length > 0 && (
-              <div className="flex items-center gap-1 bg-white border border-[#1A1A1A]/15 p-1 self-start sm:self-auto text-xs font-mono">
+              <div className="flex flex-wrap items-center gap-1 bg-white border border-[#1A1A1A]/15 p-1 self-start sm:self-auto text-xs font-mono">
                 <button
                   onClick={() => setPubFilter('all')}
                   className={`px-3 py-1 transition-colors ${
@@ -426,6 +432,30 @@ export const TeamMemberDetailPage: React.FC<TeamMemberDetailPageProps> = ({
                     Críticas ({publications.criticas.length})
                   </button>
                 )}
+                {publications.umaImagem.length > 0 && (
+                  <button
+                    onClick={() => setPubFilter('uma_imagem')}
+                    className={`px-3 py-1 transition-colors ${
+                      pubFilter === 'uma_imagem'
+                        ? 'bg-[#1A1A1A] text-[#F5F2ED] font-bold'
+                        : 'text-[#1A1A1A]/70 hover:text-[#1A1A1A]'
+                    }`}
+                  >
+                    Uma Imagem ({publications.umaImagem.length})
+                  </button>
+                )}
+                {publications.especiais.length > 0 && (
+                  <button
+                    onClick={() => setPubFilter('especial')}
+                    className={`px-3 py-1 transition-colors ${
+                      pubFilter === 'especial'
+                        ? 'bg-[#1A1A1A] text-[#F5F2ED] font-bold'
+                        : 'text-[#1A1A1A]/70 hover:text-[#1A1A1A]'
+                    }`}
+                  >
+                    Especiais ({publications.especiais.length})
+                  </button>
+                )}
               </div>
             )}
           </div>
@@ -444,6 +474,10 @@ export const TeamMemberDetailPage: React.FC<TeamMemberDetailPageProps> = ({
                   ? publications.ensaios
                   : pubFilter === 'critica'
                   ? publications.criticas
+                  : pubFilter === 'uma_imagem'
+                  ? publications.umaImagem
+                  : pubFilter === 'especial'
+                  ? publications.especiais
                   : publications.all;
 
               if (displayedPubs.length === 0) {
@@ -462,7 +496,21 @@ export const TeamMemberDetailPage: React.FC<TeamMemberDetailPageProps> = ({
                     const targetUrl =
                       pub.type === 'ensaio'
                         ? `/ensaios/${pub.slug}`
-                        : `/criticas/${pub.slug}`;
+                        : pub.type === 'critica'
+                        ? `/criticas/${pub.slug}`
+                        : pub.type === 'uma_imagem'
+                        ? `/uma-imagem/${pub.slug}`
+                        : `/especiais/${pub.slug}`;
+
+                    const typeBadgeLabel =
+                      pub.type === 'ensaio'
+                        ? 'Ensaio'
+                        : pub.type === 'critica'
+                        ? 'Crítica'
+                        : pub.type === 'uma_imagem'
+                        ? 'Uma Imagem'
+                        : 'Especial';
+
                     return (
                       <div
                         key={`${pub.type}-${pub.id}`}
@@ -478,7 +526,7 @@ export const TeamMemberDetailPage: React.FC<TeamMemberDetailPageProps> = ({
                             />
                             <div className="absolute top-3 left-3 flex items-center gap-1.5">
                               <span className="px-2 py-0.5 bg-[#1A1A1A] text-[#F5F2ED] text-[9px] font-mono font-bold uppercase tracking-wider">
-                                {pub.type === 'ensaio' ? 'Ensaio' : 'Crítica'}
+                                {typeBadgeLabel}
                               </span>
                               {pub.roleName && (
                                 <span className="px-2 py-0.5 bg-[#F5F2ED]/95 border border-[#1A1A1A]/20 text-[#1A1A1A] text-[9px] font-mono font-semibold uppercase">
@@ -494,7 +542,7 @@ export const TeamMemberDetailPage: React.FC<TeamMemberDetailPageProps> = ({
                             {!pub.coverImage && (
                               <div className="flex items-center gap-1.5 mb-2">
                                 <span className="px-2 py-0.5 bg-[#1A1A1A] text-[#F5F2ED] text-[9px] font-mono font-bold uppercase tracking-wider">
-                                  {pub.type === 'ensaio' ? 'Ensaio' : 'Crítica'}
+                                  {typeBadgeLabel}
                                 </span>
                                 {pub.roleName && (
                                   <span className="px-2 py-0.5 bg-[#F5F2ED] border border-[#1A1A1A]/20 text-[#1A1A1A] text-[9px] font-mono font-semibold uppercase">
@@ -508,6 +556,12 @@ export const TeamMemberDetailPage: React.FC<TeamMemberDetailPageProps> = ({
                               <div className="text-[11px] font-sans-ui text-[#1A1A1A]/80 uppercase tracking-wider font-bold mb-1">
                                 {pub.movieTitle} {pub.year ? `(${pub.year})` : ''}{' '}
                                 {pub.director ? `· Dir. ${pub.director}` : ''}
+                              </div>
+                            )}
+
+                            {pub.type === 'uma_imagem' && pub.movieTitle && (
+                              <div className="text-[11px] font-sans-ui text-[#1A1A1A]/80 uppercase tracking-wider font-bold mb-1">
+                                Filme: {pub.movieTitle} {pub.director ? `· Dir. ${pub.director}` : ''}
                               </div>
                             )}
 

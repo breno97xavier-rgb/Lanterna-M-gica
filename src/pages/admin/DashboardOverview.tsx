@@ -21,9 +21,11 @@ import { fetchPessoas } from '../../services/repositories/pessoasRepository';
 import { fetchFilmes } from '../../services/repositories/filmesRepository';
 import { fetchCriticas, mapSupabaseCriticaToCritica } from '../../services/repositories/criticasRepository';
 import { fetchEnsaios, mapSupabaseEnsaioToEnsaio } from '../../services/repositories/ensaiosRepository';
-import { Critica, Ensaio } from '../../types';
+import { fetchUmaImagem, mapSupabaseUmaImagemToDomain } from '../../services/repositories/umaImagemRepository';
+import { fetchEspeciais } from '../../services/repositories/especiaisRepository';
+import { Critica, Ensaio, UmaImagemUmaIdeia, Especial } from '../../types';
 import { formatEditorialDate } from '../../utils/dateUtils';
-import { getEffectiveEditorialStatus } from '../../utils/statusUtils';
+import { getEffectiveEditorialStatus, useEditorialTicker } from '../../utils/statusUtils';
 
 interface DashboardOverviewProps {
   onNavigateTab: (tab: any, create?: boolean) => void;
@@ -34,10 +36,11 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
   onNavigateTab,
   onPreviewItem,
 }) => {
+  const currentTime = useEditorialTicker(30000);
   const [ensaios, setEnsaios] = useState<Ensaio[]>([]);
   const [criticas, setCriticas] = useState<Critica[]>([]);
-  const umaImagem = cmsStore.getUmaImagemList(false);
-  const especiais = cmsStore.getEspeciais(false);
+  const [umaImagem, setUmaImagem] = useState<UmaImagemUmaIdeia[]>([]);
+  const [especiais, setEspeciais] = useState<Especial[]>([]);
   const listas = cmsStore.getListas(false);
   const [pessoasCount, setPessoasCount] = useState<number>(0);
   const [filmesCount, setFilmesCount] = useState<number>(0);
@@ -64,6 +67,16 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
         setEnsaios(data.map(mapSupabaseEnsaioToEnsaio));
       }
     });
+    fetchUmaImagem({ allStatuses: true }).then(({ data }) => {
+      if (data) {
+        setUmaImagem(data.map(mapSupabaseUmaImagemToDomain));
+      }
+    });
+    fetchEspeciais({ allStatuses: true }).then(({ data }) => {
+      if (data) {
+        setEspeciais(data);
+      }
+    });
   }, []);
 
   const allItems = [
@@ -78,10 +91,10 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
     ...listas.map((l) => ({ ...l, _type: 'lista' as const, _title: l.title })),
   ];
 
-  const draftsCount = allItems.filter((i) => getEffectiveEditorialStatus(i) === 'draft').length;
-  const scheduledCount = allItems.filter((i) => getEffectiveEditorialStatus(i) === 'scheduled').length;
-  const publishedCount = allItems.filter((i) => getEffectiveEditorialStatus(i) === 'published').length;
-  const archivedCount = allItems.filter((i) => getEffectiveEditorialStatus(i) === 'archived').length;
+  const draftsCount = allItems.filter((i) => getEffectiveEditorialStatus(i, undefined, currentTime) === 'draft').length;
+  const scheduledCount = allItems.filter((i) => getEffectiveEditorialStatus(i, undefined, currentTime) === 'scheduled').length;
+  const publishedCount = allItems.filter((i) => getEffectiveEditorialStatus(i, undefined, currentTime) === 'published').length;
+  const archivedCount = allItems.filter((i) => getEffectiveEditorialStatus(i, undefined, currentTime) === 'archived').length;
 
   const recentItems = [...allItems]
     .sort(
@@ -257,7 +270,7 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
                   </td>
                   <td className="py-3 px-3 font-mono text-[10px] uppercase">
                     {(() => {
-                      const effectiveStatus = getEffectiveEditorialStatus(item);
+                      const effectiveStatus = getEffectiveEditorialStatus(item, undefined, currentTime);
                       if (effectiveStatus === 'published') {
                         return (
                           <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 font-bold">

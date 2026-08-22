@@ -43,6 +43,7 @@ export const Header: React.FC<HeaderProps> = ({
     { label: 'Início', path: '/' },
     { label: 'Ensaios', path: '/ensaios' },
     { label: 'Críticas', path: '/criticas' },
+    { label: 'Uma Imagem', path: '/uma-imagem' },
     { label: 'Estreias', path: '/estreias' },
     { label: 'Especiais', path: '/especiais' },
     { label: 'Arquivo', path: '/arquivo' },
@@ -87,14 +88,16 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-8">
+        <nav className="hidden md:flex items-center space-x-4 lg:space-x-6 xl:space-x-8">
           {navItems.map((item) => {
-            const isActive = activePath === item.path;
+            const isActive =
+              activePath === item.path ||
+              (item.path !== '/' && activePath.startsWith(item.path));
             return (
               <button
                 key={item.path}
                 onClick={() => handleNavClick(item.path)}
-                className={`text-xs font-sans-ui uppercase tracking-[0.18em] transition-colors duration-200 relative py-1 ${
+                className={`text-xs font-sans-ui uppercase tracking-[0.16em] transition-colors duration-200 relative py-1 ${
                   isActive
                     ? 'text-[#1A1A1A] font-bold'
                     : 'text-[#1A1A1A]/70 hover:text-[#1A1A1A]'

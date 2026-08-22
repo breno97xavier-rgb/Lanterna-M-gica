@@ -167,16 +167,36 @@ export interface Critica {
 
 export interface UmaImagemUmaIdeia {
   id: string;
+  legacyId?: string | null;
   title: string;
   slug: string;
   image: string;
   content: string;
+  filmId?: string | null;
+  personId?: string | null;
+  film?: {
+    id: string;
+    title: string;
+    slug: string;
+    year?: number;
+    posterUrl?: string | null;
+    backdropUrl?: string | null;
+  } | null;
+  person?: {
+    id: string;
+    name: string;
+    slug: string;
+    photoUrl?: string | null;
+  } | null;
   relatedMovie?: string;
   relatedFilmmaker?: string;
   tags: string[];
+  authors?: EditorialAuthorCredit[];
   highlightHome: boolean;
   date: string;
   status: ContentStatus;
+  publishedAt?: string;
+  scheduledAt?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -196,17 +216,64 @@ export interface Cineasta {
   updatedAt: string;
 }
 
+export type EspecialItemType = 'ensaio' | 'critica' | 'lista' | 'uma_imagem' | 'filme' | 'pessoa';
+
+export interface EspecialItemEntityJoin {
+  id: string;
+  title?: string;
+  name?: string;
+  slug: string;
+  year?: number;
+  country?: string;
+  coverImage?: string;
+  poster_url?: string | null;
+  backdrop_url?: string | null;
+  photo_url?: string | null;
+  [key: string]: any;
+}
+
+export interface EspecialItem {
+  id: string;
+  especialId: string;
+  itemType: EspecialItemType;
+  targetId: string;
+  customLabel?: string;
+  orderIndex: number;
+  createdAt: string;
+
+  // Joined relational data
+  ensaio?: Ensaio;
+  critica?: Critica;
+  lista?: Lista;
+  umaImagem?: UmaImagemUmaIdeia;
+  filme?: Filme;
+  pessoa?: Pessoa;
+  entity?: EspecialItemEntityJoin;
+}
+
 export interface Especial {
   id: string;
+  legacyId?: string | null;
   title: string;
   slug: string;
   subtitle: string;
   coverImage: string;
   intro: string;
   content: string;
+  relatedPersonId?: string | null;
+  relatedPerson?: {
+    id: string;
+    name: string;
+    slug: string;
+    photo_url?: string | null;
+  } | null;
+  items?: EspecialItem[];
   relatedItemIds: string[];
   highlightHome: boolean;
   status: ContentStatus;
+  publishedAt?: string | null;
+  scheduledAt?: string | null;
+  authorCredits?: EditorialAuthorCredit[];
   createdAt: string;
   updatedAt: string;
 }

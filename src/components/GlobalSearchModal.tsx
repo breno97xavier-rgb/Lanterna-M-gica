@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Search, X, Film, BookOpen, User, Folder, List, Calendar, Clapperboard, Loader2 } from 'lucide-react';
+import { Search, X, Film, BookOpen, User, Folder, List, Calendar, Clapperboard, Sparkles, Loader2 } from 'lucide-react';
 import { cmsStore } from '../services/cmsStore';
 import { SearchResult } from '../types';
 import { fetchPessoas } from '../services/repositories/pessoasRepository';
 import { fetchFilmes } from '../services/repositories/filmesRepository';
 import { fetchCriticas, mapSupabaseCriticaToCritica } from '../services/repositories/criticasRepository';
 import { fetchEnsaios, mapSupabaseEnsaioToEnsaio } from '../services/repositories/ensaiosRepository';
+import { fetchUmaImagem, mapSupabaseUmaImagemToDomain } from '../services/repositories/umaImagemRepository';
+import { fetchEspeciais } from '../services/repositories/especiaisRepository';
 
 interface GlobalSearchModalProps {
   isOpen: boolean;
@@ -36,11 +38,13 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
 
     const timer = setTimeout(async () => {
       try {
-        const [pessoasRes, filmesRes, criticasRes, ensaiosRes] = await Promise.all([
+        const [pessoasRes, filmesRes, criticasRes, ensaiosRes, umaImagemRes, especiaisRes] = await Promise.all([
           fetchPessoas({ searchQuery: q, allStatuses: false }),
           fetchFilmes({ search: q, allStatuses: false }),
           fetchCriticas({ searchQuery: q, allStatuses: false }),
           fetchEnsaios({ searchQuery: q, allStatuses: false }),
+          fetchUmaImagem({ searchQuery: q, allStatuses: false }),
+          fetchEspeciais({ searchQuery: q, allStatuses: false }),
         ]);
 
         if (isCancelled) return;
@@ -91,26 +95,31 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
           };
         });
 
+        const umaImagemResults: SearchResult[] = (umaImagemRes.data || []).map((u) => {
+          const mapped = mapSupabaseUmaImagemToDomain(u);
+          return {
+            id: mapped.id,
+            type: 'uma_imagem',
+            title: mapped.title,
+            subtitle: mapped.relatedMovie ? `Filme: ${mapped.relatedMovie}` : 'Uma imagem, uma ideia',
+            slug: mapped.slug,
+            date: mapped.date,
+            image: mapped.image,
+            tags: mapped.tags,
+          };
+        });
+
+        const especiaisResults: SearchResult[] = (especiaisRes.data || []).map((es) => ({
+          id: es.id,
+          type: 'especial',
+          title: es.title,
+          subtitle: es.subtitle,
+          slug: es.slug,
+          image: es.coverImage,
+        }));
+
         // Unmigrated entities from cmsStore
         const otherResults: SearchResult[] = [];
-
-        // Especiais
-        cmsStore.getEspeciais(true).forEach((es) => {
-          if (
-            es.title.toLowerCase().includes(q) ||
-            es.subtitle?.toLowerCase().includes(q) ||
-            es.intro?.toLowerCase().includes(q)
-          ) {
-            otherResults.push({
-              id: es.id,
-              type: 'especial',
-              title: es.title,
-              subtitle: es.subtitle,
-              slug: es.slug,
-              image: es.coverImage,
-            });
-          }
-        });
 
         // Listas
         cmsStore.getListas(true).forEach((l) => {
@@ -127,26 +136,6 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
               slug: l.slug,
               image: l.coverImage,
               tags: l.tags,
-            });
-          }
-        });
-
-        // Uma Imagem
-        cmsStore.getUmaImagemList(true).forEach((u) => {
-          if (
-            u.title.toLowerCase().includes(q) ||
-            u.content.toLowerCase().includes(q) ||
-            u.tags.some((t) => t.toLowerCase().includes(q))
-          ) {
-            otherResults.push({
-              id: u.id,
-              type: 'uma_imagem',
-              title: u.title,
-              subtitle: u.relatedMovie ? `Filme: ${u.relatedMovie}` : 'Uma imagem, uma ideia',
-              slug: u.slug,
-              date: u.date,
-              image: u.image,
-              tags: u.tags,
             });
           }
         });
@@ -169,7 +158,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
           }
         });
 
-        setResults([...filmResults, ...personResults, ...ensaiosResults, ...criticasResults, ...otherResults]);
+        setResults([...filmResults, ...personResults, ...ensaiosResults, ...criticasResults, ...umaImagemResults, ...especiaisResults, ...otherResults]);
       } catch (err) {
         console.error('Search error:', err);
       } finally {
@@ -223,7 +212,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
         path = `/especiais/${result.slug}`;
         break;
       case 'uma_imagem':
-        path = `/ensaios`;
+        path = `/uma-imagem/${result.slug}`;
         break;
       case 'lista':
         path = `/especiais`;
@@ -251,6 +240,8 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
         return <Folder size={13} className="text-[#1A1A1A]/70" />;
       case 'lista':
         return <List size={13} className="text-[#1A1A1A]/70" />;
+      case 'uma_imagem':
+        return <Sparkles size={13} className="text-[#D4AF37]" />;
       default:
         return <Search size={13} className="text-[#1A1A1A]/70" />;
     }
@@ -275,7 +266,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
       case 'lista':
         return 'Lista';
       case 'uma_imagem':
-        return 'Uma Imagem';
+        return 'Uma Imagem, Uma Ideia';
       default:
         return type;
     }

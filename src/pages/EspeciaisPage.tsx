@@ -1,13 +1,42 @@
-import React from 'react';
-import { cmsStore } from '../services/cmsStore';
-import { ArticleCard } from '../components/ArticleCard';
+import React, { useState, useEffect } from 'react';
+import { Loader2 } from 'lucide-react';
+import { fetchEspeciais } from '../services/repositories/especiaisRepository';
+import { Especial } from '../types';
 
 interface EspeciaisPageProps {
   onNavigate: (path: string) => void;
 }
 
 export const EspeciaisPage: React.FC<EspeciaisPageProps> = ({ onNavigate }) => {
-  const especiais = cmsStore.getEspeciais(true);
+  const [especiais, setEspeciais] = useState<Especial[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    setLoading(true);
+    setError(null);
+
+    fetchEspeciais({ allStatuses: false })
+      .then(({ data, error: fetchErr }) => {
+        if (!isMounted) return;
+        if (fetchErr) {
+          setError('Não foi possível carregar os especiais no momento.');
+        } else {
+          setEspeciais(data);
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        if (!isMounted) return;
+        setError('Ocorreu um erro ao carregar os especiais.');
+        setLoading(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#F5F2ED] text-[#1A1A1A] pt-28 pb-24">
@@ -26,7 +55,24 @@ export const EspeciaisPage: React.FC<EspeciaisPageProps> = ({ onNavigate }) => {
           </p>
         </div>
 
-        {especiais.length === 0 ? (
+        {loading ? (
+          <div className="py-24 text-center space-y-4 border border-[#1A1A1A]/15 bg-white flex flex-col items-center justify-center">
+            <Loader2 size={32} className="animate-spin text-[#D4AF37]" />
+            <p className="text-xs font-mono uppercase tracking-widest text-[#1A1A1A]/60">
+              Carregando especiais e dossiês...
+            </p>
+          </div>
+        ) : error ? (
+          <div className="py-20 text-center space-y-3 border border-[#1A1A1A]/15 bg-white p-6">
+            <p className="text-base font-serif-body text-[#1A1A1A]/80">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="text-xs font-sans font-bold uppercase tracking-[0.2em] px-4 py-2 border border-[#1A1A1A] hover:bg-[#1A1A1A] hover:text-[#F5F2ED] transition-colors"
+            >
+              Tentar novamente
+            </button>
+          </div>
+        ) : especiais.length === 0 ? (
           <div className="py-24 text-center space-y-3 border border-[#1A1A1A]/15 bg-white">
             <p className="text-lg font-serif-display text-[#1A1A1A]/60">
               Nenhum especial publicado no momento.
@@ -34,44 +80,63 @@ export const EspeciaisPage: React.FC<EspeciaisPageProps> = ({ onNavigate }) => {
           </div>
         ) : (
           <div className="space-y-12">
-            {especiais.map((esp) => (
-              <div
-                key={esp.id}
-                onClick={() => onNavigate(`/especiais/${esp.slug}`)}
-                className="group cursor-pointer grid grid-cols-1 lg:grid-cols-12 gap-8 p-6 sm:p-8 bg-white border border-[#1A1A1A]/15 hover:border-[#D4AF37] transition-all duration-300 shadow-xs hover:shadow-md"
-              >
-                <div className="lg:col-span-5 overflow-hidden border border-[#1A1A1A]/15 bg-[#F5F2ED]">
-                  <img
-                    src={esp.coverImage}
-                    alt={esp.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
+            {especiais.map((esp) => {
+              const authorsText =
+                esp.authorCredits && esp.authorCredits.length > 0
+                  ? esp.authorCredits.map((c) => c.member?.name || 'Autor').join(', ')
+                  : null;
 
-                <div className="lg:col-span-7 flex flex-col justify-between space-y-4">
-                  <div className="space-y-3">
-                    <span className="text-[10px] font-sans font-bold uppercase tracking-[0.25em] text-[#D4AF37]">
-                      CICLO TEMÁTICO
-                    </span>
-                    <h2 className="text-2xl sm:text-3xl font-serif-display text-[#1A1A1A] group-hover:text-[#D4AF37] transition-colors">
-                      {esp.title}
-                    </h2>
-                    <p className="text-base font-serif-body text-[#1A1A1A]/80 leading-relaxed">
-                      {esp.subtitle}
-                    </p>
-                    <p className="text-xs font-sans-ui text-[#1A1A1A]/60 leading-relaxed">
-                      {esp.intro}
-                    </p>
+              return (
+                <div
+                  key={esp.id}
+                  onClick={() => onNavigate(`/especiais/${esp.slug}`)}
+                  className="group cursor-pointer grid grid-cols-1 lg:grid-cols-12 gap-8 p-6 sm:p-8 bg-white border border-[#1A1A1A]/15 hover:border-[#D4AF37] transition-all duration-300 shadow-xs hover:shadow-md"
+                >
+                  <div className="lg:col-span-5 overflow-hidden border border-[#1A1A1A]/15 bg-[#F5F2ED] aspect-[16/10] lg:aspect-auto">
+                    <img
+                      src={esp.coverImage}
+                      alt={esp.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
                   </div>
 
-                  <div className="pt-4 border-t border-[#1A1A1A]/12 flex justify-end">
-                    <span className="text-xs uppercase tracking-[0.2em] text-[#1A1A1A] font-sans-ui font-bold group-hover:text-[#D4AF37] group-hover:translate-x-1 transition-all">
-                      Acessar Dossiê Especial →
-                    </span>
+                  <div className="lg:col-span-7 flex flex-col justify-between space-y-4">
+                    <div className="space-y-3">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-[10px] font-sans font-bold uppercase tracking-[0.25em] text-[#D4AF37]">
+                          CICLO TEMÁTICO
+                        </span>
+                        {authorsText && (
+                          <span className="text-[11px] font-serif-body text-[#1A1A1A]/60 italic">
+                            · Curadoria por {authorsText}
+                          </span>
+                        )}
+                      </div>
+
+                      <h2 className="text-2xl sm:text-3xl font-serif-display text-[#1A1A1A] group-hover:text-[#D4AF37] transition-colors leading-tight">
+                        {esp.title}
+                      </h2>
+                      {esp.subtitle && (
+                        <p className="text-base font-serif-body text-[#1A1A1A]/80 leading-relaxed">
+                          {esp.subtitle}
+                        </p>
+                      )}
+                      {esp.intro && (
+                        <p className="text-xs font-sans-ui text-[#1A1A1A]/60 leading-relaxed line-clamp-3">
+                          {esp.intro}
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="pt-4 border-t border-[#1A1A1A]/12 flex justify-end">
+                      <span className="text-xs uppercase tracking-[0.2em] text-[#1A1A1A] font-sans-ui font-bold group-hover:text-[#D4AF37] group-hover:translate-x-1 transition-all">
+                        Acessar Dossiê Especial →
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
 

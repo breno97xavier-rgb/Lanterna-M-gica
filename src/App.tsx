@@ -22,6 +22,8 @@ import { SobrePage } from './pages/SobrePage';
 import { TeamMemberDetailPage } from './pages/TeamMemberDetailPage';
 import { ManifestoPage } from './pages/ManifestoPage';
 import { AdminPage } from './pages/AdminPage';
+import { UmaImagemDetailPage } from './pages/UmaImagemDetailPage';
+import { UmaImagemPage } from './pages/UmaImagemPage';
 
 export default function App() {
   const [currentPath, setCurrentPath] = useState<string>(() => {
@@ -124,6 +126,15 @@ export default function App() {
     }
     if (currentPath === '/ensaios') {
       return <EnsaiosPage onNavigate={navigate} />;
+    }
+
+    // Uma Imagem detail & index
+    if (currentPath.startsWith('/uma-imagem/')) {
+      const slug = currentPath.replace('/uma-imagem/', '');
+      return <UmaImagemDetailPage slug={slug} onNavigate={navigate} onGoBack={goBack} />;
+    }
+    if (currentPath === '/uma-imagem') {
+      return <UmaImagemPage onNavigate={navigate} />;
     }
 
     // Criticas detail

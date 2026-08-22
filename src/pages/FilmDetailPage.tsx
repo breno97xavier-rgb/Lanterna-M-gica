@@ -3,6 +3,8 @@ import { ArrowLeft, Calendar, Clock, Globe, Film as FilmIcon, User, Star, Clappe
 import { cmsStore } from '../services/cmsStore';
 import { ArticleCard } from '../components/ArticleCard';
 import { fetchFilmeBySlug, SupabaseFilme } from '../services/repositories/filmesRepository';
+import { fetchUmaImagem, mapSupabaseUmaImagemToDomain } from '../services/repositories/umaImagemRepository';
+import { UmaImagemUmaIdeia } from '../types';
 
 interface FilmDetailPageProps {
   slug: string;
@@ -16,6 +18,7 @@ export const FilmDetailPage: React.FC<FilmDetailPageProps> = ({
   onGoBack,
 }) => {
   const [film, setFilm] = useState<SupabaseFilme | null>(null);
+  const [umaImagemList, setUmaImagemList] = useState<UmaImagemUmaIdeia[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -26,6 +29,10 @@ export const FilmDetailPage: React.FC<FilmDetailPageProps> = ({
       if (isMounted) {
         if (data) {
           setFilm(data);
+          const umaRes = await fetchUmaImagem({ filmId: data.id, allStatuses: false });
+          if (isMounted && umaRes.data) {
+            setUmaImagemList(umaRes.data.map(mapSupabaseUmaImagemToDomain));
+          }
         } else {
           // Fallback para cmsStore se não encontrar no Supabase
           const localFilm = cmsStore.getFilmeBySlug(slug);
@@ -471,13 +478,13 @@ export const FilmDetailPage: React.FC<FilmDetailPageProps> = ({
         )}
 
         {/* Uma Imagem, Uma Ideia */}
-        {related.umaImagem.length > 0 && (
+        {umaImagemList.length > 0 && (
           <div className="space-y-4">
             <h3 className="text-xs font-sans font-bold uppercase tracking-[0.2em] text-[#D4AF37]">
-              UMA IMAGEM, UMA IDEIA
+              UMA IMAGEM, UMA IDEIA ({umaImagemList.length})
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {related.umaImagem.map((u) => (
+              {umaImagemList.map((u) => (
                 <ArticleCard
                   key={u.id}
                   type="uma_imagem"
@@ -486,7 +493,7 @@ export const FilmDetailPage: React.FC<FilmDetailPageProps> = ({
                   subtitle={u.relatedMovie ? `Filme: ${u.relatedMovie}` : 'Uma imagem, uma ideia'}
                   image={u.image}
                   date={u.date}
-                  onClick={() => onNavigate('/ensaios')}
+                  onClick={() => onNavigate(`/uma-imagem/${u.slug}`)}
                 />
               ))}
             </div>

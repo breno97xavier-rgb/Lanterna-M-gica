@@ -30,7 +30,7 @@ import {
   parseDateInputToIso,
   parseDateTimeInputToIso,
 } from '../../utils/dateUtils';
-import { getEffectiveEditorialStatus } from '../../utils/statusUtils';
+import { getEffectiveEditorialStatus, useEditorialTicker } from '../../utils/statusUtils';
 
 interface EnsaiosAdminProps {
   onNotify: (msg: string) => void;
@@ -57,6 +57,7 @@ interface EditingEnsaioForm {
 }
 
 export const EnsaiosAdmin: React.FC<EnsaiosAdminProps> = ({ onNotify, autoCreate = false }) => {
+  const currentTime = useEditorialTicker(30000);
   const [ensaios, setEnsaios] = useState<SupabaseEnsaio[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -376,7 +377,7 @@ export const EnsaiosAdmin: React.FC<EnsaiosAdminProps> = ({ onNotify, autoCreate
 
     // Status filter (utiliza status editorial efetivo para agendamentos já liberados)
     if (statusFilter !== 'todos') {
-      const effectiveStatus = getEffectiveEditorialStatus(e);
+      const effectiveStatus = getEffectiveEditorialStatus(e, undefined, currentTime);
       if (effectiveStatus !== statusFilter) {
         return false;
       }
@@ -755,16 +756,16 @@ export const EnsaiosAdmin: React.FC<EnsaiosAdminProps> = ({ onNotify, autoCreate
           >
             <option value="todos">Todos os Status ({ensaios.length})</option>
             <option value="published">
-              Publicados ({ensaios.filter((e) => getEffectiveEditorialStatus(e) === 'published').length})
+              Publicados ({ensaios.filter((e) => getEffectiveEditorialStatus(e, undefined, currentTime) === 'published').length})
             </option>
             <option value="draft">
-              Rascunhos ({ensaios.filter((e) => getEffectiveEditorialStatus(e) === 'draft').length})
+              Rascunhos ({ensaios.filter((e) => getEffectiveEditorialStatus(e, undefined, currentTime) === 'draft').length})
             </option>
             <option value="scheduled">
-              Agendados ({ensaios.filter((e) => getEffectiveEditorialStatus(e) === 'scheduled').length})
+              Agendados ({ensaios.filter((e) => getEffectiveEditorialStatus(e, undefined, currentTime) === 'scheduled').length})
             </option>
             <option value="archived">
-              Arquivados ({ensaios.filter((e) => getEffectiveEditorialStatus(e) === 'archived').length})
+              Arquivados ({ensaios.filter((e) => getEffectiveEditorialStatus(e, undefined, currentTime) === 'archived').length})
             </option>
           </select>
 
@@ -839,7 +840,7 @@ export const EnsaiosAdmin: React.FC<EnsaiosAdminProps> = ({ onNotify, autoCreate
                   <td className="py-3 px-4 text-[#1A1A1A]/70">{e.category}</td>
                   <td className="py-3 px-4 font-mono text-[10px] uppercase">
                     {(() => {
-                      const effectiveStatus = getEffectiveEditorialStatus(e);
+                      const effectiveStatus = getEffectiveEditorialStatus(e, undefined, currentTime);
                       if (effectiveStatus === 'published') {
                         return (
                           <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 font-bold">

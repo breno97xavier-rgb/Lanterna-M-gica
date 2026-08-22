@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { ContentStatus } from '../types';
 
 /**
@@ -19,6 +20,24 @@ export interface ItemWithEditorialStatus {
 }
 
 /**
+ * Hook reativo leve que dispara um tick a cada `intervalMs` (padrão 30s)
+ * para recalcular status editoriais temporais (itens agendados cujo horário foi atingido)
+ * no frontend sem realizar novas requisições de rede ao Supabase.
+ */
+export function useEditorialTicker(intervalMs: number = 30000): number {
+  const [now, setNow] = useState<number>(() => Date.now());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setNow(Date.now());
+    }, intervalMs);
+    return () => clearInterval(timer);
+  }, [intervalMs]);
+
+  return now;
+}
+
+/**
  * Calcula o status editorial efetivo de uma publicação ou registro administrativo.
  * 
  * Permite que itens agendados cujo horário de liberação já passou sejam representados
@@ -27,9 +46,15 @@ export interface ItemWithEditorialStatus {
 export function getEffectiveEditorialStatus(
   input: ItemWithEditorialStatus | ContentStatus | string | null | undefined,
   scheduledAtParam?: string | null,
-  nowTime: number = Date.now()
+  nowTime?: number
 ): ContentStatus {
   if (!input) return 'draft';
+
+  // Garante fallback estritamente numérico e seguro caso nowTime seja undefined, null, NaN ou inválido
+  const effectiveNow =
+    typeof nowTime === 'number' && !isNaN(nowTime) && nowTime > 0
+      ? nowTime
+      : Date.now();
 
   let status: ContentStatus = 'draft';
   let scheduledAt: string | null | undefined = null;
@@ -56,7 +81,7 @@ export function getEffectiveEditorialStatus(
   if (status === 'scheduled') {
     if (scheduledAt && typeof scheduledAt === 'string' && scheduledAt.trim()) {
       const scheduledTime = new Date(scheduledAt.trim()).getTime();
-      if (!isNaN(scheduledTime) && scheduledTime <= nowTime) {
+      if (!isNaN(scheduledTime) && scheduledTime <= effectiveNow) {
         return 'published';
       }
     }
@@ -71,7 +96,7 @@ export function getEffectiveEditorialStatus(
  */
 export function isEffectivelyPublished(
   item: ItemWithEditorialStatus | null | undefined,
-  nowTime: number = Date.now()
+  nowTime?: number
 ): boolean {
   return getEffectiveEditorialStatus(item, undefined, nowTime) === 'published';
 }
