@@ -351,7 +351,7 @@ export const EspecialDetailPage: React.FC<EspecialDetailPageProps> = ({
                         title={lista.title}
                         subtitle={lista.intro}
                         image={lista.cover_image || lista.coverImage}
-                        onClick={() => onNavigate(`/especiais`)}
+                        onClick={() => onNavigate(`/listas/${lista.slug}`)}
                       />
                     </div>
                   );

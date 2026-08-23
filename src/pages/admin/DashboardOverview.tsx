@@ -23,7 +23,8 @@ import { fetchCriticas, mapSupabaseCriticaToCritica } from '../../services/repos
 import { fetchEnsaios, mapSupabaseEnsaioToEnsaio } from '../../services/repositories/ensaiosRepository';
 import { fetchUmaImagem, mapSupabaseUmaImagemToDomain } from '../../services/repositories/umaImagemRepository';
 import { fetchEspeciais } from '../../services/repositories/especiaisRepository';
-import { Critica, Ensaio, UmaImagemUmaIdeia, Especial } from '../../types';
+import { fetchListas } from '../../services/repositories/listasRepository';
+import { Critica, Ensaio, UmaImagemUmaIdeia, Especial, Lista } from '../../types';
 import { formatEditorialDate } from '../../utils/dateUtils';
 import { getEffectiveEditorialStatus, useEditorialTicker } from '../../utils/statusUtils';
 
@@ -41,7 +42,7 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
   const [criticas, setCriticas] = useState<Critica[]>([]);
   const [umaImagem, setUmaImagem] = useState<UmaImagemUmaIdeia[]>([]);
   const [especiais, setEspeciais] = useState<Especial[]>([]);
-  const listas = cmsStore.getListas(false);
+  const [listas, setListas] = useState<Lista[]>([]);
   const [pessoasCount, setPessoasCount] = useState<number>(0);
   const [filmesCount, setFilmesCount] = useState<number>(0);
   const estreias = cmsStore.getEstreias(false);
@@ -75,6 +76,11 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
     fetchEspeciais({ allStatuses: true }).then(({ data }) => {
       if (data) {
         setEspeciais(data);
+      }
+    });
+    fetchListas({ allStatuses: true }).then(({ data }) => {
+      if (data) {
+        setListas(data);
       }
     });
   }, []);

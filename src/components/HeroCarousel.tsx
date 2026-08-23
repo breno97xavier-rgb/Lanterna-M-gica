@@ -76,6 +76,8 @@ export const HeroCarousel: React.FC<HeroCarouselProps> = ({
         return `/cineastas/${item.slug}`;
       case 'uma_imagem':
         return `/uma-imagem/${item.slug}`;
+      case 'lista':
+        return `/listas/${item.slug}`;
       default:
         return '/';
     }
@@ -93,6 +95,8 @@ export const HeroCarousel: React.FC<HeroCarouselProps> = ({
         return 'PERFIL DE CINEASTA';
       case 'uma_imagem':
         return 'UMA IMAGEM, UMA IDEIA';
+      case 'lista':
+        return 'LISTA EDITORIAL';
       default:
         return 'DESTAQUE';
     }
@@ -114,6 +118,9 @@ export const HeroCarousel: React.FC<HeroCarouselProps> = ({
     }
     if (item.itemType === 'ensaio' || item.itemType === 'especial') {
       return item.subtitle;
+    }
+    if (item.itemType === 'lista') {
+      return item.intro || `${item.items?.length || 0} títulos catalogados`;
     }
     if (item.itemType === 'cineasta') {
       const dates = item.birthYear ? ` (${item.birthYear}${item.deathYear ? `–${item.deathYear}` : ''})` : '';

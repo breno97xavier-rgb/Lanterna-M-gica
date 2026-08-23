@@ -8,7 +8,8 @@ import { fetchCriticas, mapSupabaseCriticaToCritica } from '../services/reposito
 import { fetchEnsaios, mapSupabaseEnsaioToEnsaio } from '../services/repositories/ensaiosRepository';
 import { fetchUmaImagem, mapSupabaseUmaImagemToDomain } from '../services/repositories/umaImagemRepository';
 import { fetchEspeciais } from '../services/repositories/especiaisRepository';
-import { Critica, Ensaio, Especial, UmaImagemUmaIdeia } from '../types';
+import { fetchListas } from '../services/repositories/listasRepository';
+import { Critica, Ensaio, Especial, UmaImagemUmaIdeia, Lista } from '../types';
 
 interface ArquivoPageProps {
   onNavigate: (path: string) => void;
@@ -36,6 +37,9 @@ export const ArquivoPage: React.FC<ArquivoPageProps> = ({ onNavigate }) => {
 
   const [especiais, setEspeciais] = useState<Especial[]>([]);
   const [loadingEspeciais, setLoadingEspeciais] = useState(true);
+
+  const [listas, setListas] = useState<Lista[]>([]);
+  const [loadingListas, setLoadingListas] = useState(true);
 
   useEffect(() => {
     let isMounted = true;
@@ -125,6 +129,16 @@ export const ArquivoPage: React.FC<ArquivoPageProps> = ({ onNavigate }) => {
       }
     });
 
+    setLoadingListas(true);
+    fetchListas({ allStatuses: false }).then(({ data }) => {
+      if (isMounted) {
+        if (data) {
+          setListas(data);
+        }
+        setLoadingListas(false);
+      }
+    });
+
     return () => {
       isMounted = false;
     };
@@ -146,6 +160,18 @@ export const ArquivoPage: React.FC<ArquivoPageProps> = ({ onNavigate }) => {
         displaySub: es.subtitle,
         displayDate: pubDate.slice(0, 10),
         displayImg: es.coverImage,
+        yearNum: new Date(pubDate).getFullYear(),
+      };
+    }),
+    ...listas.map((l) => {
+      const pubDate = l.publishedAt || l.createdAt;
+      return {
+        ...l,
+        archiveType: 'lista' as const,
+        displayTitle: l.title,
+        displaySub: l.intro || `${l.items?.length || 0} títulos catalogados`,
+        displayDate: pubDate.slice(0, 10),
+        displayImg: l.coverImage,
         yearNum: new Date(pubDate).getFullYear(),
       };
     }),
@@ -213,7 +239,7 @@ export const ArquivoPage: React.FC<ArquivoPageProps> = ({ onNavigate }) => {
               {/* Content Type Filter */}
               <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
                 <span className="text-[#D4AF37] font-sans font-bold uppercase tracking-[0.2em] mr-2">TIPO:</span>
-                {['todos', 'ensaio', 'critica', 'uma_imagem', 'especial'].map((t) => (
+                {['todos', 'ensaio', 'critica', 'uma_imagem', 'especial', 'lista'].map((t) => (
                   <button
                     key={t}
                     onClick={() => setSelectedType(t)}
@@ -223,7 +249,7 @@ export const ArquivoPage: React.FC<ArquivoPageProps> = ({ onNavigate }) => {
                         : 'bg-white text-[#1A1A1A]/70 border-[#1A1A1A]/15 hover:border-[#D4AF37] hover:text-[#1A1A1A]'
                     }`}
                   >
-                    {t === 'uma_imagem' ? 'Uma Imagem' : t}
+                    {t === 'uma_imagem' ? 'Uma Imagem' : t === 'lista' ? 'Listas' : t}
                   </button>
                 ))}
               </div>
@@ -271,6 +297,7 @@ export const ArquivoPage: React.FC<ArquivoPageProps> = ({ onNavigate }) => {
                       else if (item.archiveType === 'critica') onNavigate(`/criticas/${item.slug}`);
                       else if (item.archiveType === 'especial') onNavigate(`/especiais/${item.slug}`);
                       else if (item.archiveType === 'uma_imagem') onNavigate(`/uma-imagem/${item.slug}`);
+                      else if (item.archiveType === 'lista') onNavigate(`/listas/${item.slug}`);
                       else onNavigate('/arquivo');
                     }}
                   />

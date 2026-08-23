@@ -28,6 +28,7 @@ import { fetchEnsaios } from '../services/repositories/ensaiosRepository';
 import { fetchUmaImagem } from '../services/repositories/umaImagemRepository';
 import { fetchTeamMembers } from '../services/repositories/teamMembersRepository';
 import { fetchEspeciais } from '../services/repositories/especiaisRepository';
+import { fetchListas } from '../services/repositories/listasRepository';
 import { DashboardOverview } from './admin/DashboardOverview';
 import { EnsaiosAdmin } from './admin/EnsaiosAdmin';
 import { CriticasAdmin } from './admin/CriticasAdmin';
@@ -86,9 +87,10 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate, onGoBack }) =>
   const [equipeCount, setEquipeCount] = useState<number | null>(null);
   const [umaImagemCount, setUmaImagemCount] = useState<number | null>(null);
   const [especiaisCount, setEspeciaisCount] = useState<number | null>(null);
+  const [listasCount, setListasCount] = useState<number | null>(null);
 
   const loadCounts = async () => {
-    const [pesRes, filmRes, critRes, ensRes, eqRes, umaRes, espRes] = await Promise.all([
+    const [pesRes, filmRes, critRes, ensRes, eqRes, umaRes, espRes, lisRes] = await Promise.all([
       fetchPessoas({ allStatuses: true }),
       fetchFilmes({ allStatuses: true }),
       fetchCriticas({ allStatuses: true }),
@@ -96,6 +98,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate, onGoBack }) =>
       fetchTeamMembers({ status: 'all' }),
       fetchUmaImagem({ allStatuses: true }),
       fetchEspeciais({ allStatuses: true }),
+      fetchListas({ allStatuses: true }),
     ]);
     if (pesRes.data) {
       setPessoasCount(pesRes.data.length);
@@ -117,6 +120,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate, onGoBack }) =>
     }
     if (espRes.data) {
       setEspeciaisCount(espRes.count ?? espRes.data.length);
+    }
+    if (lisRes.data) {
+      setListasCount(lisRes.count ?? lisRes.data.length);
     }
   };
 
@@ -537,7 +543,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate, onGoBack }) =>
             }`}
           >
             <ListIcon size={14} />
-            <span>Listas ({cmsStore.getListas(false).length})</span>
+            <span>Listas ({listasCount !== null ? listasCount : '...'})</span>
           </button>
 
           <button

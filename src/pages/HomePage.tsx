@@ -8,7 +8,8 @@ import { fetchCriticas, mapSupabaseCriticaToCritica } from '../services/reposito
 import { fetchEnsaios, mapSupabaseEnsaioToEnsaio } from '../services/repositories/ensaiosRepository';
 import { fetchUmaImagem, mapSupabaseUmaImagemToDomain } from '../services/repositories/umaImagemRepository';
 import { fetchEspeciais } from '../services/repositories/especiaisRepository';
-import { Critica, Ensaio, Especial, HighlightItem, UmaImagemUmaIdeia } from '../types';
+import { fetchListas } from '../services/repositories/listasRepository';
+import { Critica, Ensaio, Especial, HighlightItem, Lista, UmaImagemUmaIdeia } from '../types';
 
 interface HomePageProps {
   onNavigate: (path: string) => void;
@@ -19,6 +20,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const [supabaseEnsaios, setSupabaseEnsaios] = useState<Ensaio[]>([]);
   const [supabaseUmaImagem, setSupabaseUmaImagem] = useState<UmaImagemUmaIdeia[]>([]);
   const [supabaseEspeciais, setSupabaseEspeciais] = useState<Especial[]>([]);
+  const [supabaseListas, setSupabaseListas] = useState<Lista[]>([]);
   const [loadingContent, setLoadingContent] = useState(true);
 
   useEffect(() => {
@@ -28,7 +30,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       fetchEnsaios({ allStatuses: false }),
       fetchUmaImagem({ allStatuses: false }),
       fetchEspeciais({ allStatuses: false }),
-    ]).then(([critRes, ensRes, umaRes, espRes]) => {
+      fetchListas({ allStatuses: false }),
+    ]).then(([critRes, ensRes, umaRes, espRes, listRes]) => {
       if (isMounted) {
         if (critRes.data) {
           setSupabaseCriticas(critRes.data.map(mapSupabaseCriticaToCritica));
@@ -41,6 +44,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         }
         if (espRes.data) {
           setSupabaseEspeciais(espRes.data);
+        }
+        if (listRes.data) {
+          setSupabaseListas(listRes.data);
         }
         setLoadingContent(false);
       }
@@ -71,7 +77,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     return 0;
   };
 
-  // Combine highlights: Supabase highlighted critiques + Supabase highlighted ensaios + Supabase Uma Imagem + cmsStore highlights
+  // Combine highlights: Supabase highlighted critiques + Supabase highlighted ensaios + Supabase Uma Imagem + Supabase Listas + cmsStore highlights
   const highlights: HighlightItem[] = useMemo(() => {
     const list: HighlightItem[] = [];
 
@@ -90,11 +96,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       .filter((u) => Boolean(u.highlightHome))
       .forEach((u) => list.push({ ...u, itemType: 'uma_imagem' }));
 
-    // Add highlights from other unmigrated entities
+    // Add highlights from Supabase Especiais
     especiais
       .filter((es) => Boolean(es.highlightHome))
       .forEach((es) => list.push({ ...es, itemType: 'especial' }));
 
+    // Add highlights from other unmigrated entities
     cineastas
       .filter((cin) => Boolean(cin.highlightHome))
       .forEach((cin) => list.push({ ...cin, itemType: 'cineasta' }));
@@ -122,6 +129,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     supabaseCriticas.length === 0 &&
     umaImagemList.length === 0 &&
     especiais.length === 0 &&
+    supabaseListas.length === 0 &&
     cineastas.length === 0;
 
   if (loadingContent) {
@@ -540,6 +548,44 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                     </p>
                   </div>
                 </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* 8. LISTAS & CURADORIAS (Only if Listas exist) */}
+        {supabaseListas.length > 0 && (
+          <section className="space-y-8 animate-in fade-in duration-500">
+            <div className="flex items-center justify-between border-b border-[#1A1A1A]/15 pb-4">
+              <div>
+                <span className="text-[10px] font-sans font-bold uppercase tracking-[0.25em] text-[#1A1A1A]/90 block mb-1">
+                  Filmografias & Curadorias
+                </span>
+                <h2 className="text-3xl sm:text-4xl font-serif-display font-normal text-[#1A1A1A]">
+                  LISTAS
+                </h2>
+              </div>
+              <button
+                onClick={() => onNavigate('/listas')}
+                className="inline-flex items-center gap-2 text-xs font-sans font-bold uppercase tracking-[0.2em] text-[#1A1A1A]/80 hover:text-[#1A1A1A] transition-colors group"
+              >
+                <span>Ver todas as listas</span>
+                <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {supabaseListas.slice(0, 3).map((l) => (
+                <ArticleCard
+                  key={l.id}
+                  type="lista"
+                  variant="medium"
+                  title={l.title}
+                  subtitle={l.intro || `${l.items?.length || 0} títulos catalogados`}
+                  image={l.coverImage}
+                  date={l.publishedAt ? l.publishedAt.slice(0, 10) : l.createdAt.slice(0, 10)}
+                  onClick={() => onNavigate(`/listas/${l.slug}`)}
+                />
               ))}
             </div>
           </section>

@@ -24,6 +24,8 @@ import { ManifestoPage } from './pages/ManifestoPage';
 import { AdminPage } from './pages/AdminPage';
 import { UmaImagemDetailPage } from './pages/UmaImagemDetailPage';
 import { UmaImagemPage } from './pages/UmaImagemPage';
+import { ListasPage } from './pages/ListasPage';
+import { ListaDetailPage } from './pages/ListaDetailPage';
 
 export default function App() {
   const [currentPath, setCurrentPath] = useState<string>(() => {
@@ -153,6 +155,15 @@ export default function App() {
     }
     if (currentPath === '/especiais') {
       return <EspeciaisPage onNavigate={navigate} />;
+    }
+
+    // Listas detail & list
+    if (currentPath.startsWith('/listas/')) {
+      const slug = currentPath.replace('/listas/', '');
+      return <ListaDetailPage slug={slug} onNavigate={navigate} onGoBack={goBack} />;
+    }
+    if (currentPath === '/listas') {
+      return <ListasPage onNavigate={navigate} />;
     }
 
     // Cineastas detail (Redirects to /pessoas/:slug)

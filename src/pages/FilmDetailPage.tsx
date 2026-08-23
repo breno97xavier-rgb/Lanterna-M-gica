@@ -4,7 +4,9 @@ import { cmsStore } from '../services/cmsStore';
 import { ArticleCard } from '../components/ArticleCard';
 import { fetchFilmeBySlug, SupabaseFilme } from '../services/repositories/filmesRepository';
 import { fetchUmaImagem, mapSupabaseUmaImagemToDomain } from '../services/repositories/umaImagemRepository';
-import { UmaImagemUmaIdeia } from '../types';
+import { fetchEspeciais } from '../services/repositories/especiaisRepository';
+import { fetchListas } from '../services/repositories/listasRepository';
+import { UmaImagemUmaIdeia, Especial, Lista } from '../types';
 
 interface FilmDetailPageProps {
   slug: string;
@@ -19,6 +21,8 @@ export const FilmDetailPage: React.FC<FilmDetailPageProps> = ({
 }) => {
   const [film, setFilm] = useState<SupabaseFilme | null>(null);
   const [umaImagemList, setUmaImagemList] = useState<UmaImagemUmaIdeia[]>([]);
+  const [supabaseEspeciais, setSupabaseEspeciais] = useState<Especial[]>([]);
+  const [supabaseListas, setSupabaseListas] = useState<Lista[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -29,9 +33,21 @@ export const FilmDetailPage: React.FC<FilmDetailPageProps> = ({
       if (isMounted) {
         if (data) {
           setFilm(data);
-          const umaRes = await fetchUmaImagem({ filmId: data.id, allStatuses: false });
-          if (isMounted && umaRes.data) {
-            setUmaImagemList(umaRes.data.map(mapSupabaseUmaImagemToDomain));
+          const [umaRes, espRes, listasRes] = await Promise.all([
+            fetchUmaImagem({ filmId: data.id, allStatuses: false }),
+            fetchEspeciais({ filmId: data.id, allStatuses: false }),
+            fetchListas({ filmId: data.id, allStatuses: false }),
+          ]);
+          if (isMounted) {
+            if (umaRes.data) {
+              setUmaImagemList(umaRes.data.map(mapSupabaseUmaImagemToDomain));
+            }
+            if (espRes.data) {
+              setSupabaseEspeciais(espRes.data);
+            }
+            if (listasRes.data) {
+              setSupabaseListas(listasRes.data);
+            }
           }
         } else {
           // Fallback para cmsStore se não encontrar no Supabase
@@ -501,13 +517,13 @@ export const FilmDetailPage: React.FC<FilmDetailPageProps> = ({
         )}
 
         {/* Especiais & Listas */}
-        {(related.especiais.length > 0 || related.listas.length > 0) && (
+        {(supabaseEspeciais.length > 0 || related.especiais.length > 0 || supabaseListas.length > 0) && (
           <div className="space-y-4">
             <h3 className="text-xs font-sans font-bold uppercase tracking-[0.2em] text-[#D4AF37]">
               ESPECIAIS & LISTAS
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {related.especiais.map((es) => (
+              {supabaseEspeciais.map((es) => (
                 <ArticleCard
                   key={es.id}
                   type="especial"
@@ -518,7 +534,18 @@ export const FilmDetailPage: React.FC<FilmDetailPageProps> = ({
                   onClick={() => onNavigate(`/especiais/${es.slug}`)}
                 />
               ))}
-              {related.listas.map((l) => (
+              {supabaseEspeciais.length === 0 && related.especiais.map((es) => (
+                <ArticleCard
+                  key={es.id}
+                  type="especial"
+                  variant="medium"
+                  title={es.title}
+                  subtitle={es.subtitle}
+                  image={es.coverImage}
+                  onClick={() => onNavigate(`/especiais/${es.slug}`)}
+                />
+              ))}
+              {supabaseListas.map((l) => (
                 <ArticleCard
                   key={l.id}
                   type="lista"
@@ -526,7 +553,7 @@ export const FilmDetailPage: React.FC<FilmDetailPageProps> = ({
                   title={l.title}
                   subtitle={l.intro}
                   image={l.coverImage}
-                  onClick={() => onNavigate('/especiais')}
+                  onClick={() => onNavigate(`/listas/${l.slug}`)}
                 />
               ))}
             </div>
@@ -536,8 +563,9 @@ export const FilmDetailPage: React.FC<FilmDetailPageProps> = ({
         {related.criticas.length === 0 &&
           related.ensaios.length === 0 &&
           related.umaImagem.length === 0 &&
+          supabaseEspeciais.length === 0 &&
           related.especiais.length === 0 &&
-          related.listas.length === 0 && (
+          supabaseListas.length === 0 && (
             <div className="bg-white border border-[#1A1A1A]/15 p-8 text-center space-y-2">
               <p className="font-serif-body text-base text-[#1A1A1A]/70">
                 Ainda não há ensaios ou críticas longas dedicadas a este filme no arquivo.

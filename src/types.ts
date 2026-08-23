@@ -279,24 +279,47 @@ export interface Especial {
 }
 
 export interface ListaItem {
+  id?: string;
   rank?: number;
+  filmId?: string | null;
   title: string;
   director?: string;
   year?: number;
   note?: string;
   image?: string;
+  orderIndex?: number;
+  film?: {
+    id: string;
+    title: string;
+    slug: string;
+    year?: number;
+    posterUrl?: string | null;
+    backdropUrl?: string | null;
+    country?: string | null;
+    director?: string | null;
+  } | null;
 }
 
 export interface Lista {
   id: string;
+  legacyId?: string | null;
   title: string;
   slug: string;
   intro: string;
   coverImage: string;
   items: ListaItem[];
+  relatedPersonId?: string | null;
+  relatedPerson?: {
+    id: string;
+    name: string;
+    slug: string;
+    photoUrl?: string | null;
+  } | null;
   relatedFilmmaker?: string;
   tags: string[];
   status: ContentStatus;
+  publishedAt?: string | null;
+  scheduledAt?: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -306,7 +329,8 @@ export type HighlightItem =
   | ({ itemType: 'critica' } & Critica)
   | ({ itemType: 'especial' } & Especial)
   | ({ itemType: 'uma_imagem' } & UmaImagemUmaIdeia)
-  | ({ itemType: 'cineasta' } & Cineasta);
+  | ({ itemType: 'cineasta' } & Cineasta)
+  | ({ itemType: 'lista' } & Lista);
 
 export interface SearchResult {
   id: string;

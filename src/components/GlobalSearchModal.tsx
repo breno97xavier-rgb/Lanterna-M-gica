@@ -8,6 +8,7 @@ import { fetchCriticas, mapSupabaseCriticaToCritica } from '../services/reposito
 import { fetchEnsaios, mapSupabaseEnsaioToEnsaio } from '../services/repositories/ensaiosRepository';
 import { fetchUmaImagem, mapSupabaseUmaImagemToDomain } from '../services/repositories/umaImagemRepository';
 import { fetchEspeciais } from '../services/repositories/especiaisRepository';
+import { fetchListas } from '../services/repositories/listasRepository';
 
 interface GlobalSearchModalProps {
   isOpen: boolean;
@@ -38,13 +39,14 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
 
     const timer = setTimeout(async () => {
       try {
-        const [pessoasRes, filmesRes, criticasRes, ensaiosRes, umaImagemRes, especiaisRes] = await Promise.all([
+        const [pessoasRes, filmesRes, criticasRes, ensaiosRes, umaImagemRes, especiaisRes, listasRes] = await Promise.all([
           fetchPessoas({ searchQuery: q, allStatuses: false }),
           fetchFilmes({ search: q, allStatuses: false }),
           fetchCriticas({ searchQuery: q, allStatuses: false }),
           fetchEnsaios({ searchQuery: q, allStatuses: false }),
           fetchUmaImagem({ searchQuery: q, allStatuses: false }),
           fetchEspeciais({ searchQuery: q, allStatuses: false }),
+          fetchListas({ searchQuery: q, allStatuses: false }),
         ]);
 
         if (isCancelled) return;
@@ -118,27 +120,18 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
           image: es.coverImage,
         }));
 
+        const listasResults: SearchResult[] = (listasRes.data || []).map((l) => ({
+          id: l.id,
+          type: 'lista',
+          title: l.title,
+          subtitle: l.intro || `${l.items?.length || 0} títulos catalogados`,
+          slug: l.slug,
+          image: l.coverImage || undefined,
+          tags: l.tags,
+        }));
+
         // Unmigrated entities from cmsStore
         const otherResults: SearchResult[] = [];
-
-        // Listas
-        cmsStore.getListas(true).forEach((l) => {
-          if (
-            l.title.toLowerCase().includes(q) ||
-            l.intro?.toLowerCase().includes(q) ||
-            l.tags.some((t) => t.toLowerCase().includes(q))
-          ) {
-            otherResults.push({
-              id: l.id,
-              type: 'lista',
-              title: l.title,
-              subtitle: l.intro,
-              slug: l.slug,
-              image: l.coverImage,
-              tags: l.tags,
-            });
-          }
-        });
 
         // Estreias
         cmsStore.getEstreias(true).forEach((est) => {
@@ -158,7 +151,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
           }
         });
 
-        setResults([...filmResults, ...personResults, ...ensaiosResults, ...criticasResults, ...umaImagemResults, ...especiaisResults, ...otherResults]);
+        setResults([...filmResults, ...personResults, ...ensaiosResults, ...criticasResults, ...umaImagemResults, ...especiaisResults, ...listasResults, ...otherResults]);
       } catch (err) {
         console.error('Search error:', err);
       } finally {
@@ -215,7 +208,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
         path = `/uma-imagem/${result.slug}`;
         break;
       case 'lista':
-        path = `/especiais`;
+        path = `/listas/${result.slug}`;
         break;
     }
     onNavigate(path);

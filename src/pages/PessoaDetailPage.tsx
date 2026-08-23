@@ -6,7 +6,8 @@ import { fetchPessoaBySlug, SupabasePessoa } from '../services/repositories/pess
 import { fetchFilmes, SupabaseFilme } from '../services/repositories/filmesRepository';
 import { fetchUmaImagem, mapSupabaseUmaImagemToDomain } from '../services/repositories/umaImagemRepository';
 import { fetchEspeciais } from '../services/repositories/especiaisRepository';
-import { Especial, Pessoa, UmaImagemUmaIdeia } from '../types';
+import { fetchListas } from '../services/repositories/listasRepository';
+import { Especial, Pessoa, UmaImagemUmaIdeia, Lista } from '../types';
 
 import { calculatePersonAge } from '../utils/dateUtils';
 export { calculatePersonAge };
@@ -26,6 +27,7 @@ export const PessoaDetailPage: React.FC<PessoaDetailPageProps> = ({
   const [supabaseFilmes, setSupabaseFilmes] = useState<SupabaseFilme[]>([]);
   const [umaImagemList, setUmaImagemList] = useState<UmaImagemUmaIdeia[]>([]);
   const [supabaseEspeciais, setSupabaseEspeciais] = useState<Especial[]>([]);
+  const [supabaseListas, setSupabaseListas] = useState<Lista[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -41,9 +43,10 @@ export const PessoaDetailPage: React.FC<PessoaDetailPageProps> = ({
         setSupabaseFilmes(filmRes.data);
       }
       if (pesRes.data?.id) {
-        const [umaRes, espRes] = await Promise.all([
+        const [umaRes, espRes, listasRes] = await Promise.all([
           fetchUmaImagem({ personId: pesRes.data.id, allStatuses: false }),
           fetchEspeciais({ relatedPersonId: pesRes.data.id, allStatuses: false }),
+          fetchListas({ relatedPersonId: pesRes.data.id, allStatuses: false }),
         ]);
         if (isMounted) {
           if (umaRes.data) {
@@ -51,6 +54,9 @@ export const PessoaDetailPage: React.FC<PessoaDetailPageProps> = ({
           }
           if (espRes.data) {
             setSupabaseEspeciais(espRes.data);
+          }
+          if (listasRes.data) {
+            setSupabaseListas(listasRes.data);
           }
         }
       }
@@ -428,7 +434,7 @@ export const PessoaDetailPage: React.FC<PessoaDetailPageProps> = ({
         )}
 
         {/* Especiais & Listas */}
-        {(supabaseEspeciais.length > 0 || related.especiais.length > 0 || related.listas.length > 0) && (
+        {(supabaseEspeciais.length > 0 || related.especiais.length > 0 || supabaseListas.length > 0) && (
           <div className="space-y-4">
             <h3 className="text-xs font-sans font-bold uppercase tracking-[0.2em] text-[#D4AF37]">
               ESPECIAIS & LISTAS
@@ -456,7 +462,7 @@ export const PessoaDetailPage: React.FC<PessoaDetailPageProps> = ({
                   onClick={() => onNavigate(`/especiais/${es.slug}`)}
                 />
               ))}
-              {related.listas.map((l) => (
+              {supabaseListas.map((l) => (
                 <ArticleCard
                   key={l.id}
                   type="lista"
@@ -464,7 +470,7 @@ export const PessoaDetailPage: React.FC<PessoaDetailPageProps> = ({
                   title={l.title}
                   subtitle={l.intro}
                   image={l.coverImage}
-                  onClick={() => onNavigate('/especiais')}
+                  onClick={() => onNavigate(`/listas/${l.slug}`)}
                 />
               ))}
             </div>

@@ -113,6 +113,7 @@ export interface FetchEspeciaisOptions {
   allStatuses?: boolean;
   highlightOnly?: boolean;
   relatedPersonId?: string;
+  filmId?: string;
   searchQuery?: string;
   includeDrafts?: boolean;
 }
@@ -510,6 +511,23 @@ export async function fetchEspeciais(
 
     if (options.relatedPersonId) {
       query = query.eq('related_person_id', options.relatedPersonId);
+    }
+
+    if (options.filmId) {
+      const { data: itemRows, error: itemErr } = await supabase
+        .from('especial_items')
+        .select('especial_id')
+        .eq('filme_id', options.filmId);
+
+      if (itemErr) {
+        console.error('Erro ao buscar itens vinculados do filme:', itemErr);
+      }
+
+      const especialIds = (itemRows || []).map((r: any) => r.especial_id).filter(Boolean);
+      if (especialIds.length === 0) {
+        return { data: [], count: 0, error: null };
+      }
+      query = query.in('id', especialIds);
     }
 
     if (options.searchQuery?.trim()) {

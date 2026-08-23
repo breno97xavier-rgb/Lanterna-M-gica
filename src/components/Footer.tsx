@@ -37,6 +37,9 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <button onClick={() => onNavigate('/especiais')} className="hover:text-white transition-colors">
             Especiais
           </button>
+          <button onClick={() => onNavigate('/listas')} className="hover:text-white transition-colors">
+            Listas
+          </button>
           <button onClick={() => onNavigate('/arquivo')} className="hover:text-white transition-colors">
             Arquivo
           </button>
