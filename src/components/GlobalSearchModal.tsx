@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Search, X, Film, BookOpen, User, Folder, List, Calendar, Clapperboard, Sparkles, Loader2 } from 'lucide-react';
-import { cmsStore } from '../services/cmsStore';
 import { SearchResult } from '../types';
 import { fetchPessoas } from '../services/repositories/pessoasRepository';
 import { fetchFilmes } from '../services/repositories/filmesRepository';
@@ -9,6 +8,7 @@ import { fetchEnsaios, mapSupabaseEnsaioToEnsaio } from '../services/repositorie
 import { fetchUmaImagem, mapSupabaseUmaImagemToDomain } from '../services/repositories/umaImagemRepository';
 import { fetchEspeciais } from '../services/repositories/especiaisRepository';
 import { fetchListas } from '../services/repositories/listasRepository';
+import { fetchEstreias } from '../services/repositories/estreiasRepository';
 
 interface GlobalSearchModalProps {
   isOpen: boolean;
@@ -39,7 +39,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
 
     const timer = setTimeout(async () => {
       try {
-        const [pessoasRes, filmesRes, criticasRes, ensaiosRes, umaImagemRes, especiaisRes, listasRes] = await Promise.all([
+        const [pessoasRes, filmesRes, criticasRes, ensaiosRes, umaImagemRes, especiaisRes, listasRes, estreiasRes] = await Promise.all([
           fetchPessoas({ searchQuery: q, allStatuses: false }),
           fetchFilmes({ search: q, allStatuses: false }),
           fetchCriticas({ searchQuery: q, allStatuses: false }),
@@ -47,6 +47,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
           fetchUmaImagem({ searchQuery: q, allStatuses: false }),
           fetchEspeciais({ searchQuery: q, allStatuses: false }),
           fetchListas({ searchQuery: q, allStatuses: false }),
+          fetchEstreias({ searchQuery: q, allStatuses: false }),
         ]);
 
         if (isCancelled) return;
@@ -130,28 +131,25 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
           tags: l.tags,
         }));
 
-        // Unmigrated entities from cmsStore
-        const otherResults: SearchResult[] = [];
+        const estreiasResults: SearchResult[] = (estreiasRes.data || []).map((est) => ({
+          id: est.id,
+          type: 'estreia',
+          title: est.filmTitle,
+          subtitle: `Estreia em ${est.releaseDate} · Dir. ${est.filmDirector}`,
+          slug: est.filmSlug,
+          image: est.filmPoster,
+        }));
 
-        // Estreias
-        cmsStore.getEstreias(true).forEach((est) => {
-          if (
-            est.filmTitle?.toLowerCase().includes(q) ||
-            est.filmDirector?.toLowerCase().includes(q) ||
-            est.filmCountry?.toLowerCase().includes(q)
-          ) {
-            otherResults.push({
-              id: est.id,
-              type: 'estreia',
-              title: est.filmTitle,
-              subtitle: `Estreia em ${est.releaseDate} · Dir. ${est.filmDirector}`,
-              slug: est.filmSlug,
-              image: est.filmPoster,
-            });
-          }
-        });
-
-        setResults([...filmResults, ...personResults, ...ensaiosResults, ...criticasResults, ...umaImagemResults, ...especiaisResults, ...listasResults, ...otherResults]);
+        setResults([
+          ...filmResults,
+          ...personResults,
+          ...ensaiosResults,
+          ...criticasResults,
+          ...umaImagemResults,
+          ...especiaisResults,
+          ...listasResults,
+          ...estreiasResults,
+        ]);
       } catch (err) {
         console.error('Search error:', err);
       } finally {

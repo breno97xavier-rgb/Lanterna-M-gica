@@ -16,7 +16,6 @@ import {
   Calendar,
   Users,
 } from 'lucide-react';
-import { cmsStore } from '../../services/cmsStore';
 import { fetchPessoas } from '../../services/repositories/pessoasRepository';
 import { fetchFilmes } from '../../services/repositories/filmesRepository';
 import { fetchCriticas, mapSupabaseCriticaToCritica } from '../../services/repositories/criticasRepository';
@@ -24,7 +23,8 @@ import { fetchEnsaios, mapSupabaseEnsaioToEnsaio } from '../../services/reposito
 import { fetchUmaImagem, mapSupabaseUmaImagemToDomain } from '../../services/repositories/umaImagemRepository';
 import { fetchEspeciais } from '../../services/repositories/especiaisRepository';
 import { fetchListas } from '../../services/repositories/listasRepository';
-import { Critica, Ensaio, UmaImagemUmaIdeia, Especial, Lista } from '../../types';
+import { fetchEstreias } from '../../services/repositories/estreiasRepository';
+import { Critica, Ensaio, UmaImagemUmaIdeia, Especial, Lista, Estreia } from '../../types';
 import { formatEditorialDate } from '../../utils/dateUtils';
 import { getEffectiveEditorialStatus, useEditorialTicker } from '../../utils/statusUtils';
 
@@ -43,9 +43,9 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
   const [umaImagem, setUmaImagem] = useState<UmaImagemUmaIdeia[]>([]);
   const [especiais, setEspeciais] = useState<Especial[]>([]);
   const [listas, setListas] = useState<Lista[]>([]);
+  const [estreias, setEstreias] = useState<Estreia[]>([]);
   const [pessoasCount, setPessoasCount] = useState<number>(0);
   const [filmesCount, setFilmesCount] = useState<number>(0);
-  const estreias = cmsStore.getEstreias(false);
 
   useEffect(() => {
     fetchPessoas({ allStatuses: true }).then(({ data }) => {
@@ -83,6 +83,11 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
         setListas(data);
       }
     });
+    fetchEstreias({ allStatuses: true }).then(({ data }) => {
+      if (data) {
+        setEstreias(data);
+      }
+    });
   }, []);
 
   const allItems = [
@@ -95,6 +100,11 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
     ...umaImagem.map((u) => ({ ...u, _type: 'uma_imagem' as const, _title: u.title })),
     ...especiais.map((es) => ({ ...es, _type: 'especial' as const, _title: es.title })),
     ...listas.map((l) => ({ ...l, _type: 'lista' as const, _title: l.title })),
+    ...estreias.map((est) => ({
+      ...est,
+      _type: 'estreia' as const,
+      _title: `${est.filmTitle} (${est.releaseDate})`,
+    })),
   ];
 
   const draftsCount = allItems.filter((i) => getEffectiveEditorialStatus(i, undefined, currentTime) === 'draft').length;

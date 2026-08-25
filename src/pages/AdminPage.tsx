@@ -19,7 +19,6 @@ import {
   Plus,
   Users,
 } from 'lucide-react';
-import { cmsStore } from '../services/cmsStore';
 import { getSupabaseClient } from '../services/supabaseClient';
 import { fetchPessoas } from '../services/repositories/pessoasRepository';
 import { fetchFilmes } from '../services/repositories/filmesRepository';
@@ -29,13 +28,13 @@ import { fetchUmaImagem } from '../services/repositories/umaImagemRepository';
 import { fetchTeamMembers } from '../services/repositories/teamMembersRepository';
 import { fetchEspeciais } from '../services/repositories/especiaisRepository';
 import { fetchListas } from '../services/repositories/listasRepository';
+import { fetchEstreias } from '../services/repositories/estreiasRepository';
 import { DashboardOverview } from './admin/DashboardOverview';
 import { EnsaiosAdmin } from './admin/EnsaiosAdmin';
 import { CriticasAdmin } from './admin/CriticasAdmin';
 import { FilmesAdmin } from './admin/FilmesAdmin';
 import { PessoasAdmin } from './admin/PessoasAdmin';
 import { EstreiasAdmin } from './admin/EstreiasAdmin';
-import { CineastasAdmin } from './admin/CineastasAdmin';
 import { UmaImagemAdmin } from './admin/UmaImagemAdmin';
 import { ListasAdmin } from './admin/ListasAdmin';
 import { EspeciaisAdmin } from './admin/EspeciaisAdmin';
@@ -68,7 +67,6 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate, onGoBack }) =>
     | 'filmes'
     | 'pessoas'
     | 'equipe'
-    | 'cineastas'
     | 'uma_imagem'
     | 'listas'
     | 'especiais'
@@ -88,9 +86,10 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate, onGoBack }) =>
   const [umaImagemCount, setUmaImagemCount] = useState<number | null>(null);
   const [especiaisCount, setEspeciaisCount] = useState<number | null>(null);
   const [listasCount, setListasCount] = useState<number | null>(null);
+  const [estreiasCount, setEstreiasCount] = useState<number | null>(null);
 
   const loadCounts = async () => {
-    const [pesRes, filmRes, critRes, ensRes, eqRes, umaRes, espRes, lisRes] = await Promise.all([
+    const [pesRes, filmRes, critRes, ensRes, eqRes, umaRes, espRes, lisRes, estRes] = await Promise.all([
       fetchPessoas({ allStatuses: true }),
       fetchFilmes({ allStatuses: true }),
       fetchCriticas({ allStatuses: true }),
@@ -99,6 +98,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate, onGoBack }) =>
       fetchUmaImagem({ allStatuses: true }),
       fetchEspeciais({ allStatuses: true }),
       fetchListas({ allStatuses: true }),
+      fetchEstreias({ allStatuses: true }),
     ]);
     if (pesRes.data) {
       setPessoasCount(pesRes.data.length);
@@ -123,6 +123,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate, onGoBack }) =>
     }
     if (lisRes.data) {
       setListasCount(lisRes.count ?? lisRes.data.length);
+    }
+    if (estRes.data) {
+      setEstreiasCount(estRes.count ?? estRes.data.length);
     }
   };
 
@@ -471,7 +474,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate, onGoBack }) =>
             }`}
           >
             <Folder size={14} />
-            <span>Estreias ({cmsStore.getEstreias(false).length})</span>
+            <span>Estreias ({estreiasCount !== null ? estreiasCount : '...'})</span>
           </button>
 
           <button
@@ -508,18 +511,6 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate, onGoBack }) =>
           >
             <Users size={14} />
             <span>Equipe ({equipeCount !== null ? equipeCount : '...'})</span>
-          </button>
-
-          <button
-            onClick={() => handleNavigateTab('cineastas')}
-            className={`px-3 py-2 border whitespace-nowrap flex items-center gap-1.5 transition-colors ${
-              activeTab === 'cineastas'
-                ? 'bg-[#1A1A1A] text-[#F5F2ED] border-[#1A1A1A]'
-                : 'bg-white text-[#1A1A1A]/70 border-[#1A1A1A]/15 hover:border-[#1A1A1A]'
-            }`}
-          >
-            <User size={14} />
-            <span>Cineastas ({cmsStore.getCineastas().length})</span>
           </button>
 
           <button
@@ -618,7 +609,12 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate, onGoBack }) =>
             />
           )}
 
-          {activeTab === 'estreias' && <EstreiasAdmin />}
+          {activeTab === 'estreias' && (
+            <EstreiasAdmin
+              onNotify={showToast}
+              autoCreate={autoCreateTab}
+            />
+          )}
 
           {activeTab === 'filmes' && (
             <FilmesAdmin
@@ -636,13 +632,6 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate, onGoBack }) =>
 
           {activeTab === 'equipe' && (
             <TeamAdmin
-              onNotify={showToast}
-              autoCreate={autoCreateTab}
-            />
-          )}
-
-          {activeTab === 'cineastas' && (
-            <CineastasAdmin
               onNotify={showToast}
               autoCreate={autoCreateTab}
             />

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Calendar, Clock, Globe, Film as FilmIcon, User, Star, Clapperboard, Sparkles, Loader2 } from 'lucide-react';
-import { cmsStore } from '../services/cmsStore';
 import { ArticleCard } from '../components/ArticleCard';
 import { fetchFilmeBySlug, SupabaseFilme } from '../services/repositories/filmesRepository';
+import { fetchCriticas, mapSupabaseCriticaToCritica } from '../services/repositories/criticasRepository';
+import { fetchEnsaios, mapSupabaseEnsaioToEnsaio } from '../services/repositories/ensaiosRepository';
 import { fetchUmaImagem, mapSupabaseUmaImagemToDomain } from '../services/repositories/umaImagemRepository';
 import { fetchEspeciais } from '../services/repositories/especiaisRepository';
 import { fetchListas } from '../services/repositories/listasRepository';
-import { UmaImagemUmaIdeia, Especial, Lista } from '../types';
+import { fetchEstreiasByFilmId } from '../services/repositories/estreiasRepository';
+import { Critica, Ensaio, UmaImagemUmaIdeia, Especial, Lista, Estreia } from '../types';
 
 interface FilmDetailPageProps {
   slug: string;
@@ -20,9 +22,12 @@ export const FilmDetailPage: React.FC<FilmDetailPageProps> = ({
   onGoBack,
 }) => {
   const [film, setFilm] = useState<SupabaseFilme | null>(null);
+  const [relatedCriticas, setRelatedCriticas] = useState<Critica[]>([]);
+  const [relatedEnsaios, setRelatedEnsaios] = useState<Ensaio[]>([]);
   const [umaImagemList, setUmaImagemList] = useState<UmaImagemUmaIdeia[]>([]);
   const [supabaseEspeciais, setSupabaseEspeciais] = useState<Especial[]>([]);
   const [supabaseListas, setSupabaseListas] = useState<Lista[]>([]);
+  const [filmEstreias, setFilmEstreias] = useState<Estreia[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -33,12 +38,21 @@ export const FilmDetailPage: React.FC<FilmDetailPageProps> = ({
       if (isMounted) {
         if (data) {
           setFilm(data);
-          const [umaRes, espRes, listasRes] = await Promise.all([
+          const [critRes, ensRes, umaRes, espRes, listasRes, estreiasRes] = await Promise.all([
+            fetchCriticas({ filmId: data.id, allStatuses: false }),
+            fetchEnsaios({ searchQuery: data.title, allStatuses: false }),
             fetchUmaImagem({ filmId: data.id, allStatuses: false }),
             fetchEspeciais({ filmId: data.id, allStatuses: false }),
             fetchListas({ filmId: data.id, allStatuses: false }),
+            fetchEstreiasByFilmId(data.id, { allStatuses: false }),
           ]);
           if (isMounted) {
+            if (critRes.data) {
+              setRelatedCriticas(critRes.data.map(mapSupabaseCriticaToCritica));
+            }
+            if (ensRes.data) {
+              setRelatedEnsaios(ensRes.data.map(mapSupabaseEnsaioToEnsaio));
+            }
             if (umaRes.data) {
               setUmaImagemList(umaRes.data.map(mapSupabaseUmaImagemToDomain));
             }
@@ -48,67 +62,12 @@ export const FilmDetailPage: React.FC<FilmDetailPageProps> = ({
             if (listasRes.data) {
               setSupabaseListas(listasRes.data);
             }
+            if (estreiasRes.data) {
+              setFilmEstreias(estreiasRes.data);
+            }
           }
         } else {
-          // Fallback para cmsStore se não encontrar no Supabase
-          const localFilm = cmsStore.getFilmeBySlug(slug);
-          if (localFilm) {
-            setFilm({
-              id: localFilm.id,
-              legacy_id: localFilm.id,
-              title: localFilm.title,
-              original_title: localFilm.originalTitle || null,
-              slug: localFilm.slug,
-              year: localFilm.year,
-              country: localFilm.country,
-              duration_minutes: localFilm.durationMinutes || null,
-              poster_url: localFilm.posterImage || null,
-              backdrop_url: null,
-              synopsis: localFilm.synopsis || null,
-              editorial_rating: null,
-              status: 'published',
-              published_at: localFilm.createdAt,
-              scheduled_at: null,
-              created_at: localFilm.createdAt,
-              updated_at: localFilm.updatedAt,
-              legacy_director_name: localFilm.director,
-              generos: localFilm.genres?.map((g) => ({ id: g, name: g, slug: g })) || [],
-              countries: localFilm.country ? [{ id: 'c1', name: localFilm.country, slug: 'pais', flag_url: null, created_at: '', updated_at: '' }] : [],
-              credits: (localFilm.credits || []).map((c, i) => ({
-                id: c.id,
-                film_id: localFilm.id,
-                person_id: c.personId || null,
-                fallback_person_name: c.personName,
-                department: c.department,
-                role: c.role || null,
-                character_name: c.characterName || null,
-                order_index: i,
-                person: c.personSlug ? {
-                  id: c.personId || 'p1',
-                  legacy_id: null,
-                  name: c.personName,
-                  slug: c.personSlug,
-                  photo_url: c.personPhoto || null,
-                  birth_date: null,
-                  death_date: null,
-                  country_id: null,
-                  country: null,
-                  bio: null,
-                  is_editorial_profile: false,
-                  editorial_profile: null,
-                  primary_roles: [],
-                  highlight_home: false,
-                  status: 'published',
-                  published_at: null,
-                  scheduled_at: null,
-                  created_at: '',
-                  updated_at: '',
-                } : null,
-              })),
-            });
-          } else {
-            setFilm(null);
-          }
+          setFilm(null);
         }
         setLoading(false);
       }
@@ -144,8 +103,6 @@ export const FilmDetailPage: React.FC<FilmDetailPageProps> = ({
       </div>
     );
   }
-
-  const related = cmsStore.getFilmRelatedContent(film.slug);
 
   // Group credits by department (ignoring entries with no person and no fallback name)
   const credits = (film.credits || []).filter(
@@ -287,23 +244,30 @@ export const FilmDetailPage: React.FC<FilmDetailPageProps> = ({
             )}
 
             {/* Release in Brazil notification if available */}
-            {related.estreia && (
-              <div className="bg-white border-l-4 border-[#D4AF37] border-y border-r border-[#1A1A1A]/10 p-4 space-y-1">
-                <span className="text-[10px] font-sans font-bold uppercase tracking-[0.2em] text-[#D4AF37]">
-                  Estreia no Circuito Brasileiro
-                </span>
-                <p className="text-sm font-sans font-medium text-[#1A1A1A]">
-                  Lançamento oficial em{' '}
-                  {new Date(related.estreia.releaseDate + 'T12:00:00').toLocaleDateString('pt-BR', {
-                    day: '2-digit',
-                    month: 'long',
-                    year: 'numeric',
-                  })}
-                  {related.estreia.distributor ? ` · Distribuição: ${related.estreia.distributor}` : ''}
-                </p>
-                {related.estreia.notes && (
-                  <p className="text-xs font-serif-body italic text-[#1A1A1A]/70">{related.estreia.notes}</p>
-                )}
+            {filmEstreias.length > 0 && (
+              <div className="space-y-3">
+                {filmEstreias.map((est) => (
+                  <div
+                    key={est.id}
+                    className="bg-white border-l-4 border-[#D4AF37] border-y border-r border-[#1A1A1A]/10 p-4 space-y-1 shadow-2xs"
+                  >
+                    <span className="text-[10px] font-sans font-bold uppercase tracking-[0.2em] text-[#D4AF37]">
+                      {est.releaseType ? `Estreia no Circuito Brasileiro · ${est.releaseType}` : 'Estreia no Circuito Brasileiro'}
+                    </span>
+                    <p className="text-sm font-sans font-medium text-[#1A1A1A]">
+                      Lançamento oficial em{' '}
+                      {new Date(est.releaseDate + 'T12:00:00').toLocaleDateString('pt-BR', {
+                        day: '2-digit',
+                        month: 'long',
+                        year: 'numeric',
+                      })}
+                      {est.distributor ? ` · Distribuição: ${est.distributor}` : ''}
+                    </p>
+                    {est.notes && (
+                      <p className="text-xs font-serif-body italic text-[#1A1A1A]/70">{est.notes}</p>
+                    )}
+                  </div>
+                ))}
               </div>
             )}
           </div>
@@ -446,13 +410,13 @@ export const FilmDetailPage: React.FC<FilmDetailPageProps> = ({
         </div>
 
         {/* Críticas */}
-        {related.criticas.length > 0 && (
+        {relatedCriticas.length > 0 && (
           <div className="space-y-4">
             <h3 className="text-xs font-sans font-bold uppercase tracking-[0.2em] text-[#D4AF37]">
-              CRÍTICAS FILMOGRÁFICAS ({related.criticas.length})
+              CRÍTICAS FILMOGRÁFICAS ({relatedCriticas.length})
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {related.criticas.map((c) => (
+              {relatedCriticas.map((c) => (
                 <ArticleCard
                   key={c.id}
                   type="critica"
@@ -471,13 +435,13 @@ export const FilmDetailPage: React.FC<FilmDetailPageProps> = ({
         )}
 
         {/* Ensaios */}
-        {related.ensaios.length > 0 && (
+        {relatedEnsaios.length > 0 && (
           <div className="space-y-4">
             <h3 className="text-xs font-sans font-bold uppercase tracking-[0.2em] text-[#D4AF37]">
-              ENSAIOS & REFLEXÕES ({related.ensaios.length})
+              ENSAIOS & REFLEXÕES ({relatedEnsaios.length})
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {related.ensaios.map((e) => (
+              {relatedEnsaios.map((e) => (
                 <ArticleCard
                   key={e.id}
                   type="ensaio"
@@ -517,24 +481,13 @@ export const FilmDetailPage: React.FC<FilmDetailPageProps> = ({
         )}
 
         {/* Especiais & Listas */}
-        {(supabaseEspeciais.length > 0 || related.especiais.length > 0 || supabaseListas.length > 0) && (
+        {(supabaseEspeciais.length > 0 || supabaseListas.length > 0) && (
           <div className="space-y-4">
             <h3 className="text-xs font-sans font-bold uppercase tracking-[0.2em] text-[#D4AF37]">
               ESPECIAIS & LISTAS
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {supabaseEspeciais.map((es) => (
-                <ArticleCard
-                  key={es.id}
-                  type="especial"
-                  variant="medium"
-                  title={es.title}
-                  subtitle={es.subtitle}
-                  image={es.coverImage}
-                  onClick={() => onNavigate(`/especiais/${es.slug}`)}
-                />
-              ))}
-              {supabaseEspeciais.length === 0 && related.especiais.map((es) => (
                 <ArticleCard
                   key={es.id}
                   type="especial"
@@ -560,11 +513,10 @@ export const FilmDetailPage: React.FC<FilmDetailPageProps> = ({
           </div>
         )}
 
-        {related.criticas.length === 0 &&
-          related.ensaios.length === 0 &&
-          related.umaImagem.length === 0 &&
+        {relatedCriticas.length === 0 &&
+          relatedEnsaios.length === 0 &&
+          umaImagemList.length === 0 &&
           supabaseEspeciais.length === 0 &&
-          related.especiais.length === 0 &&
           supabaseListas.length === 0 && (
             <div className="bg-white border border-[#1A1A1A]/15 p-8 text-center space-y-2">
               <p className="font-serif-body text-base text-[#1A1A1A]/70">

@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Calendar, Film, Loader2 } from 'lucide-react';
-import { cmsStore } from '../services/cmsStore';
 import { ArticleCard } from '../components/ArticleCard';
 import { fetchPessoaBySlug, SupabasePessoa } from '../services/repositories/pessoasRepository';
 import { fetchFilmes, SupabaseFilme } from '../services/repositories/filmesRepository';
+import { fetchCriticas, mapSupabaseCriticaToCritica } from '../services/repositories/criticasRepository';
+import { fetchEnsaios, mapSupabaseEnsaioToEnsaio } from '../services/repositories/ensaiosRepository';
 import { fetchUmaImagem, mapSupabaseUmaImagemToDomain } from '../services/repositories/umaImagemRepository';
 import { fetchEspeciais } from '../services/repositories/especiaisRepository';
 import { fetchListas } from '../services/repositories/listasRepository';
-import { Especial, Pessoa, UmaImagemUmaIdeia, Lista } from '../types';
+import { Critica, Ensaio, Especial, Pessoa, UmaImagemUmaIdeia, Lista } from '../types';
 
 import { calculatePersonAge } from '../utils/dateUtils';
 export { calculatePersonAge };
@@ -25,6 +26,8 @@ export const PessoaDetailPage: React.FC<PessoaDetailPageProps> = ({
 }) => {
   const [supabasePessoa, setSupabasePessoa] = useState<SupabasePessoa | null>(null);
   const [supabaseFilmes, setSupabaseFilmes] = useState<SupabaseFilme[]>([]);
+  const [relatedCriticas, setRelatedCriticas] = useState<Critica[]>([]);
+  const [relatedEnsaios, setRelatedEnsaios] = useState<Ensaio[]>([]);
   const [umaImagemList, setUmaImagemList] = useState<UmaImagemUmaIdeia[]>([]);
   const [supabaseEspeciais, setSupabaseEspeciais] = useState<Especial[]>([]);
   const [supabaseListas, setSupabaseListas] = useState<Lista[]>([]);
@@ -43,12 +46,20 @@ export const PessoaDetailPage: React.FC<PessoaDetailPageProps> = ({
         setSupabaseFilmes(filmRes.data);
       }
       if (pesRes.data?.id) {
-        const [umaRes, espRes, listasRes] = await Promise.all([
+        const [critRes, ensRes, umaRes, espRes, listasRes] = await Promise.all([
+          fetchCriticas({ searchQuery: pesRes.data.name, allStatuses: false }),
+          fetchEnsaios({ searchQuery: pesRes.data.name, allStatuses: false }),
           fetchUmaImagem({ personId: pesRes.data.id, allStatuses: false }),
           fetchEspeciais({ relatedPersonId: pesRes.data.id, allStatuses: false }),
           fetchListas({ relatedPersonId: pesRes.data.id, allStatuses: false }),
         ]);
         if (isMounted) {
+          if (critRes.data) {
+            setRelatedCriticas(critRes.data.map(mapSupabaseCriticaToCritica));
+          }
+          if (ensRes.data) {
+            setRelatedEnsaios(ensRes.data.map(mapSupabaseEnsaioToEnsaio));
+          }
           if (umaRes.data) {
             setUmaImagemList(umaRes.data.map(mapSupabaseUmaImagemToDomain));
           }
@@ -67,30 +78,7 @@ export const PessoaDetailPage: React.FC<PessoaDetailPageProps> = ({
     };
   }, [slug]);
 
-  // Fallback to cmsStore / legacy cineasta if Supabase does not have it
-  const cineastaFallback = cmsStore.getCineastaBySlug(slug);
-  const cmsPessoa = cmsStore.getPessoaBySlug(slug);
-
-  const person: Pessoa | SupabasePessoa | undefined =
-    supabasePessoa ||
-    cmsPessoa ||
-    (cineastaFallback
-      ? {
-          id: `pes-${slug}`,
-          name: cineastaFallback.name,
-          slug: slug,
-          photo_url: cineastaFallback.photo,
-          country: cineastaFallback.country,
-          birth_date: cineastaFallback.birthYear ? String(cineastaFallback.birthYear) : undefined,
-          death_date: cineastaFallback.deathYear ? String(cineastaFallback.deathYear) : undefined,
-          bio: cineastaFallback.bio,
-          editorial_profile: undefined,
-          primary_roles: ['Diretor'],
-          tags: cineastaFallback.tags,
-          created_at: cineastaFallback.createdAt,
-          updated_at: cineastaFallback.updatedAt,
-        }
-      : undefined);
+  const person: SupabasePessoa | null = supabasePessoa;
 
   if (loading && !person) {
     return (
@@ -116,13 +104,11 @@ export const PessoaDetailPage: React.FC<PessoaDetailPageProps> = ({
     );
   }
 
-  const related = cmsStore.getPersonRelatedContent(person.slug);
-
   // Normalize properties
-  const photoUrl = 'photo_url' in person ? person.photo_url : (person as any).photo;
-  const birthDateStr = 'birth_date' in person ? person.birth_date : (person as any).birthDate;
-  const deathDateStr = 'death_date' in person ? person.death_date : (person as any).deathDate;
-  const primaryRolesList = 'primary_roles' in person ? person.primary_roles : (person as any).primaryRoles;
+  const photoUrl = person.photo_url;
+  const birthDateStr = person.birth_date;
+  const deathDateStr = person.death_date;
+  const primaryRolesList = person.primary_roles;
 
   // Format roles
   const rolesDisplay = primaryRolesList && primaryRolesList.length > 0
@@ -277,33 +263,6 @@ export const PessoaDetailPage: React.FC<PessoaDetailPageProps> = ({
           });
         });
 
-        // Add local/related films if not already present
-        related.filmes.forEach((lf) => {
-          if (!filmMap.has(lf.slug)) {
-            const personCredits = (lf.credits || []).filter(
-              (c) =>
-                c.personId === person.id ||
-                c.personSlug === person.slug ||
-                c.personName.toLowerCase().trim() === person.name.toLowerCase().trim()
-            );
-
-            filmMap.set(lf.slug, {
-              id: lf.id,
-              slug: lf.slug,
-              title: lf.title,
-              year: lf.year,
-              country: lf.country,
-              posterUrl: lf.posterImage,
-              credits: personCredits.map((c) => ({
-                id: c.id,
-                department: c.department,
-                role: c.role,
-                characterName: c.characterName,
-              })),
-            });
-          }
-        });
-
         const allPersonFilms = Array.from(filmMap.values());
 
         return (
@@ -386,13 +345,13 @@ export const PessoaDetailPage: React.FC<PessoaDetailPageProps> = ({
         </div>
 
         {/* Críticas */}
-        {related.criticas.length > 0 && (
+        {relatedCriticas.length > 0 && (
           <div className="space-y-4">
             <h3 className="text-xs font-sans font-bold uppercase tracking-[0.2em] text-[#D4AF37]">
-              CRÍTICAS FILMOGRÁFICAS ({related.criticas.length})
+              CRÍTICAS FILMOGRÁFICAS ({relatedCriticas.length})
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {related.criticas.map((c) => (
+              {relatedCriticas.map((c) => (
                 <ArticleCard
                   key={c.id}
                   type="critica"
@@ -411,13 +370,13 @@ export const PessoaDetailPage: React.FC<PessoaDetailPageProps> = ({
         )}
 
         {/* Ensaios */}
-        {related.ensaios.length > 0 && (
+        {relatedEnsaios.length > 0 && (
           <div className="space-y-4">
             <h3 className="text-xs font-sans font-bold uppercase tracking-[0.2em] text-[#D4AF37]">
-              ENSAIOS & REFLEXÕES ({related.ensaios.length})
+              ENSAIOS & REFLEXÕES ({relatedEnsaios.length})
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {related.ensaios.map((e) => (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {relatedEnsaios.map((e) => (
                 <ArticleCard
                   key={e.id}
                   type="ensaio"
@@ -434,24 +393,13 @@ export const PessoaDetailPage: React.FC<PessoaDetailPageProps> = ({
         )}
 
         {/* Especiais & Listas */}
-        {(supabaseEspeciais.length > 0 || related.especiais.length > 0 || supabaseListas.length > 0) && (
+        {(supabaseEspeciais.length > 0 || supabaseListas.length > 0) && (
           <div className="space-y-4">
             <h3 className="text-xs font-sans font-bold uppercase tracking-[0.2em] text-[#D4AF37]">
               ESPECIAIS & LISTAS
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {supabaseEspeciais.map((es) => (
-                <ArticleCard
-                  key={es.id}
-                  type="especial"
-                  variant="medium"
-                  title={es.title}
-                  subtitle={es.subtitle}
-                  image={es.coverImage}
-                  onClick={() => onNavigate(`/especiais/${es.slug}`)}
-                />
-              ))}
-              {supabaseEspeciais.length === 0 && related.especiais.map((es) => (
                 <ArticleCard
                   key={es.id}
                   type="especial"

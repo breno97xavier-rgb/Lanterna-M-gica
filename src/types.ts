@@ -83,6 +83,8 @@ export interface Estreia {
   distributor?: string;
   notes?: string;
   status?: ContentStatus;
+  publishedAt?: string | null;
+  scheduledAt?: string | null;
   createdAt: string;
   updatedAt: string;
 }

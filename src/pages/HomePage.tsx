@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { ArrowRight, Sparkles, Film, Loader2 } from 'lucide-react';
-import { cmsStore } from '../services/cmsStore';
 import { HeroCarousel } from '../components/HeroCarousel';
 import { ArticleCard } from '../components/ArticleCard';
 import { BrandLogo } from '../components/BrandLogo';
@@ -9,7 +8,10 @@ import { fetchEnsaios, mapSupabaseEnsaioToEnsaio } from '../services/repositorie
 import { fetchUmaImagem, mapSupabaseUmaImagemToDomain } from '../services/repositories/umaImagemRepository';
 import { fetchEspeciais } from '../services/repositories/especiaisRepository';
 import { fetchListas } from '../services/repositories/listasRepository';
-import { Critica, Ensaio, Especial, HighlightItem, Lista, UmaImagemUmaIdeia } from '../types';
+import { fetchEstreias, getCurrentWeekEstreiasFromList } from '../services/repositories/estreiasRepository';
+import { fetchPessoas, SupabasePessoa } from '../services/repositories/pessoasRepository';
+import { getTodayLocalDateString } from '../utils/dateUtils';
+import { Critica, Ensaio, Especial, HighlightItem, Lista, UmaImagemUmaIdeia, Estreia } from '../types';
 
 interface HomePageProps {
   onNavigate: (path: string) => void;
@@ -21,6 +23,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const [supabaseUmaImagem, setSupabaseUmaImagem] = useState<UmaImagemUmaIdeia[]>([]);
   const [supabaseEspeciais, setSupabaseEspeciais] = useState<Especial[]>([]);
   const [supabaseListas, setSupabaseListas] = useState<Lista[]>([]);
+  const [supabaseEstreias, setSupabaseEstreias] = useState<Estreia[]>([]);
+  const [supabasePessoas, setSupabasePessoas] = useState<SupabasePessoa[]>([]);
   const [loadingContent, setLoadingContent] = useState(true);
 
   useEffect(() => {
@@ -31,7 +35,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       fetchUmaImagem({ allStatuses: false }),
       fetchEspeciais({ allStatuses: false }),
       fetchListas({ allStatuses: false }),
-    ]).then(([critRes, ensRes, umaRes, espRes, listRes]) => {
+      fetchEstreias({ allStatuses: false }),
+      fetchPessoas({ allStatuses: false }),
+    ]).then(([critRes, ensRes, umaRes, espRes, listRes, estRes, pesRes]) => {
       if (isMounted) {
         if (critRes.data) {
           setSupabaseCriticas(critRes.data.map(mapSupabaseCriticaToCritica));
@@ -48,6 +54,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         if (listRes.data) {
           setSupabaseListas(listRes.data);
         }
+        if (estRes.data) {
+          setSupabaseEstreias(estRes.data);
+        }
+        if (pesRes.data) {
+          setSupabasePessoas(pesRes.data);
+        }
         setLoadingContent(false);
       }
     });
@@ -56,12 +68,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     };
   }, []);
 
-  // Load data from CMS store for unmigrated entities
-  const currentWeekEstreias = cmsStore.getCurrentWeekEstreias();
+  // Compute current week releases from Supabase
+  const currentWeekEstreias = useMemo(() => {
+    return getCurrentWeekEstreiasFromList(supabaseEstreias, getTodayLocalDateString());
+  }, [supabaseEstreias]);
+
   const ensaios = supabaseEnsaios;
   const umaImagemList = supabaseUmaImagem;
   const especiais = supabaseEspeciais;
-  const cineastas = cmsStore.getCineastas();
 
   // Helper para obter timestamp de ordenação editorial/cronológica
   const getItemTimestamp = (item: HighlightItem): number => {
@@ -77,7 +91,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     return 0;
   };
 
-  // Combine highlights: Supabase highlighted critiques + Supabase highlighted ensaios + Supabase Uma Imagem + Supabase Listas + cmsStore highlights
+  // Combine highlights: Supabase highlighted critiques + Supabase highlighted ensaios + Supabase Uma Imagem + Supabase Especiais
   const highlights: HighlightItem[] = useMemo(() => {
     const list: HighlightItem[] = [];
 
@@ -101,16 +115,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       .filter((es) => Boolean(es.highlightHome))
       .forEach((es) => list.push({ ...es, itemType: 'especial' }));
 
-    // Add highlights from other unmigrated entities
-    cineastas
-      .filter((cin) => Boolean(cin.highlightHome))
-      .forEach((cin) => list.push({ ...cin, itemType: 'cineasta' }));
-
     // Ordenação editorial unificada: as publicações mais recentes marcadas com destaque na Home
     list.sort((a, b) => getItemTimestamp(b) - getItemTimestamp(a));
 
     return list.slice(0, 4);
-  }, [supabaseCriticas, supabaseEnsaios, supabaseUmaImagem, especiais, cineastas]);
+  }, [supabaseCriticas, supabaseEnsaios, supabaseUmaImagem, especiais]);
 
   // Current year for Críticas section
   const currentYear = new Date().getFullYear();
@@ -130,7 +139,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     umaImagemList.length === 0 &&
     especiais.length === 0 &&
     supabaseListas.length === 0 &&
-    cineastas.length === 0;
+    supabasePessoas.length === 0;
 
   if (loadingContent) {
     return (
@@ -503,20 +512,20 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           </section>
         )}
 
-        {/* 7. CINEASTAS (Only if Cineastas exist) */}
-        {cineastas.length > 0 && (
+        {/* 7. PESSOAS DO CINEMA (Only if Pessoas exist) */}
+        {supabasePessoas.length > 0 && (
           <section className="space-y-8 animate-in fade-in duration-500">
             <div className="flex items-center justify-between border-b border-[#1A1A1A]/15 pb-4">
               <div>
                 <span className="text-[10px] font-sans font-bold uppercase tracking-[0.25em] text-[#1A1A1A]/90 block mb-1">
-                  Índice de Autores
+                  Índice de Autores & Elenco
                 </span>
                 <h2 className="text-3xl sm:text-4xl font-serif-display font-normal text-[#1A1A1A]">
-                  CINEASTAS
+                  PESSOAS DO CINEMA
                 </h2>
               </div>
               <button
-                onClick={() => onNavigate('/cineastas')}
+                onClick={() => onNavigate('/pessoas')}
                 className="inline-flex items-center gap-2 text-xs font-sans font-bold uppercase tracking-[0.2em] text-[#1A1A1A]/80 hover:text-[#1A1A1A] transition-colors group"
               >
                 <span>Ver todos</span>
@@ -525,27 +534,35 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {cineastas.slice(0, 3).map((cin) => (
+              {supabasePessoas.slice(0, 3).map((pes) => (
                 <div
-                  key={cin.id}
-                  onClick={() => onNavigate(`/cineastas/${cin.slug}`)}
+                  key={pes.id}
+                  onClick={() => onNavigate(`/pessoas/${pes.slug}`)}
                   className="group cursor-pointer p-6 bg-white border border-[#1A1A1A]/12 hover:border-[#1A1A1A] transition-all duration-300 flex items-start gap-4"
                 >
-                  <img
-                    src={cin.photo}
-                    alt={cin.name}
-                    className="w-16 h-16 rounded-full object-cover border border-[#1A1A1A]/15 shrink-0 filter grayscale group-hover:grayscale-0 transition-all duration-500"
-                  />
-                  <div className="space-y-1">
-                    <h3 className="text-xl font-serif-display text-[#1A1A1A] group-hover:underline underline-offset-2 transition-colors">
-                      {cin.name}
+                  {pes.photo_url ? (
+                    <img
+                      src={pes.photo_url}
+                      alt={pes.name}
+                      className="w-16 h-16 rounded-full object-cover border border-[#1A1A1A]/15 shrink-0 filter grayscale group-hover:grayscale-0 transition-all duration-500"
+                    />
+                  ) : (
+                    <div className="w-16 h-16 rounded-full bg-[#1A1A1A]/10 border border-[#1A1A1A]/15 shrink-0 flex items-center justify-center text-xs font-mono font-bold">
+                      {pes.name.charAt(0)}
+                    </div>
+                  )}
+                  <div className="space-y-1 min-w-0">
+                    <h3 className="text-xl font-serif-display text-[#1A1A1A] group-hover:underline underline-offset-2 transition-colors truncate">
+                      {pes.name}
                     </h3>
-                    <p className="text-xs font-mono text-[#1A1A1A]/70">
-                      {cin.country} {cin.birthYear ? `· (${cin.birthYear}–${cin.deathYear || ''})` : ''}
+                    <p className="text-xs font-mono text-[#1A1A1A]/70 truncate">
+                      {pes.country?.name || pes.primary_roles?.join(' · ') || 'Cinema'}
                     </p>
-                    <p className="text-xs font-serif-body text-[#1A1A1A]/70 line-clamp-2 pt-1">
-                      {cin.bio}
-                    </p>
+                    {pes.bio && (
+                      <p className="text-xs font-serif-body text-[#1A1A1A]/70 line-clamp-2 pt-1">
+                        {pes.bio}
+                      </p>
+                    )}
                   </div>
                 </div>
               ))}

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Share2, Film, Calendar, Clock, Globe, Loader2, AlertCircle, User } from 'lucide-react';
-import { cmsStore } from '../services/cmsStore';
 import { StarRating } from '../components/StarRating';
 import { ArticleCard } from '../components/ArticleCard';
 import { fetchCriticaBySlug, fetchCriticas, mapSupabaseCriticaToCritica } from '../services/repositories/criticasRepository';
-import { Critica } from '../types';
+import { fetchEnsaios, mapSupabaseEnsaioToEnsaio } from '../services/repositories/ensaiosRepository';
+import { Critica, Ensaio } from '../types';
 import { formatEditorialDate } from '../utils/dateUtils';
 
 interface CriticaDetailPageProps {
@@ -20,6 +20,7 @@ export const CriticaDetailPage: React.FC<CriticaDetailPageProps> = ({
 }) => {
   const [critica, setCritica] = useState<Critica | null>(null);
   const [otherCriticas, setOtherCriticas] = useState<Critica[]>([]);
+  const [relatedEnsaios, setRelatedEnsaios] = useState<Ensaio[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -39,10 +40,19 @@ export const CriticaDetailPage: React.FC<CriticaDetailPageProps> = ({
         const mapped = mapSupabaseCriticaToCritica(data);
         setCritica(mapped);
 
-        // Fetch other reviews to find related content by director/year
-        const { data: allSupabaseCriticas } = await fetchCriticas({ allStatuses: false });
-        if (isMounted && allSupabaseCriticas) {
-          setOtherCriticas(allSupabaseCriticas.map(mapSupabaseCriticaToCritica));
+        // Fetch other reviews and essays to find related content
+        const [allCriticasRes, ensaiosRes] = await Promise.all([
+          fetchCriticas({ allStatuses: false }),
+          fetchEnsaios({ searchQuery: mapped.director, allStatuses: false }),
+        ]);
+
+        if (isMounted) {
+          if (allCriticasRes.data) {
+            setOtherCriticas(allCriticasRes.data.map(mapSupabaseCriticaToCritica));
+          }
+          if (ensaiosRes.data) {
+            setRelatedEnsaios(ensaiosRes.data.map(mapSupabaseEnsaioToEnsaio));
+          }
         }
       } else {
         setCritica(null);
@@ -98,8 +108,6 @@ export const CriticaDetailPage: React.FC<CriticaDetailPageProps> = ({
     );
   }
 
-  // Related content for director (Essays from cmsStore until Phase 5, Criticas from Supabase)
-  const essayRelated = cmsStore.getFilmmakerRelatedContent(critica.director);
   const relatedCriticas = otherCriticas.filter(
     (c) => c.id !== critica.id && (c.director.toLowerCase() === critica.director.toLowerCase() || c.movieTitle.toLowerCase() === critica.movieTitle.toLowerCase())
   );
@@ -337,7 +345,7 @@ export const CriticaDetailPage: React.FC<CriticaDetailPageProps> = ({
       </main>
 
       {/* Related content for this director */}
-      {(relatedCriticas.length > 0 || essayRelated.ensaios.length > 0) && (
+      {(relatedCriticas.length > 0 || relatedEnsaios.length > 0) && (
         <section className="max-w-4xl mx-auto px-4 sm:px-6 pt-20 mt-20 border-t border-[#1A1A1A]/15 space-y-8">
           <h3 className="text-2xl font-serif-display text-[#1A1A1A]">
             Mais sobre {critica.director} e Obras Relacionadas
@@ -357,7 +365,7 @@ export const CriticaDetailPage: React.FC<CriticaDetailPageProps> = ({
                 onClick={() => onNavigate(`/criticas/${c.slug}`)}
               />
             ))}
-            {essayRelated.ensaios.map((e) => (
+            {relatedEnsaios.map((e) => (
               <ArticleCard
                 key={e.id}
                 type="ensaio"

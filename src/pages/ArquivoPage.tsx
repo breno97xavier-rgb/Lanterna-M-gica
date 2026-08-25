@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Film, User, BookOpen, Calendar, ArrowRight, Loader2 } from 'lucide-react';
-import { cmsStore } from '../services/cmsStore';
 import { ArticleCard } from '../components/ArticleCard';
 import { fetchPessoas, SupabasePessoa } from '../services/repositories/pessoasRepository';
 import { fetchFilmes, SupabaseFilme } from '../services/repositories/filmesRepository';
@@ -9,7 +8,8 @@ import { fetchEnsaios, mapSupabaseEnsaioToEnsaio } from '../services/repositorie
 import { fetchUmaImagem, mapSupabaseUmaImagemToDomain } from '../services/repositories/umaImagemRepository';
 import { fetchEspeciais } from '../services/repositories/especiaisRepository';
 import { fetchListas } from '../services/repositories/listasRepository';
-import { Critica, Ensaio, Especial, UmaImagemUmaIdeia, Lista } from '../types';
+import { fetchEstreias } from '../services/repositories/estreiasRepository';
+import { Critica, Ensaio, Especial, UmaImagemUmaIdeia, Lista, Estreia } from '../types';
 
 interface ArquivoPageProps {
   onNavigate: (path: string) => void;
@@ -41,6 +41,9 @@ export const ArquivoPage: React.FC<ArquivoPageProps> = ({ onNavigate }) => {
   const [listas, setListas] = useState<Lista[]>([]);
   const [loadingListas, setLoadingListas] = useState(true);
 
+  const [estreias, setEstreias] = useState<Estreia[]>([]);
+  const [loadingEstreias, setLoadingEstreias] = useState(true);
+
   useEffect(() => {
     let isMounted = true;
     setLoadingPessoas(true);
@@ -54,37 +57,7 @@ export const ArquivoPage: React.FC<ArquivoPageProps> = ({ onNavigate }) => {
     setLoadingFilmes(true);
     fetchFilmes({ allStatuses: false }).then(({ data }) => {
       if (isMounted) {
-        if (data && data.length > 0) {
-          setFilmes(data);
-        } else {
-          // Fallback to cmsStore films
-          const localFilmes = cmsStore.getFilmes();
-          setFilmes(
-            localFilmes.map((lf) => ({
-              id: lf.id,
-              legacy_id: lf.id,
-              title: lf.title,
-              original_title: lf.originalTitle || null,
-              slug: lf.slug,
-              year: lf.year,
-              country: lf.country,
-              duration_minutes: lf.durationMinutes || null,
-              poster_url: lf.posterImage || null,
-              backdrop_url: null,
-              synopsis: lf.synopsis || null,
-              editorial_rating: null,
-              status: 'published',
-              published_at: lf.createdAt,
-              scheduled_at: null,
-              created_at: lf.createdAt,
-              updated_at: lf.updatedAt,
-              legacy_director_name: lf.director,
-              generos: (lf.genres || []).map((g) => ({ id: g, name: g, slug: g })),
-              countries: lf.country ? [{ id: 'c1', name: lf.country, slug: 'pais', flag_url: null, created_at: '', updated_at: '' }] : [],
-              credits: [],
-            }))
-          );
-        }
+        setFilmes(data || []);
         setLoadingFilmes(false);
       }
     });
@@ -139,12 +112,18 @@ export const ArquivoPage: React.FC<ArquivoPageProps> = ({ onNavigate }) => {
       }
     });
 
+    setLoadingEstreias(true);
+    fetchEstreias({ allStatuses: false }).then(({ data }) => {
+      if (isMounted) {
+        setEstreias(data || []);
+        setLoadingEstreias(false);
+      }
+    });
+
     return () => {
       isMounted = false;
     };
   }, []);
-
-  const estreias = cmsStore.getEstreias(true);
 
   // Combine all items into a unified archive list for editorial publications
   const allArchiveItems = [
@@ -210,7 +189,7 @@ export const ArquivoPage: React.FC<ArquivoPageProps> = ({ onNavigate }) => {
             { id: 'publicacoes', label: `Publicações Editoriais (${allArchiveItems.length})`, icon: BookOpen },
             { id: 'filmes', label: `Acervo de Filmes (${loadingFilmes ? '...' : filmes.length})`, icon: Film },
             { id: 'pessoas', label: `Catálogo de Pessoas (${loadingPessoas ? '...' : pessoas.length})`, icon: User },
-            { id: 'estreias', label: `Guia de Estreias (${estreias.length})`, icon: Calendar },
+            { id: 'estreias', label: `Guia de Estreias (${loadingEstreias ? '...' : estreias.length})`, icon: Calendar },
           ].map((sec) => {
             const Icon = sec.icon;
             const isActive = mainSection === sec.id;
@@ -480,7 +459,14 @@ export const ArquivoPage: React.FC<ArquivoPageProps> = ({ onNavigate }) => {
               </button>
             </div>
 
-            {estreias.length === 0 ? (
+            {loadingEstreias ? (
+              <div className="py-20 text-center space-y-3 border border-[#1A1A1A]/15 bg-white p-8">
+                <Loader2 size={32} className="animate-spin text-[#D4AF37] mx-auto" />
+                <p className="text-xs font-sans uppercase tracking-widest text-[#1A1A1A]/60">
+                  Carregando lançamentos...
+                </p>
+              </div>
+            ) : estreias.length === 0 ? (
               <div className="py-20 text-center space-y-3 border border-[#1A1A1A]/15 bg-white p-8">
                 <p className="text-lg font-serif-display text-[#1A1A1A]/60">
                   Nenhuma estreia cadastrada no momento.
