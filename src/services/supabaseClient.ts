@@ -1,42 +1,23 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-// Resolve credentials from either standard Vite (import.meta.env) or Next.js (process.env / NEXT_PUBLIC_)
+// Resolve credentials directly from standard Vite environment variables (import.meta.env)
 export function getSupabaseCredentials(): { url: string; anonKey: string } {
-  // 1. Vite environment variables
-  const viteUrl = (import.meta as any).env?.VITE_SUPABASE_URL || '';
-  const viteAnonKey =
-    (import.meta as any).env?.VITE_SUPABASE_ANON_KEY ||
-    (import.meta as any).env?.VITE_SUPABASE_PUBLISHABLE_KEY ||
-    '';
-
-  // 2. Next.js compatible environment variables
-  let nextUrl = '';
-  let nextAnonKey = '';
-  try {
-    if (typeof process !== 'undefined' && process.env) {
-      nextUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-      nextAnonKey =
-        process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
-        (process.env as any).NEXT_PUBLIC_SUPABASE_ANON_KEY ||
-        '';
-    }
-  } catch (_) {
-    // Ignore in pure client without process
-  }
-
-  // 3. Fallback to localStorage configured credentials (if configured directly in admin UI test sandbox)
-  let localUrl = '';
-  let localAnonKey = '';
-  try {
-    localUrl = localStorage.getItem('lanterna_magica_supabase_custom_url') || '';
-    localAnonKey = localStorage.getItem('lanterna_magica_supabase_custom_key') || '';
-  } catch (_) {}
-
-  const url = (viteUrl || nextUrl || localUrl).trim();
-  const anonKey = (viteAnonKey || nextAnonKey || localAnonKey).trim();
+  const url = (import.meta.env.VITE_SUPABASE_URL || '').trim();
+  const anonKey = (
+    import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
+    import.meta.env.VITE_SUPABASE_ANON_KEY ||
+    ''
+  ).trim();
 
   return { url, anonKey };
 }
+
+// Log safe diagnostic (without exposing keys)
+const initialCreds = getSupabaseCredentials();
+console.info('[Supabase config]', {
+  hasUrl: Boolean(initialCreds.url),
+  hasKey: Boolean(initialCreds.anonKey),
+});
 
 let supabaseInstance: SupabaseClient | null = null;
 
@@ -83,7 +64,7 @@ export async function testSupabaseConnection(customUrl?: string, customKey?: str
       connected: false,
       url: url || 'Não configurada',
       maskedKey: anonKey ? `${anonKey.slice(0, 8)}...` : 'Não configurada',
-      message: 'Variáveis de ambiente do Supabase não encontradas. Configure NEXT_PUBLIC_SUPABASE_URL e NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY no AI Studio.',
+      message: 'Variáveis de ambiente do Supabase não encontradas. Configure VITE_SUPABASE_URL e VITE_SUPABASE_PUBLISHABLE_KEY nas variáveis de ambiente da Vercel.',
     };
   }
 
