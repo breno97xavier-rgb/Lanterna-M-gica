@@ -12,14 +12,96 @@ export function getSupabaseCredentials(): { url: string; anonKey: string } {
   return { url, anonKey };
 }
 
-// Log safe diagnostic (without exposing keys)
-const initialCreds = getSupabaseCredentials();
-console.info('[Supabase config]', {
-  hasUrl: Boolean(initialCreds.url),
-  hasKey: Boolean(initialCreds.anonKey),
+// Log safe diagnostic for production troubleshooting (without exposing actual keys)
+console.info('[Supabase production diagnostic]', {
+  mode: import.meta.env.MODE,
+  prod: import.meta.env.PROD,
+  hasUrl: Boolean(import.meta.env.VITE_SUPABASE_URL),
+  hasPublishableKey: Boolean(import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY),
+  hasAnonKey: Boolean(import.meta.env.VITE_SUPABASE_ANON_KEY),
 });
 
 let supabaseInstance: SupabaseClient | null = null;
+
+/**
+ * Resilient fetch wrapper that intercepts PostgREST clock-drift errors (e.g. PGRST303 "JWT issued at future").
+ * When clock drift or stale JWTs occur, it waits briefly for server time to catch up and retries,
+ * and if necessary cleans invalid localStorage sessions so public queries continue working.
+ */
+const resilientSupabaseFetch = async (
+  input: RequestInfo | URL,
+  init?: RequestInit
+): Promise<Response> => {
+  let response = await fetch(input, init);
+
+  if (response.status === 401) {
+    try {
+      const cloned = response.clone();
+      const body = await cloned.json().catch(() => null);
+
+      const isJwtFuture =
+        body &&
+        (body.code === 'PGRST303' ||
+          (typeof body.message === 'string' &&
+            body.message.toLowerCase().includes('jwt issued at future')));
+
+      if (isJwtFuture) {
+        console.warn(
+          '[Supabase Client] PGRST303 (JWT issued at future) detectado. Compensando desvio de relógio (clock skew) e repetindo requisição...'
+        );
+
+        // Aguarda 1.2s para compensar pequenas diferenças de timestamp entre cliente e servidor
+        await new Promise((r) => setTimeout(r, 1200));
+
+        // Repete a requisição original
+        response = await fetch(input, init);
+
+        // Se persistir o erro de JWT futuro, limpa sessão local corrompida e tenta como anônimo
+        if (response.status === 401) {
+          const secondClone = response.clone();
+          const secondBody = await secondClone.json().catch(() => null);
+          if (
+            secondBody &&
+            (secondBody.code === 'PGRST303' ||
+              (typeof secondBody.message === 'string' &&
+                secondBody.message.toLowerCase().includes('jwt issued at future')))
+          ) {
+            console.warn(
+              '[Supabase Client] Erro persistente de JWT futuro. Limpando tokens locais corrompidos e repetindo...'
+            );
+            if (typeof window !== 'undefined' && window.localStorage) {
+              try {
+                const keysToRemove: string[] = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                  const k = localStorage.key(i);
+                  if (k && (k.startsWith('sb-') || k.includes('supabase.auth.token'))) {
+                    keysToRemove.push(k);
+                  }
+                }
+                keysToRemove.forEach((k) => localStorage.removeItem(k));
+              } catch (_) {}
+            }
+
+            // Repete sem o header de Authorization expirado/futuro
+            if (init) {
+              const headers = new Headers(init.headers);
+              headers.delete('Authorization');
+              const { anonKey } = getSupabaseCredentials();
+              if (anonKey) {
+                headers.set('apikey', anonKey);
+              }
+              response = await fetch(input, { ...init, headers });
+            }
+          }
+        }
+      }
+    } catch (_) {
+      // Ignora falhas de parse em respostas 401 não-JSON
+    }
+  }
+
+  return response;
+};
 
 /**
  * Returns the Supabase client singleton if configured, or null if credentials are not yet entered.
@@ -37,6 +119,9 @@ export function getSupabaseClient(): SupabaseClient | null {
       auth: {
         persistSession: true,
         autoRefreshToken: true,
+      },
+      global: {
+        fetch: resilientSupabaseFetch,
       },
     });
   }
