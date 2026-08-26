@@ -13,13 +13,8 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
   className = '',
   showText = true,
 }) => {
-  // Official brand images provided
-  // White symbol for dark backgrounds (default)
-  const whiteSymbolUrl = 'https://i.ibb.co/k2VVcJ5y/3.png';
-  // Black symbol for light backgrounds
-  const blackSymbolUrl = 'https://i.ibb.co/9HxGVSLY/2.png';
-
-  const symbolUrl = theme === 'dark' ? whiteSymbolUrl : blackSymbolUrl;
+  // Official transparent symbol asset (local canonical file)
+  const symbolUrl = '/simbolo-lanterna.png';
 
   const sizeDimensions = {
     sm: { img: 'h-7 w-auto', text: 'text-base leading-none' },
@@ -34,13 +29,10 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
       <img
         src={symbolUrl}
         alt="Lanterna Mágica — Símbolo Oficial"
-        className={`${img} object-contain transition-opacity duration-300`}
+        className={`${img} object-contain transition-all duration-300 ${
+          theme === 'dark' ? 'brightness-0 invert' : ''
+        }`}
         loading="eager"
-        onError={(e) => {
-          // Fallback if external image is slow to load
-          const target = e.currentTarget;
-          target.style.display = 'none';
-        }}
       />
       {showText && (
         <div className={`font-serif-display font-normal tracking-wide flex flex-col justify-center ${
