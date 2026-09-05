@@ -307,7 +307,23 @@ export const CriticasAdmin: React.FC<CriticasAdminProps> = ({ onNotify, autoCrea
     let scheduledAt: string | null = null;
 
     if (editing.status === 'published') {
-      publishedAt = editing.date ? parseDateInputToIso(editing.date) : new Date().toISOString();
+      const todayStr = getTodayLocalDateString();
+      const chosenDateStr = editing.date?.trim() || todayStr;
+
+      if (chosenDateStr > todayStr) {
+        setSaving(false);
+        onNotify('Atenção: A data de publicação informada é futura. Para agendar a publicação, selecione o Status "Agendado" e defina a data/hora.');
+        return;
+      }
+
+      if (chosenDateStr === todayStr) {
+        // Se a data escolhida for hoje, o timestamp de publicação deve ser o momento atual (imediato)
+        // evitando que fique no futuro quando publicado antes das 12:00
+        publishedAt = new Date().toISOString();
+      } else {
+        // Se for uma data passada, converte para horário seguro do dia informado (12:00 local)
+        publishedAt = parseDateInputToIso(chosenDateStr);
+      }
       scheduledAt = null;
     } else if (editing.status === 'scheduled') {
       scheduledAt = editing.scheduledAt

@@ -669,8 +669,8 @@ export async function createCritica(input: CreateCriticaInput): Promise<{ data: 
       await syncCriticaTags(createdId, input.tag_ids, input.tags);
     }
 
-    // Retorna a crítica criada completa
-    return await fetchCriticaById(createdId);
+    // Retorna a crítica criada completa (allStatuses: true para operações administrativas)
+    return await fetchCriticaById(createdId, { allStatuses: true });
   } catch (err: any) {
     return { data: null, error: new Error(err?.message || 'Falha ao salvar a nova crítica.') };
   }
@@ -793,7 +793,7 @@ export async function updateCritica(
       await syncCriticaTags(id, input.tag_ids, input.tags);
     }
 
-    return await fetchCriticaById(id);
+    return await fetchCriticaById(id, { allStatuses: true });
   } catch (err: any) {
     return { data: null, error: new Error(err?.message || 'Erro ao atualizar a crítica.') };
   }
