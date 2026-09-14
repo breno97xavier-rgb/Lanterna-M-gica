@@ -1,6 +1,7 @@
 import React from 'react';
 import { X, Calendar, User, Clock, Film } from 'lucide-react';
 import { StarRating } from '../StarRating';
+import { EditorialContent } from '../EditorialContent';
 
 interface ArticlePreviewModalProps {
   item: any;
@@ -26,7 +27,7 @@ export const ArticlePreviewModal: React.FC<ArticlePreviewModalProps> = ({
               PRÉ-VISUALIZAÇÃO DE RASCUNHO
             </span>
             <span className="text-xs font-mono text-[#F5F2ED]/70 hidden sm:inline">
-              Layout real do leitor publico
+              Layout real do leitor público
             </span>
           </div>
 
@@ -69,20 +70,11 @@ export const ArticlePreviewModal: React.FC<ArticlePreviewModalProps> = ({
                 </div>
               )}
 
-              <main className="max-w-[700px] mx-auto space-y-6 font-serif-body text-base sm:text-lg text-[#1A1A1A]/90 leading-relaxed">
-                {(item.content || '').split('\n\n').map((paragraph: string, idx: number) => {
-                  if (paragraph.startsWith('### ')) {
-                    return <h3 key={idx} className="text-2xl font-serif-display font-normal text-[#1A1A1A] pt-6 pb-2 border-b border-[#1A1A1A]/15 mt-8 mb-4">{paragraph.replace('### ', '')}</h3>;
-                  }
-                  if (paragraph.startsWith('> ')) {
-                    return <blockquote key={idx} className="my-8 pl-6 border-l-2 border-[#1A1A1A] italic font-serif-display text-xl text-[#1A1A1A] leading-snug">{paragraph.replace('> ', '')}</blockquote>;
-                  }
-                  return (
-                    <p key={idx} className={idx === 0 ? "first-letter:float-left first-letter:text-5xl first-letter:font-serif-display first-letter:mr-3 first-letter:leading-none first-letter:text-[#1A1A1A]" : ""}>
-                      {paragraph}
-                    </p>
-                  );
-                })}
+              <main className="max-w-[700px] mx-auto">
+                <EditorialContent
+                  content={item.content}
+                  firstLetterDropCap={true}
+                />
               </main>
             </article>
           )}
@@ -115,17 +107,11 @@ export const ArticlePreviewModal: React.FC<ArticlePreviewModalProps> = ({
                 </div>
               )}
 
-              <main className="max-w-[700px] mx-auto space-y-6 font-serif-body text-base sm:text-lg text-[#1A1A1A]/90 leading-relaxed">
-                {(item.content || '').split('\n\n').map((paragraph: string, idx: number) => {
-                  if (paragraph.startsWith('> ')) {
-                    return <blockquote key={idx} className="my-8 pl-6 border-l-2 border-[#1A1A1A] italic font-serif-display text-xl text-[#1A1A1A] leading-snug">{paragraph.replace('> ', '')}</blockquote>;
-                  }
-                  return (
-                    <p key={idx} className={idx === 0 ? "first-letter:float-left first-letter:text-5xl first-letter:font-serif-display first-letter:mr-3 first-letter:leading-none first-letter:text-[#1A1A1A]" : ""}>
-                      {paragraph}
-                    </p>
-                  );
-                })}
+              <main className="max-w-[700px] mx-auto">
+                <EditorialContent
+                  content={item.content}
+                  firstLetterDropCap={true}
+                />
               </main>
             </article>
           )}
@@ -135,9 +121,9 @@ export const ArticlePreviewModal: React.FC<ArticlePreviewModalProps> = ({
               <h1 className="text-3xl font-serif-display text-[#1A1A1A]">{item.title}</h1>
               {item.image && <img src={item.image} alt={item.title} className="w-full border border-[#1A1A1A]/15" />}
               {item.coverImage && <img src={item.coverImage} alt={item.title} className="w-full border border-[#1A1A1A]/15" />}
-              <div className="font-serif-body text-base leading-relaxed text-[#1A1A1A]">
-                {item.content || item.intro}
-              </div>
+              <EditorialContent
+                content={item.content || item.intro}
+              />
             </div>
           )}
         </div>

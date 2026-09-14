@@ -9,6 +9,7 @@ import { fetchUmaImagem, mapSupabaseUmaImagemToDomain } from '../services/reposi
 import { fetchEspeciais } from '../services/repositories/especiaisRepository';
 import { fetchListas } from '../services/repositories/listasRepository';
 import { Critica, Ensaio, Especial, Pessoa, UmaImagemUmaIdeia, Lista } from '../types';
+import { EditorialContent } from '../components/EditorialContent';
 
 import { calculatePersonAge } from '../utils/dateUtils';
 export { calculatePersonAge };
@@ -201,10 +202,8 @@ export const PessoaDetailPage: React.FC<PessoaDetailPageProps> = ({
 
             {/* Bio Text */}
             {person.bio && (
-              <div className="font-serif-body text-base sm:text-lg text-[#1A1A1A]/85 leading-relaxed space-y-4 pt-1">
-                {person.bio.split('\n\n').map((para, i) => (
-                  <p key={i}>{para}</p>
-                ))}
+              <div className="pt-1">
+                <EditorialContent content={person.bio} />
               </div>
             )}
           </div>

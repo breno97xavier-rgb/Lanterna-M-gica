@@ -3,6 +3,7 @@ import { ArrowLeft, Loader2, User, Film, Sparkles, BookOpen } from 'lucide-react
 import { fetchEspecialBySlug } from '../services/repositories/especiaisRepository';
 import { ArticleCard } from '../components/ArticleCard';
 import { Especial, EspecialItem } from '../types';
+import { EditorialContent, InlineMarkdown } from '../components/EditorialContent';
 
 interface EspecialDetailPageProps {
   slug: string;
@@ -228,16 +229,15 @@ export const EspecialDetailPage: React.FC<EspecialDetailPageProps> = ({
 
         {/* Intro e Conteúdo */}
         {(especial.intro || especial.content) && (
-          <div className="max-w-3xl mx-auto py-8 space-y-6 font-serif-body text-base sm:text-lg text-[#1A1A1A]/90 leading-relaxed border-b border-[#1A1A1A]/15">
+          <div className="max-w-3xl mx-auto py-8 space-y-6 border-b border-[#1A1A1A]/15">
             {especial.intro && (
-              <p className="font-semibold text-[#1A1A1A] text-lg sm:text-xl leading-relaxed">
-                {especial.intro}
+              <p className="font-serif-body font-semibold text-[#1A1A1A] text-lg sm:text-xl leading-relaxed">
+                <InlineMarkdown text={especial.intro} />
               </p>
             )}
-            {especial.content &&
-              especial.content.split('\n\n').map((p, idx) => (
-                <p key={idx}>{p}</p>
-              ))}
+            {especial.content && (
+              <EditorialContent content={especial.content} />
+            )}
           </div>
         )}
 

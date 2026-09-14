@@ -9,6 +9,7 @@ import {
 import { ArticleCard } from '../components/ArticleCard';
 import { UmaImagemUmaIdeia } from '../types';
 import { formatEditorialDate } from '../utils/dateUtils';
+import { EditorialContent } from '../components/EditorialContent';
 
 interface UmaImagemDetailPageProps {
   slug: string;
@@ -207,20 +208,11 @@ export const UmaImagemDetailPage: React.FC<UmaImagemDetailPageProps> = ({
 
       {/* Conteúdo / Reflexão */}
       <main className="max-w-3xl mx-auto px-4 sm:px-6 space-y-8">
-        <div className="space-y-6">
-          {paragraphs.map((p, index) => (
-            <p
-              key={index}
-              className={`font-serif-body text-[#1A1A1A]/90 leading-relaxed ${
-                index === 0
-                  ? 'text-lg sm:text-xl font-normal leading-relaxed first-letter:text-4xl first-letter:font-serif-display first-letter:mr-2 first-letter:float-left first-letter:text-[#1A1A1A]'
-                  : 'text-base sm:text-lg'
-              }`}
-            >
-              {p}
-            </p>
-          ))}
-        </div>
+        <EditorialContent
+          content={item.content}
+          firstLetterDropCap={true}
+          dropCapClass="first-letter:text-4xl first-letter:font-serif-display first-letter:mr-2 first-letter:float-left first-letter:text-[#1A1A1A]"
+        />
 
         {/* Tags / Temas */}
         {item.tags && item.tags.length > 0 && (

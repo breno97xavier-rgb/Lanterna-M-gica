@@ -6,6 +6,7 @@ import { fetchCriticaBySlug, fetchCriticas, mapSupabaseCriticaToCritica } from '
 import { fetchEnsaios, mapSupabaseEnsaioToEnsaio } from '../services/repositories/ensaiosRepository';
 import { Critica, Ensaio } from '../types';
 import { formatEditorialDate } from '../utils/dateUtils';
+import { EditorialContent } from '../components/EditorialContent';
 
 interface CriticaDetailPageProps {
   slug: string;
@@ -245,31 +246,11 @@ export const CriticaDetailPage: React.FC<CriticaDetailPageProps> = ({
       </div>
 
       {/* Main Review Body — Constrained comfortable reading width */}
-      <main className="max-w-[700px] mx-auto px-4 sm:px-6 space-y-6 font-serif-body text-base sm:text-lg text-[#1A1A1A]/90 leading-relaxed">
-        {critica.content.split('\n\n').map((paragraph, idx) => {
-          if (paragraph.startsWith('> ')) {
-            return (
-              <blockquote
-                key={idx}
-                className="my-8 pl-6 border-l-2 border-[#1A1A1A] italic font-serif-display text-xl text-[#1A1A1A] leading-snug"
-              >
-                {paragraph.replace('> ', '')}
-              </blockquote>
-            );
-          }
-          return (
-            <p
-              key={idx}
-              className={
-                idx === 0
-                  ? "first-letter:float-left first-letter:text-5xl first-letter:font-serif-display first-letter:mr-3 first-letter:leading-none first-letter:text-[#1A1A1A]"
-                  : ""
-              }
-            >
-              {paragraph}
-            </p>
-          );
-        })}
+      <main className="max-w-[700px] mx-auto px-4 sm:px-6">
+        <EditorialContent
+          content={critica.content}
+          firstLetterDropCap={true}
+        />
 
         {/* Tags */}
         {critica.tags && critica.tags.length > 0 && (

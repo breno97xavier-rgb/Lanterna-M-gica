@@ -21,6 +21,7 @@ import {
 } from '../services/repositories/editorialAuthorsRepository';
 import { calculatePersonAge, formatEditorialDate } from '../utils/dateUtils';
 import { StarRating } from '../components/StarRating';
+import { EditorialContent, InlineMarkdown } from '../components/EditorialContent';
 
 interface TeamMemberDetailPageProps {
   slug: string;
@@ -265,7 +266,7 @@ export const TeamMemberDetailPage: React.FC<TeamMemberDetailPageProps> = ({
               {/* Short Bio */}
               {member.shortBio && (
                 <p className="text-base font-serif-body italic text-[#1A1A1A]/85 pt-2 border-t border-[#1A1A1A]/10">
-                  “{member.shortBio}”
+                  “<InlineMarkdown text={member.shortBio} />”
                 </p>
               )}
 
@@ -377,9 +378,7 @@ export const TeamMemberDetailPage: React.FC<TeamMemberDetailPageProps> = ({
               </span>
             </h2>
 
-            <div className="font-serif-body text-base sm:text-lg text-[#1A1A1A]/90 leading-relaxed space-y-5 whitespace-pre-line">
-              {member.bio}
-            </div>
+            <EditorialContent content={member.bio} />
           </section>
         )}
 

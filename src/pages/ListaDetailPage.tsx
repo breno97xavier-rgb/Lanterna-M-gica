@@ -15,6 +15,7 @@ import {
 import { fetchListaBySlug } from '../services/repositories/listasRepository';
 import { Lista, ListaItem } from '../types';
 import { formatEditorialDate } from '../utils/dateUtils';
+import { EditorialContent, InlineMarkdown } from '../components/EditorialContent';
 
 interface ListaDetailPageProps {
   slug: string;
@@ -178,7 +179,7 @@ export const ListaDetailPage: React.FC<ListaDetailPageProps> = ({
 
           {lista.intro && (
             <p className="text-base sm:text-lg font-serif-body text-[#1A1A1A]/85 leading-relaxed max-w-4xl pt-2">
-              {lista.intro}
+              <InlineMarkdown text={lista.intro} />
             </p>
           )}
         </div>
@@ -351,8 +352,8 @@ export const ListaDetailPage: React.FC<ListaDetailPageProps> = ({
                         {/* Nota Crítica / Texto Editorial do Item */}
                         {item.note && (
                           <div className="pt-3">
-                            <div className="p-4 bg-[#F5F2ED]/70 border-l-2 border-[#D4AF37] text-sm sm:text-base font-serif-body text-[#1A1A1A]/85 leading-relaxed whitespace-pre-line">
-                              {item.note}
+                            <div className="p-4 bg-[#F5F2ED]/70 border-l-2 border-[#D4AF37] text-sm sm:text-base font-serif-body text-[#1A1A1A]/85 leading-relaxed">
+                              <InlineMarkdown text={item.note} />
                             </div>
                           </div>
                         )}

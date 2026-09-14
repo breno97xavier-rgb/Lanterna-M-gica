@@ -2,6 +2,7 @@ import React from 'react';
 import { StarRating } from './StarRating';
 import { ArrowRight } from 'lucide-react';
 import { formatEditorialDate } from '../utils/dateUtils';
+import { InlineMarkdown } from './EditorialContent';
 
 interface ArticleCardProps {
   type: 'ensaio' | 'critica' | 'uma_imagem' | 'especial' | 'cineasta' | 'lista';
@@ -97,12 +98,12 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
             </div>
 
             <h3 className={`text-xl sm:text-2xl font-serif-display font-normal ${textPrimary} transition-colors leading-tight group-hover:underline underline-offset-4 decoration-1`}>
-              {title}
+              <InlineMarkdown text={title} />
             </h3>
 
             {subtitle && (
               <p className={`mt-2 text-sm font-serif-body ${textSecondary} line-clamp-2 leading-relaxed`}>
-                {subtitle}
+                <InlineMarkdown text={subtitle} />
               </p>
             )}
 
@@ -158,12 +159,12 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
           </div>
 
           <h2 className={`text-2xl sm:text-3xl md:text-4xl font-serif-display font-normal ${textPrimary} transition-colors leading-tight group-hover:underline underline-offset-4 decoration-1`}>
-            {title}
+            <InlineMarkdown text={title} />
           </h2>
 
           {subtitle && (
             <p className={`text-base sm:text-lg font-serif-body ${textSecondary} leading-relaxed max-w-3xl`}>
-              {subtitle}
+              <InlineMarkdown text={subtitle} />
             </p>
           )}
 
@@ -195,11 +196,11 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
           {date && <span className={`${textMuted} font-normal`}>{formatDate(date)}</span>}
         </div>
         <h4 className={`text-base font-serif-display font-normal ${textPrimary} group-hover:underline underline-offset-2 transition-colors leading-snug`}>
-          {title}
+          <InlineMarkdown text={title} />
         </h4>
         {subtitle && (
           <p className={`text-xs font-serif-body ${textMuted} mt-1 line-clamp-1`}>
-            {subtitle}
+            <InlineMarkdown text={subtitle} />
           </p>
         )}
       </article>
@@ -230,12 +231,12 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
         </div>
 
         <h3 className={`text-xl font-serif-display font-normal ${textPrimary} transition-colors leading-tight group-hover:underline underline-offset-4 decoration-1`}>
-          {title}
+          <InlineMarkdown text={title} />
         </h3>
 
         {subtitle && (
           <p className={`text-xs sm:text-sm font-serif-body ${textSecondary} line-clamp-3 leading-relaxed`}>
-            {subtitle}
+            <InlineMarkdown text={subtitle} />
           </p>
         )}
 

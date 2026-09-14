@@ -4,6 +4,7 @@ import { fetchEnsaioBySlug, fetchEnsaios, mapSupabaseEnsaioToEnsaio } from '../s
 import { ArticleCard } from '../components/ArticleCard';
 import { Ensaio } from '../types';
 import { formatEditorialDate } from '../utils/dateUtils';
+import { EditorialContent } from '../components/EditorialContent';
 
 interface EnsaioDetailPageProps {
   slug: string;
@@ -204,45 +205,11 @@ export const EnsaioDetailPage: React.FC<EnsaioDetailPageProps> = ({
       )}
 
       {/* Main Text Body — Constrained comfortable reading width */}
-      <main className="max-w-[700px] mx-auto px-4 sm:px-6 space-y-6 font-serif-body text-base sm:text-lg text-[#1A1A1A]/90 leading-relaxed">
-        {ensaio.content.split('\n\n').map((paragraph, idx) => {
-          if (paragraph.startsWith('### ')) {
-            return (
-              <h3
-                key={idx}
-                className="text-2xl font-serif-display font-normal text-[#1A1A1A] pt-6 pb-2 border-b border-[#1A1A1A]/15 mt-8 mb-4"
-              >
-                {paragraph.replace('### ', '')}
-              </h3>
-            );
-          }
-
-          if (paragraph.startsWith('> ')) {
-            return (
-              <blockquote
-                key={idx}
-                className="my-8 pl-6 border-l-2 border-[#1A1A1A] italic font-serif-display text-xl text-[#1A1A1A] leading-snug"
-              >
-                {paragraph.replace('> ', '')}
-              </blockquote>
-            );
-          }
-
-          const isFirstParagraph = idx === 0 || (idx === 1 && ensaio.content.split('\n\n')[0].startsWith('### '));
-
-          return (
-            <p
-              key={idx}
-              className={
-                isFirstParagraph
-                  ? "first-letter:float-left first-letter:text-5xl first-letter:font-serif-display first-letter:mr-3 first-letter:leading-none first-letter:text-[#1A1A1A]"
-                  : ""
-              }
-            >
-              {paragraph}
-            </p>
-          );
-        })}
+      <main className="max-w-[700px] mx-auto px-4 sm:px-6">
+        <EditorialContent
+          content={ensaio.content}
+          firstLetterDropCap={true}
+        />
 
         {/* Tags */}
         {ensaio.tags && ensaio.tags.length > 0 && (
