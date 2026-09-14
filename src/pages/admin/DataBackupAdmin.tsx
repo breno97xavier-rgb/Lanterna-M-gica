@@ -319,7 +319,7 @@ export const DataBackupAdmin: React.FC<DataBackupAdminProps> = ({ onNotify, onRe
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-sans">
           <div className="p-3 bg-stone-50 border border-stone-200 space-y-1">
             <span className="text-stone-500 font-bold uppercase text-[10px] block">
-              URL do Projeto (NEXT_PUBLIC_SUPABASE_URL ou VITE_SUPABASE_URL)
+              URL do Projeto (VITE_SUPABASE_URL)
             </span>
             <code className="text-stone-900 font-mono text-[11px] block truncate">
               {creds.url ? creds.url : 'Não informada'}
@@ -328,7 +328,7 @@ export const DataBackupAdmin: React.FC<DataBackupAdminProps> = ({ onNotify, onRe
 
           <div className="p-3 bg-stone-50 border border-stone-200 space-y-1">
             <span className="text-stone-500 font-bold uppercase text-[10px] block">
-              Chave Pública (NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ou VITE_SUPABASE_ANON_KEY)
+              Chave Pública (VITE_SUPABASE_PUBLISHABLE_KEY ou VITE_SUPABASE_ANON_KEY)
             </span>
             <code className="text-stone-900 font-mono text-[11px] block truncate">
               {creds.anonKey ? `${creds.anonKey.slice(0, 12)}...${creds.anonKey.slice(-6)} (Oculta por Segurança)` : 'Não informada'}
