@@ -4,7 +4,7 @@
 // Arquivo: api/_lib/errors.ts
 // ==============================================================================
 
-import { ApiErrorCode, ApiErrorResponse } from './types';
+import { ApiErrorCode, ApiErrorResponse } from './types.js';
 
 export class AppError extends Error {
   public statusCode: number;

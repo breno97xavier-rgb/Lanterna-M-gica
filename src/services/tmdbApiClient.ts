@@ -24,7 +24,7 @@ import type {
   TmdbPersonCredits,
   TmdbPersonCastCredit,
   TmdbPersonCrewCredit,
-} from '../../api/_lib/types';
+} from '../../api/_lib/types.js';
 
 // Re-exportar tipos para uso no frontend
 export type {

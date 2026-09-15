@@ -5,7 +5,7 @@
 // ==============================================================================
 
 import { createClient, User } from '@supabase/supabase-js';
-import { sendApiError } from './errors';
+import { sendApiError } from './errors.js';
 
 export interface AuthValidationResult {
   authorized: boolean;

@@ -3,7 +3,7 @@
 // Arquivo: api/tmdb/movies/[id]/index.ts
 // ==============================================================================
 
-import { handleTmdbApiRequest } from '../../../_lib/router';
+import { handleTmdbApiRequest } from '../../../_lib/router.js';
 
 export default async function handler(req: any, res: any) {
   return handleTmdbApiRequest(req, res);

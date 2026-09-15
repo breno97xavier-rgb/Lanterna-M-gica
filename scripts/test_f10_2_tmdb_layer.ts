@@ -4,7 +4,7 @@
 // Arquivo: scripts/test_f10_2_tmdb_layer.ts
 // ==============================================================================
 
-import { handleTmdbApiRequest } from '../api/_lib/router';
+import { handleTmdbApiRequest } from '../api/_lib/router.js';
 import {
   searchMovies,
   getMovieDetails,
@@ -12,7 +12,7 @@ import {
   searchPeople,
   getPersonDetails,
   getPersonCredits,
-} from '../api/_lib/tmdbClient';
+} from '../api/_lib/tmdbClient.js';
 import { createClient } from '@supabase/supabase-js';
 import * as fs from 'fs';
 import * as path from 'path';

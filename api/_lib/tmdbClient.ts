@@ -4,7 +4,7 @@
 // Arquivo: api/_lib/tmdbClient.ts
 // ==============================================================================
 
-import { AppError } from './errors';
+import { AppError } from './errors.js';
 import {
   TmdbMovieSummary,
   TmdbMovieSearchResult,
@@ -18,7 +18,7 @@ import {
   TmdbPersonCredits,
   TmdbPersonCastCredit,
   TmdbPersonCrewCredit,
-} from './types';
+} from './types.js';
 
 const TMDB_API_BASE_URL = 'https://api.themoviedb.org/3';
 const TMDB_IMAGE_BASE_POSTER = 'https://image.tmdb.org/t/p/w780';

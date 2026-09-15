@@ -4,8 +4,8 @@
 // Arquivo: api/_lib/router.ts
 // ==============================================================================
 
-import { requireAdmin } from './authMiddleware';
-import { sendApiError, AppError } from './errors';
+import { requireAdmin } from './authMiddleware.js';
+import { sendApiError, AppError } from './errors.js';
 import {
   searchMovies,
   getMovieDetails,
@@ -13,7 +13,7 @@ import {
   searchPeople,
   getPersonDetails,
   getPersonCredits,
-} from './tmdbClient';
+} from './tmdbClient.js';
 
 export interface StandardRequest {
   url?: string;
