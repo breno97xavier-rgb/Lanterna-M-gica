@@ -22,6 +22,7 @@ import { SobrePage } from './pages/SobrePage';
 import { TeamMemberDetailPage } from './pages/TeamMemberDetailPage';
 import { ManifestoPage } from './pages/ManifestoPage';
 import { AdminPage } from './pages/AdminPage';
+import { TmdbDiagnosticPage } from './pages/TmdbDiagnosticPage';
 import { UmaImagemDetailPage } from './pages/UmaImagemDetailPage';
 import { UmaImagemPage } from './pages/UmaImagemPage';
 import { ListasPage } from './pages/ListasPage';
@@ -90,6 +91,11 @@ export default function App() {
 
   // Route Parser
   const renderCurrentPage = () => {
+    // Admin TMDB Diagnostic (Temporary F10.2E)
+    if (currentPath === '/admin/tmdb-diagnostic') {
+      return <TmdbDiagnosticPage onNavigate={navigate} onGoBack={goBack} />;
+    }
+
     // Admin
     if (currentPath === '/admin') {
       return <AdminPage onNavigate={navigate} onGoBack={goBack} />;
@@ -203,8 +209,8 @@ export default function App() {
     return <HomePage onNavigate={navigate} />;
   };
 
-  // Don't render public header/footer on admin page for clean dashboard feel
-  const isAdminPage = currentPath === '/admin';
+  // Don't render public header/footer on admin pages for clean dashboard feel
+  const isAdminPage = currentPath.startsWith('/admin');
 
   return (
     <div className="min-h-screen bg-[#F5F2ED] text-[#1A1A1A] font-sans-ui selection:bg-[#D4AF37] selection:text-[#1A1A1A]">
