@@ -1,0 +1,3804 @@
+{
+  "generated_at": "2026-09-14T13:03:10.475Z",
+  "tmdb_api_authenticated": true,
+  "auth_method": "Bearer Read Access Token",
+  "requests_total": 268,
+  "requests_success": 268,
+  "requests_error": 0,
+  "algorithm_version": "F9.3B-LIVE-HTTP-DIAGNOSTIC-V2",
+  "film_stats": {
+    "total": 11,
+    "high": 10,
+    "ambiguous": 1,
+    "noMatch": 0,
+    "error": 0
+  },
+  "person_stats": {
+    "total": 89,
+    "high": 76,
+    "ambiguous": 13,
+    "noMatch": 0,
+    "error": 0
+  },
+  "films": [
+    {
+      "internalId": "449a8c24-1901-4df1-a3fa-6de1f2edf934",
+      "localTitle": "A Noviça Rebelde",
+      "localOriginalTitle": "The Sound of Music",
+      "localYear": 1965,
+      "localDirector": "Robert Wise",
+      "localCountry": "Estados Unidos",
+      "imdbId": null,
+      "queryUsed": "The Sound of Music",
+      "endpointUsed": "/search/movie?query=The%20Sound%20of%20Music&language=pt-BR",
+      "resultsCount": 20,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB: Título (\"A Noviça Rebelde\" / \"The Sound of Music\"), Ano (1965) e Direção (\"Robert Wise\") coincidem com alto grau de confiança.",
+      "candidate": {
+        "tmdbId": 15121,
+        "titleOrName": "A Noviça Rebelde",
+        "originalTitle": "The Sound of Music",
+        "releaseDateOrBirthDate": "1965-03-29",
+        "year": 1965,
+        "directorsOrKnownFor": "Robert Wise",
+        "overviewOrBio": "No final da década de 1930, na Áustria, quando o pesadelo nazista estava prestes a se instaurar no país, uma noviça que vive em um convento, mas não consegue seguir as rígidas normas de conduta das religiosas, vai trabalhar como governanta na casa do capitão Von Trapp, que é viúvo, tem sete filhos e os educa como se fizessem parte de um regimento. Sua chegada modifica drasticamente o padrão da família, trazendo alegria novamente ao lar da família Von Trapp e conquistando o carinho e o respeito das crianças. Mas ela termina se apaixonando pelo capitão, que está comprometido com uma rica baronesa.",
+        "score": 100,
+        "divergences": []
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 213989,
+          "titleOrName": "The Sound of Music",
+          "originalTitle": "The Sound of Music",
+          "releaseDateOrBirthDate": "1992-08-12",
+          "year": 1992,
+          "directorsOrKnownFor": "Phil Mulloy",
+          "overviewOrBio": "",
+          "score": 20,
+          "divergences": [
+            "Diferença significativa de ano (Local: 1965 vs TMDB: 1992)",
+            "Diretor não coincide: Local \"Robert Wise\" vs TMDB \"Phil Mulloy\""
+          ]
+        },
+        {
+          "tmdbId": 231401,
+          "titleOrName": "The Sound of Music Live!",
+          "originalTitle": "The Sound of Music Live!",
+          "releaseDateOrBirthDate": "2013-12-05",
+          "year": 2013,
+          "directorsOrKnownFor": "Beth McCarthy-Miller, Rob Ashford",
+          "overviewOrBio": "",
+          "score": 12,
+          "divergences": [
+            "Diferença significativa de ano (Local: 1965 vs TMDB: 2013)",
+            "Diretor não coincide: Local \"Robert Wise\" vs TMDB \"Beth McCarthy-Miller, Rob Ashford\""
+          ]
+        },
+        {
+          "tmdbId": 373534,
+          "titleOrName": "The Sound of Music Live!",
+          "originalTitle": "The Sound of Music Live!",
+          "releaseDateOrBirthDate": "2015-12-20",
+          "year": 2015,
+          "directorsOrKnownFor": "Coky Giedroyc, Richard Valentine",
+          "overviewOrBio": "",
+          "score": 12,
+          "divergences": [
+            "Diferença significativa de ano (Local: 1965 vs TMDB: 2015)",
+            "Diretor não coincide: Local \"Robert Wise\" vs TMDB \"Coky Giedroyc, Richard Valentine\""
+          ]
+        }
+      ],
+      "divergences": []
+    },
+    {
+      "internalId": "1b32374e-d28c-41ac-bcd1-4cb8792c2764",
+      "localTitle": "A Odisseia",
+      "localOriginalTitle": "The Odyssey",
+      "localYear": 2026,
+      "localDirector": "Chirstopher Nolan",
+      "localCountry": "Estados Unidos",
+      "imdbId": null,
+      "queryUsed": "The Odyssey",
+      "endpointUsed": "/search/movie?query=The%20Odyssey&language=pt-BR",
+      "resultsCount": 20,
+      "classification": "AMBIGUOUS",
+      "justification": "Múltiplos candidatos ou divergência relevante detectada. Candidato principal: \"A Odisseia\" (Dir: Christopher Nolan, Ano: 2026).",
+      "candidate": {
+        "tmdbId": 1368337,
+        "titleOrName": "A Odisseia",
+        "originalTitle": "The Odyssey",
+        "releaseDateOrBirthDate": "2026-07-15",
+        "year": 2026,
+        "directorsOrKnownFor": "Christopher Nolan",
+        "overviewOrBio": "Acompanhe o rei grego Odisseu em sua perigosa jornada de 20 anos para voltar a Ítaca após a Guerra de Troia, enfrentando monstros e deuses enquanto sua esposa Penélope resiste em seu reino.",
+        "score": 65,
+        "divergences": [
+          "Diretor não coincide: Local \"Chirstopher Nolan\" vs TMDB \"Christopher Nolan\""
+        ]
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 1698863,
+          "titleOrName": "The Odyssey",
+          "originalTitle": "The Odyssey",
+          "releaseDateOrBirthDate": "2026-07-03",
+          "year": 2026,
+          "directorsOrKnownFor": "Marcel Walz",
+          "overviewOrBio": "",
+          "score": 65,
+          "divergences": [
+            "Diretor não coincide: Local \"Chirstopher Nolan\" vs TMDB \"Marcel Walz\""
+          ]
+        },
+        {
+          "tmdbId": 219197,
+          "titleOrName": "The Odyssey",
+          "originalTitle": "The Odyssey",
+          "releaseDateOrBirthDate": "1991-04-08",
+          "year": 1991,
+          "directorsOrKnownFor": "Warwick Gilbert",
+          "overviewOrBio": "",
+          "score": 20,
+          "divergences": [
+            "Diferença significativa de ano (Local: 2026 vs TMDB: 1991)",
+            "Diretor não coincide: Local \"Chirstopher Nolan\" vs TMDB \"Warwick Gilbert\""
+          ]
+        },
+        {
+          "tmdbId": 493416,
+          "titleOrName": "Troy: The Odyssey",
+          "originalTitle": "Troy: The Odyssey",
+          "releaseDateOrBirthDate": "2017-10-15",
+          "year": 2017,
+          "directorsOrKnownFor": "Tekin Girgin",
+          "overviewOrBio": "",
+          "score": 7,
+          "divergences": [
+            "Diferença significativa de ano (Local: 2026 vs TMDB: 2017)",
+            "Diretor não coincide: Local \"Chirstopher Nolan\" vs TMDB \"Tekin Girgin\""
+          ]
+        }
+      ],
+      "divergences": [
+        "Diretor não coincide: Local \"Chirstopher Nolan\" vs TMDB \"Christopher Nolan\""
+      ]
+    },
+    {
+      "internalId": "fffa6c06-dd44-46c0-bfcd-875dd2e10f06",
+      "localTitle": "Homem-Aranha: Um Novo Dia",
+      "localOriginalTitle": "Spider-Man: Brand New Day",
+      "localYear": 2026,
+      "localDirector": "Destin Daniel Cretton",
+      "localCountry": "Estados Unidos",
+      "imdbId": null,
+      "queryUsed": "Spider-Man: Brand New Day",
+      "endpointUsed": "/search/movie?query=Spider-Man%3A%20Brand%20New%20Day&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB: Título (\"Homem-Aranha: Um Novo Dia\" / \"Spider-Man: Brand New Day\"), Ano (2026) e Direção (\"Destin Daniel Cretton\") coincidem com alto grau de confiança.",
+      "candidate": {
+        "tmdbId": 969681,
+        "titleOrName": "Homem-Aranha: Um Novo Dia",
+        "originalTitle": "Spider-Man: Brand New Day",
+        "releaseDateOrBirthDate": "2026-07-29",
+        "year": 2026,
+        "directorsOrKnownFor": "Destin Daniel Cretton",
+        "overviewOrBio": "É um novo dia para Peter Parker. Combatendo o crime em tempo integral como Homem-Aranha em um mundo que não se lembra mais dele e lidando com a pressão de ver seus antigos amigos seguirem em frente sem sua presença, Peter passa por uma mudança que talvez nem ele tenha o poder de controlar. Mas essa transformação também pode ser a única coisa capaz de deter uma surpreendente nova ameaça à cidade e às pessoas que ele ama: um poderoso vilão que ninguém sequer consegue enxergar.",
+        "score": 100,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "971fea96-855e-45f2-a962-0e98cd00d4de",
+      "localTitle": "La La Land: Cantando Estações",
+      "localOriginalTitle": "La La Land",
+      "localYear": 2016,
+      "localDirector": "Damien Chazelle",
+      "localCountry": "Estados Unidos",
+      "imdbId": null,
+      "queryUsed": "La La Land",
+      "endpointUsed": "/search/movie?query=La%20La%20Land&language=pt-BR",
+      "resultsCount": 20,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB: Título (\"La La Land: Cantando Estações\" / \"La La Land\"), Ano (2016) e Direção (\"Damien Chazelle\") coincidem com alto grau de confiança.",
+      "candidate": {
+        "tmdbId": 313369,
+        "titleOrName": "La La Land: Cantando Estações",
+        "originalTitle": "La La Land",
+        "releaseDateOrBirthDate": "2016-12-01",
+        "year": 2016,
+        "directorsOrKnownFor": "Damien Chazelle",
+        "overviewOrBio": "O pianista Sebastian conhece a atriz Mia, e os dois se apaixonam perdidamente. Em busca de oportunidades para suas carreiras na competitiva Los Angeles, os jovens tentam fazer o relacionamento amoroso dar certo, enquanto perseguem fama e sucesso.",
+        "score": 100,
+        "divergences": []
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 381083,
+          "titleOrName": "Gary Numan: Android In La La Land",
+          "originalTitle": "Gary Numan: Android In La La Land",
+          "releaseDateOrBirthDate": "2016-03-14",
+          "year": 2016,
+          "directorsOrKnownFor": "Steve Read, Rob Alexander",
+          "overviewOrBio": "",
+          "score": 38,
+          "divergences": [
+            "Diretor não coincide: Local \"Damien Chazelle\" vs TMDB \"Steve Read, Rob Alexander\""
+          ]
+        },
+        {
+          "tmdbId": 691191,
+          "titleOrName": "LA LA Land",
+          "originalTitle": "LA LA Land",
+          "releaseDateOrBirthDate": "2008-03-07",
+          "year": 2008,
+          "directorsOrKnownFor": "Jason Gajda, Mark Duncan",
+          "overviewOrBio": "",
+          "score": 20,
+          "divergences": [
+            "Diferença significativa de ano (Local: 2016 vs TMDB: 2008)",
+            "Diretor não coincide: Local \"Damien Chazelle\" vs TMDB \"Jason Gajda, Mark Duncan\""
+          ]
+        },
+        {
+          "tmdbId": 105789,
+          "titleOrName": "Going Down in La-La Land",
+          "originalTitle": "Going Down in La-La Land",
+          "releaseDateOrBirthDate": "2011-05-01",
+          "year": 2011,
+          "directorsOrKnownFor": "Casper Andreas",
+          "overviewOrBio": "",
+          "score": -4,
+          "divergences": [
+            "Diferença significativa de ano (Local: 2016 vs TMDB: 2011)",
+            "Diretor não coincide: Local \"Damien Chazelle\" vs TMDB \"Casper Andreas\""
+          ]
+        }
+      ],
+      "divergences": []
+    },
+    {
+      "internalId": "c224f859-7888-4424-9566-be58a9619cae",
+      "localTitle": "Miroirs No. 3",
+      "localOriginalTitle": "Miroirs No. 3",
+      "localYear": 2025,
+      "localDirector": "Christian Petzold",
+      "localCountry": "Alemanha",
+      "imdbId": null,
+      "queryUsed": "Miroirs No. 3",
+      "endpointUsed": "/search/movie?query=Miroirs%20No.%203&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB: Título (\"Mirrors No. 3\" / \"Miroirs No. 3\"), Ano (2025) e Direção (\"Christian Petzold\") coincidem com alto grau de confiança.",
+      "candidate": {
+        "tmdbId": 1178602,
+        "titleOrName": "Mirrors No. 3",
+        "originalTitle": "Miroirs No. 3",
+        "releaseDateOrBirthDate": "2025-08-27",
+        "year": 2025,
+        "directorsOrKnownFor": "Christian Petzold",
+        "overviewOrBio": "Durante um fim de semana no campo, Laura, uma estudante de Berlim, sobrevive milagrosamente a um acidente de carro. Fisicamente ilesa, mas profundamente abalada, ela é acolhida por Betty, que testemunhou o acidente e cuida dela com carinho. Aos poucos, o marido e o filho de Betty superam a relutância inicial, e uma tranquilidade quase familiar se instala. Mas, logo, eles não conseguem mais ignorar o passado e Laura precisa enfrentar a sua própria vida.",
+        "score": 100,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "c39a1a2d-b86f-403e-a4d6-95c6c1f330c5",
+      "localTitle": "O Convite",
+      "localOriginalTitle": "The Invite",
+      "localYear": 2026,
+      "localDirector": "Olivia Wilde",
+      "localCountry": "Estados Unidos",
+      "imdbId": null,
+      "queryUsed": "The Invite",
+      "endpointUsed": "/search/movie?query=The%20Invite&language=pt-BR",
+      "resultsCount": 20,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB: Título (\"O Convite\" / \"The Invite\"), Ano (2026) e Direção (\"Olivia Wilde\") coincidem com alto grau de confiança.",
+      "candidate": {
+        "tmdbId": 950028,
+        "titleOrName": "O Convite",
+        "originalTitle": "The Invite",
+        "releaseDateOrBirthDate": "2026-06-25",
+        "year": 2026,
+        "directorsOrKnownFor": "Olivia Wilde",
+        "overviewOrBio": "O casamento de Joe e Angela está por um fio. Quando eles convidam seus enigmáticos vizinhos do andar de cima para um jantar, a noite toma rumos inesperados e o que prometia ser uma noite tranquila rapidamente descarrila. Os vizinhos trazem uma proposta inesperada e provocativa que obriga os dois casais a confrontarem seus desejos, intimidades e crises existenciais",
+        "score": 100,
+        "divergences": []
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 1353483,
+          "titleOrName": "The Invite",
+          "originalTitle": "The Invite",
+          "releaseDateOrBirthDate": "2024-10-05",
+          "year": 2024,
+          "directorsOrKnownFor": "Max Chopovsky",
+          "overviewOrBio": "",
+          "score": 20,
+          "divergences": [
+            "Diferença significativa de ano (Local: 2026 vs TMDB: 2024)",
+            "Diretor não coincide: Local \"Olivia Wilde\" vs TMDB \"Max Chopovsky\""
+          ]
+        },
+        {
+          "tmdbId": 1011436,
+          "titleOrName": "The Invite",
+          "originalTitle": "The Invite",
+          "releaseDateOrBirthDate": "2022-10-01",
+          "year": 2022,
+          "directorsOrKnownFor": "Sean Gilliam",
+          "overviewOrBio": "",
+          "score": 20,
+          "divergences": [
+            "Diferença significativa de ano (Local: 2026 vs TMDB: 2022)",
+            "Diretor não coincide: Local \"Olivia Wilde\" vs TMDB \"Sean Gilliam\""
+          ]
+        },
+        {
+          "tmdbId": 880557,
+          "titleOrName": "The Invite",
+          "originalTitle": "The Invite",
+          "releaseDateOrBirthDate": "2021-10-03",
+          "year": 2021,
+          "directorsOrKnownFor": "Jordan Rader",
+          "overviewOrBio": "",
+          "score": 20,
+          "divergences": [
+            "Diferença significativa de ano (Local: 2026 vs TMDB: 2021)",
+            "Diretor não coincide: Local \"Olivia Wilde\" vs TMDB \"Jordan Rader\""
+          ]
+        }
+      ],
+      "divergences": []
+    },
+    {
+      "internalId": "b518c724-96cb-4862-9662-cc66d2fa19d9",
+      "localTitle": "O Fim da Rua",
+      "localOriginalTitle": "The End of Oak Street",
+      "localYear": 2026,
+      "localDirector": "David Robert Mitchell",
+      "localCountry": "Estados Unidos",
+      "imdbId": null,
+      "queryUsed": "The End of Oak Street",
+      "endpointUsed": "/search/movie?query=The%20End%20of%20Oak%20Street&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB: Título (\"O Fim da Rua\" / \"The End of Oak Street\"), Ano (2026) e Direção (\"David Robert Mitchell\") coincidem com alto grau de confiança.",
+      "candidate": {
+        "tmdbId": 1101383,
+        "titleOrName": "O Fim da Rua",
+        "originalTitle": "The End of Oak Street",
+        "releaseDateOrBirthDate": "2026-08-12",
+        "year": 2026,
+        "directorsOrKnownFor": "David Robert Mitchell",
+        "overviewOrBio": "Após um misterioso evento cósmico abalar o bairro Oak Street e o transportar dos subúrbios para um lugar desconhecido, a família Platt descobre que sua sobrevivência vai depender da união entre todos para enfrentar um ambiente agora irreconhecível.",
+        "score": 100,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "0248e063-5c69-4527-9813-6a374b216825",
+      "localTitle": "Obsessão",
+      "localOriginalTitle": "Obsession",
+      "localYear": 2026,
+      "localDirector": "Curry Barker",
+      "localCountry": "Estados Unidos",
+      "imdbId": null,
+      "queryUsed": "Obsession",
+      "endpointUsed": "/search/movie?query=Obsession&language=pt-BR",
+      "resultsCount": 20,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB: Título (\"Obsessão\" / \"Obsession\"), Ano (2026) e Direção (\"Curry Barker\") coincidem com alto grau de confiança.",
+      "candidate": {
+        "tmdbId": 1339713,
+        "titleOrName": "Obsessão",
+        "originalTitle": "Obsession",
+        "releaseDateOrBirthDate": "2026-05-13",
+        "year": 2026,
+        "directorsOrKnownFor": "Curry Barker",
+        "overviewOrBio": "Sem grandes pretensões, um romântico incurável compra um brinquedo que promete realizar desejos únicos. Ele quebra o artefato misterioso enquanto pede para conquistar a crush e consegue exatamente o que desejava, mas descobre que a consequência é sinistra.",
+        "score": 100,
+        "divergences": []
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 4780,
+          "titleOrName": "Trágica Obsessão",
+          "originalTitle": "Obsession",
+          "releaseDateOrBirthDate": "1976-08-01",
+          "year": 1976,
+          "directorsOrKnownFor": "Brian De Palma",
+          "overviewOrBio": "Michael Courtland é um importante homem de negócios em New Orleans. Mas sua feliz rotina familiar é interrompida quando a mulher e a filha são sequestradas e tragicamente mortas durante o resgate. Muitos anos depois, o empresário está na Itália a negócios quando conhece e se apaixona por uma mulher que guarda incrível semelhança com sua falecida esposa.",
+          "score": 20,
+          "divergences": [
+            "Diferença significativa de ano (Local: 2026 vs TMDB: 1976)",
+            "Diretor não coincide: Local \"Curry Barker\" vs TMDB \"Brian De Palma\""
+          ]
+        },
+        {
+          "tmdbId": 158576,
+          "titleOrName": "Privacidade Obscena",
+          "originalTitle": "Private Obsession",
+          "releaseDateOrBirthDate": "1995-03-07",
+          "year": 1995,
+          "directorsOrKnownFor": "Lee Frost",
+          "overviewOrBio": "Emanuelle, uma modelo mundialmente famosa, é mantida em cativeiro por Richard Tate, um fã maluco. O rapaz a quer somente para si, e a beldade precisa usar de todos os seus recursos para tentar escapar.",
+          "score": 0,
+          "divergences": [
+            "Diferença significativa de ano (Local: 2026 vs TMDB: 1995)",
+            "Diretor não coincide: Local \"Curry Barker\" vs TMDB \"Lee Frost\""
+          ]
+        },
+        {
+          "tmdbId": 530442,
+          "titleOrName": "Meu Professor, Minha Obsessão",
+          "originalTitle": "My Teacher, My Obsession",
+          "releaseDateOrBirthDate": "2018-06-12",
+          "year": 2018,
+          "directorsOrKnownFor": "Damián Romay",
+          "overviewOrBio": "Depois de se transferir a uma nova escola, onde seu pai é professor de inglês, a jovem Riley (Laura Bilgeri) encontra problemas para fazer novas amizades. Quando ela conhece Kyla (Lucy Loken), uma jovem solitária, elas rapidamente tornam-se amigas íntimas, mas a situação começa a ficar complicada quando Riley descobre que Kyla possui um obscuro interesse por seu pai.",
+          "score": -7,
+          "divergences": [
+            "Diferença significativa de ano (Local: 2026 vs TMDB: 2018)",
+            "Diretor não coincide: Local \"Curry Barker\" vs TMDB \"Damián Romay\""
+          ]
+        }
+      ],
+      "divergences": []
+    },
+    {
+      "internalId": "3ecb01f8-41d3-45ae-b0cd-be7c25d1048a",
+      "localTitle": "Persona",
+      "localOriginalTitle": "Persona",
+      "localYear": 1966,
+      "localDirector": "Ingmar Bergman",
+      "localCountry": "Suécia",
+      "imdbId": null,
+      "queryUsed": "Persona",
+      "endpointUsed": "/search/movie?query=Persona&language=pt-BR",
+      "resultsCount": 20,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB: Título (\"Quando Duas Mulheres Pecam\" / \"Persona\"), Ano (1966) e Direção (\"Ingmar Bergman\") coincidem com alto grau de confiança.",
+      "candidate": {
+        "tmdbId": 797,
+        "titleOrName": "Quando Duas Mulheres Pecam",
+        "originalTitle": "Persona",
+        "releaseDateOrBirthDate": "1966-10-18",
+        "year": 1966,
+        "directorsOrKnownFor": "Ingmar Bergman",
+        "overviewOrBio": "Uma atriz teatral de sucesso sofre uma crise emocional e para de falar. Uma enfermeira é designada a cuidar dela em uma casa reclusa, perto da praia, onde as duas permanecem sozinhas. Para quebrar o silêncio, a enfermeira começa a falar incessantemente, narrando diversos episódios relevantes de sua vida, mas quando descobre que a atriz usa seus depoimentos como fonte de análise, a cumplicidade entre as duas se transforma em embate.",
+        "score": 100,
+        "divergences": []
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 1270793,
+          "titleOrName": "Persona",
+          "originalTitle": "Persona",
+          "releaseDateOrBirthDate": "2019-05-18",
+          "year": 2019,
+          "directorsOrKnownFor": "Anna Bergmann",
+          "overviewOrBio": "",
+          "score": 20,
+          "divergences": [
+            "Diferença significativa de ano (Local: 1966 vs TMDB: 2019)",
+            "Diretor não coincide: Local \"Ingmar Bergman\" vs TMDB \"Anna Bergmann\""
+          ]
+        },
+        {
+          "tmdbId": 1259735,
+          "titleOrName": "Persona",
+          "originalTitle": "Persona",
+          "releaseDateOrBirthDate": "2024-12-03",
+          "year": 2024,
+          "directorsOrKnownFor": "Mike Ho",
+          "overviewOrBio": "",
+          "score": 20,
+          "divergences": [
+            "Diferença significativa de ano (Local: 1966 vs TMDB: 2024)",
+            "Diretor não coincide: Local \"Ingmar Bergman\" vs TMDB \"Mike Ho\""
+          ]
+        },
+        {
+          "tmdbId": 795296,
+          "titleOrName": "Persona",
+          "originalTitle": "Persona",
+          "releaseDateOrBirthDate": "2021-01-18",
+          "year": 2021,
+          "directorsOrKnownFor": "George Arif",
+          "overviewOrBio": "",
+          "score": 20,
+          "divergences": [
+            "Diferença significativa de ano (Local: 1966 vs TMDB: 2021)",
+            "Diretor não coincide: Local \"Ingmar Bergman\" vs TMDB \"George Arif\""
+          ]
+        }
+      ],
+      "divergences": []
+    },
+    {
+      "internalId": "04ae3ecd-10ca-4b8b-835b-05820bc045c0",
+      "localTitle": "Ponto Sem Retorno",
+      "localOriginalTitle": "The Dog Stars",
+      "localYear": 2026,
+      "localDirector": "Ridley Scott",
+      "localCountry": "Estados Unidos",
+      "imdbId": null,
+      "queryUsed": "The Dog Stars",
+      "endpointUsed": "/search/movie?query=The%20Dog%20Stars&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB: Título (\"Ponto Sem Retorno\" / \"The Dog Stars\"), Ano (2026) e Direção (\"Ridley Scott\") coincidem com alto grau de confiança.",
+      "candidate": {
+        "tmdbId": 1384216,
+        "titleOrName": "Ponto Sem Retorno",
+        "originalTitle": "The Dog Stars",
+        "releaseDateOrBirthDate": "2026-08-26",
+        "year": 2026,
+        "directorsOrKnownFor": "Ridley Scott",
+        "overviewOrBio": "Após a população mundial ter sido devastada por uma pandemia, um homem vive uma existência solitária em um hangar de aviões no Colorado com seu cachorro e um pistoleiro taciturno com quem fez amizade. Quando uma transmissão misteriosa surge no rádio enquanto ele pilota seu velho Cessna, isso desencadeia uma busca pela origem do som.",
+        "score": 100,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "b5091b5f-a2e4-4a5a-9794-b9b253f28745",
+      "localTitle": "Só por Uma Noite",
+      "localOriginalTitle": "One Night Only",
+      "localYear": 2026,
+      "localDirector": "Will Gluck",
+      "localCountry": "Estados Unidos",
+      "imdbId": null,
+      "queryUsed": "One Night Only",
+      "endpointUsed": "/search/movie?query=One%20Night%20Only&language=pt-BR",
+      "resultsCount": 20,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB: Título (\"Só por Uma Noite\" / \"One Night Only\"), Ano (2026) e Direção (\"Will Gluck\") coincidem com alto grau de confiança.",
+      "candidate": {
+        "tmdbId": 1433367,
+        "titleOrName": "Só por Uma Noite",
+        "originalTitle": "One Night Only",
+        "releaseDateOrBirthDate": "2026-08-06",
+        "year": 2026,
+        "directorsOrKnownFor": "Will Gluck",
+        "overviewOrBio": "Allie e Owen são dois desconhecidos que se encontram em Nova York na única noite do ano em que relações sexuais são permitidas por lei. Abandonados por seus parceiros, a busca deles por conexão emocional toma rumos inesperados",
+        "score": 100,
+        "divergences": []
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 1451983,
+          "titleOrName": "One Night Only",
+          "originalTitle": "One Night Only",
+          "releaseDateOrBirthDate": "2025-10-10",
+          "year": 2025,
+          "directorsOrKnownFor": "Avery Maycock",
+          "overviewOrBio": "",
+          "score": 55,
+          "divergences": [
+            "Diferença de 1 ano no lançamento (Local: 2026 vs TMDB: 2025)",
+            "Diretor não coincide: Local \"Will Gluck\" vs TMDB \"Avery Maycock\""
+          ]
+        },
+        {
+          "tmdbId": 72178,
+          "titleOrName": "One Night Only",
+          "originalTitle": "One Night Only",
+          "releaseDateOrBirthDate": "1986-01-06",
+          "year": 1986,
+          "directorsOrKnownFor": "Timothy Bond",
+          "overviewOrBio": "",
+          "score": 20,
+          "divergences": [
+            "Diferença significativa de ano (Local: 2026 vs TMDB: 1986)",
+            "Diretor não coincide: Local \"Will Gluck\" vs TMDB \"Timothy Bond\""
+          ]
+        },
+        {
+          "tmdbId": 896633,
+          "titleOrName": "Adele: One Night Only",
+          "originalTitle": "Adele One Night Only",
+          "releaseDateOrBirthDate": "2021-11-14",
+          "year": 2021,
+          "directorsOrKnownFor": "Paul Dugdale",
+          "overviewOrBio": "Acompanhe o show da cantora Adele, que apresenta suas primeiras canções em seis anos. Confira também uma entrevista exclusiva da artista para Oprah Winfrey. Ela conta histórias por trás das músicas, sua vida após o divórcio e a criação de seu filho.",
+          "score": 10,
+          "divergences": [
+            "Diferença significativa de ano (Local: 2026 vs TMDB: 2021)",
+            "Diretor não coincide: Local \"Will Gluck\" vs TMDB \"Paul Dugdale\""
+          ]
+        }
+      ],
+      "divergences": []
+    }
+  ],
+  "persons": [
+    {
+      "internalId": "0f05fd0b-6c69-4b54-a256-b652d9c8478d",
+      "localName": "Allison Janney",
+      "localBirthDate": "1959-11-19",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Ponto Sem Retorno"
+      ],
+      "imdbId": null,
+      "queryUsed": "Allison Janney",
+      "endpointUsed": "/search/person?query=Allison%20Janney&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Allison Janney\" (TMDB ID: 19).",
+      "candidate": {
+        "tmdbId": 19,
+        "titleOrName": "Allison Janney",
+        "releaseDateOrBirthDate": "1959-11-19",
+        "directorsOrKnownFor": "Acting | Obras: Procurando Nemo, Beleza Americana, As Horas",
+        "overviewOrBio": "",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "65c8e5bd-f9ac-4fc5-85fc-09631299788f",
+      "localName": "Andy Richter",
+      "localBirthDate": "1966-10-28",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Obsessão"
+      ],
+      "imdbId": null,
+      "queryUsed": "Andy Richter",
+      "endpointUsed": "/search/person?query=Andy%20Richter&language=pt-BR",
+      "resultsCount": 2,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Andy Richter\" (TMDB ID: 28637).",
+      "candidate": {
+        "tmdbId": 28637,
+        "titleOrName": "Andy Richter",
+        "releaseDateOrBirthDate": "1966-10-28",
+        "directorsOrKnownFor": "Acting | Obras: Madagascar 2, Pootie Tang, Um Duende em Nova York",
+        "overviewOrBio": "",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 4768113,
+          "titleOrName": "Andy Richter",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Sound | Obras: Confissões de Tru, Confissões de Tru",
+          "overviewOrBio": "",
+          "score": 60,
+          "divergences": []
+        }
+      ],
+      "divergences": []
+    },
+    {
+      "internalId": "daebdb82-1854-440e-9203-18533fca72d1",
+      "localName": "Angela Cartwright",
+      "localBirthDate": "1952-09-09",
+      "localCountry": "Inglaterra",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "A Noviça Rebelde"
+      ],
+      "imdbId": null,
+      "queryUsed": "Angela Cartwright",
+      "endpointUsed": "/search/person?query=Angela%20Cartwright&language=pt-BR",
+      "resultsCount": 2,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Angela Cartwright\" (TMDB ID: 121640).",
+      "candidate": {
+        "tmdbId": 121640,
+        "titleOrName": "Angela Cartwright",
+        "releaseDateOrBirthDate": "1952-09-09",
+        "directorsOrKnownFor": "Acting | Obras: Perdidos no Espaço, Dramático Reencontro no Poseidon, A Noviça Rebelde",
+        "overviewOrBio": "",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 4192340,
+          "titleOrName": "Angela Cartwright",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Acting | Obras: ",
+          "overviewOrBio": "",
+          "score": 60,
+          "divergences": []
+        }
+      ],
+      "divergences": []
+    },
+    {
+      "internalId": "ac8ef972-c882-4613-b089-5a8ea321bd04",
+      "localName": "Anne Hathaway",
+      "localBirthDate": "1982-11-12",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 2,
+      "localFilmTitles": [
+        "O Fim da Rua",
+        "A Odisseia"
+      ],
+      "imdbId": null,
+      "queryUsed": "Anne Hathaway",
+      "endpointUsed": "/search/person?query=Anne%20Hathaway&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Anne Hathaway\" (TMDB ID: 1813).",
+      "candidate": {
+        "tmdbId": 1813,
+        "titleOrName": "Anne Hathaway",
+        "releaseDateOrBirthDate": "1982-11-12",
+        "directorsOrKnownFor": "Acting | Obras: O Segredo de Brokeback Mountain, Noivas em Guerra, Amor e Inocência",
+        "overviewOrBio": "Anne Jacqueline Hathaway (12 de novembro de 1982) é uma atriz norte-americana. Recebeu inúmeros prêmios, destacando-se um Oscar de melhor atriz coadjuvante, um Globo de Ouro, um prêmio BAFTA e um prêmio do Sindicato dos Atores por sua interpretação de Fantine em Os Miseráveis (2012). Em 2015, foi uma das atrizes mais bem pagas do mundo e, em 2024, foi incluída pela revista Time em sua lista das 100 pessoas mais influentes. Adicionalmente, possui um prêmio Primetime Emmy por seu trabalho de voz em Os Simpsons.\n\n​Começou sua carreira aparecendo na série de televisão Get Real (1999) antes de alcançar fama mundial como protagonista de sua estreia no cinema na comédia da Disney O Diário da Princesa (2001). Recebeu elogios da crítica por sua transição para papéis mais adultos nos dramas Garotas Sem Rumo e O Segredo de Brokeback Mountain em 2005. Seu status de estrela se consolidou com o sucesso comercial de O Diabo Veste Prada (2006), onde atuou ao lado de Meryl Streep, e obteve sua primeira indicação ao Oscar por seu papel de uma mulher em reabilitação em O Casamento de Rachel (2008).\n\n​Desde 2010, protagonizou vários dos maiores sucessos de bilheteria de sua carreira, incluindo as comédias românticas Idas e Vindas do Amor (2010) e Amor e Outras Drogas (2010), o filme de fantasia Alice no País das Maravilhas (2010), e seu papel como Mulher-Gato em Batman: O Cavaleiro das Trevas Ressurge (2012). Seus filmes Interestelar (2014), Um Senhor Estagiário (2015), Oito Mulheres e um Segredo (2018), Uma Ideia de Você (2024) e o mais recente The Odyssey (2026) reafirmaram sua versatilidade na indústria. Além de seu trabalho artístico, é Embaixadora da Boa Vontade da ONU Mulheres, onde defende a igualdade de gênero e os direitos das mulheres no ambiente de trabalho.",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "0eda86a0-0d81-4489-8959-d76b1d7108f4",
+      "localName": "Barbara Auer",
+      "localBirthDate": "1959-02-01",
+      "localCountry": "Alemanha",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Miroirs No. 3"
+      ],
+      "imdbId": null,
+      "queryUsed": "Barbara Auer",
+      "endpointUsed": "/search/person?query=Barbara%20Auer&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Barbara Auer\" (TMDB ID: 2340).",
+      "candidate": {
+        "tmdbId": 2340,
+        "titleOrName": "Barbara Auer",
+        "releaseDateOrBirthDate": "1959-02-01",
+        "directorsOrKnownFor": "Acting | Obras: A Segurança Interna, Yella, Solo für Klarinette",
+        "overviewOrBio": "",
+        "score": 85,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "5f0eb385-46d7-4ebd-b4bf-10221574fb73",
+      "localName": "Benedict Wong",
+      "localBirthDate": "1971-07-03",
+      "localCountry": "Inglaterra",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Ponto Sem Retorno"
+      ],
+      "imdbId": null,
+      "queryUsed": "Benedict Wong",
+      "endpointUsed": "/search/person?query=Benedict%20Wong&language=pt-BR",
+      "resultsCount": 2,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Benedict Wong\" (TMDB ID: 30082).",
+      "candidate": {
+        "tmdbId": 30082,
+        "titleOrName": "Benedict Wong",
+        "releaseDateOrBirthDate": "1971-07-03",
+        "directorsOrKnownFor": "Acting | Obras: Sunshine: Alerta Solar, Frankenstein, Coisas Belas E Sujas",
+        "overviewOrBio": "Benedict Wong nasceu em 1970 em Manchester, Inglaterra. Ele é um ator e escritor, mais conhecido por seu papel como Wong nos títulos do Universo Cinematográfico Marvel Doutor Estranho (2016), Vingadores: Guerra Infinita (2018), Vingadores: Ultimato (2019), Shang-Chi e a Lenda dos Dez. Anéis (2021), Homem-Aranha: No Way Home (2021), Doutor Estranho no Multiverso da Loucura (2022) e a série Disney+, She-Hulk: Advogada (2022). Ele também apareceu em Perdido em Marte (2015) e Prometheus (2012).",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 6179496,
+          "titleOrName": "Benedict Wong",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Acting | Obras: ",
+          "overviewOrBio": "",
+          "score": 60,
+          "divergences": []
+        }
+      ],
+      "divergences": []
+    },
+    {
+      "internalId": "ddc40c16-3066-4164-a295-964e39ef982e",
+      "localName": "Benny Safdie",
+      "localBirthDate": "1986-02-24",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Diretor",
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "A Odisseia"
+      ],
+      "imdbId": null,
+      "queryUsed": "Benny Safdie",
+      "endpointUsed": "/search/person?query=Benny%20Safdie&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Benny Safdie\" (TMDB ID: 227564).",
+      "candidate": {
+        "tmdbId": 227564,
+        "titleOrName": "Benny Safdie",
+        "releaseDateOrBirthDate": "1986-02-24",
+        "directorsOrKnownFor": "Directing | Obras: John's Gone, The Acquaintances of a Lonely John, Stars at Noon",
+        "overviewOrBio": "Benjamin 'Benny' Safdie (nascido em 24 de fevereiro de 1986) é um diretor, roteirista e ator americano, mais conhecido pelos thrillers ambientados em Nova York Good Time (2017) e Uncut Gems (2019). Junto com seu irmão e colaborador frequente Josh Safdie, eles são de ascendência judaico-síria e cresceram entre o pai europeu no Queens e a mãe nova-iorquina em Manhattan. Os irmãos começaram a fazer filmes quando eram crianças, inspirados pelo pai, entusiasta do cinema, que traduziu seu amor pelo cinema para Benny e seu irmão, filmando-os constantemente.",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "8536a8e7-7fa0-43cf-b9f2-feedeb9ad649",
+      "localName": "Bibi Andersson",
+      "localBirthDate": "1935-11-11",
+      "localCountry": "Suécia",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Persona"
+      ],
+      "imdbId": null,
+      "queryUsed": "Bibi Andersson",
+      "endpointUsed": "/search/person?query=Bibi%20Andersson&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Bibi Andersson\" (TMDB ID: 6657).",
+      "candidate": {
+        "tmdbId": 6657,
+        "titleOrName": "Bibi Andersson",
+        "releaseDateOrBirthDate": "1935-11-11",
+        "directorsOrKnownFor": "Acting | Obras: O Sétimo Selo, Duel at Diablo, Morangos Silvestres",
+        "overviewOrBio": "Berit Elisabeth Andersson, conhecida como Bibi Andersson (Estocolmo, 11 de novembro de 1935 – Estocolmo, 14 de abril de 2019) foi uma atriz sueca. Sua primeira colaboração com Ingmar Bergman foi em 1951, quando participou da sua produção de anúncio do detergente Bris. No fim dos anos 1950 estrelou em três filmes de Bergman: O sétimo selo, Morangos silvestres e Nära livet — que lhe valeu o prêmio de melhor atriz no Festival de Cannes. O intenso papel de Bibi como a enfermeira Alma no filme Persona de 1966 conduziu a um aumento no número de papéis oferecidos, e nesse mesmo ano atuou com James Garner e Sidney Poitier no violento faroeste \"Duel at Diablo\".",
+        "score": 85,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "7c9ad357-35f7-4005-a1e9-30f2f3f54bbd",
+      "localName": "Brian De Palma",
+      "localBirthDate": "1940-09-11",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Diretor"
+      ],
+      "localCreditsCount": 0,
+      "localFilmTitles": [],
+      "imdbId": null,
+      "queryUsed": "Brian De Palma",
+      "endpointUsed": "/search/person?query=Brian%20De%20Palma&language=pt-BR",
+      "resultsCount": 2,
+      "classification": "AMBIGUOUS",
+      "justification": "Correspondência ambígua ou presença de divergência/homônimos. Candidato sugerido: \"Brian De Palma\" (TMDB ID: 1150).",
+      "candidate": {
+        "tmdbId": 1150,
+        "titleOrName": "Brian De Palma",
+        "releaseDateOrBirthDate": "1940-09-11",
+        "directorsOrKnownFor": "Directing | Obras: Slashing 'Dressed to Kill', Acting 'Carrie', Visualizing 'Carrie'",
+        "overviewOrBio": "Brian Russell De Palma (Newark, 11 de Setembro de 1940) é um cineasta norte-americano. Os seus trabalhos exploram principalmente temas de suspense, assassinato, e desordem psíquica, entre outros. Seu estilo é influenciado pelas obras do diretor inglês Alfred Hitchcock. Trágica Obsessão (1976) e Vestida para Matar (1980) são obras de De Palma claramente inspiradas em Hitchcock. Depois de se formar na Universidade de Columbia, em Nova York (1962), ele aceitou uma bolsa de teatro no Sarah Lawrence College, Bronxville, Nova York (1964). Foi casado, de 1979 a 1984, com a atriz Nancy Allen, que estrelou alguns de seus filmes do período, como Vestida para Matar e Blow Out.",
+        "score": 85,
+        "divergences": [
+          "Pessoa sem créditos locais no banco e com múltiplos homônimos no TMDB"
+        ]
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 1082566,
+          "titleOrName": "Brian J. De Palma",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Directing | Obras: Falling Sky, Falling Sky, Falling Sky",
+          "overviewOrBio": "",
+          "score": 45,
+          "divergences": [
+            "Variação nominal: Local \"Brian De Palma\" vs TMDB \"Brian J. De Palma\"",
+            "Pessoa sem créditos locais no banco e com múltiplos homônimos no TMDB"
+          ]
+        }
+      ],
+      "divergences": [
+        "Pessoa sem créditos locais no banco e com múltiplos homônimos no TMDB"
+      ]
+    },
+    {
+      "internalId": "97744d7a-1414-4b4d-96d7-9c46a6b51094",
+      "localName": "Callum Turner",
+      "localBirthDate": "1990-02-15",
+      "localCountry": "Inglaterra",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Só por Uma Noite"
+      ],
+      "imdbId": null,
+      "queryUsed": "Callum Turner",
+      "endpointUsed": "/search/person?query=Callum%20Turner&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Callum Turner\" (TMDB ID: 1371041).",
+      "candidate": {
+        "tmdbId": 1371041,
+        "titleOrName": "Callum Turner",
+        "releaseDateOrBirthDate": "1990-02-15",
+        "directorsOrKnownFor": "Acting | Obras: Animais Fantásticos: Os Segredos de Dumbledore, Remando para o Ouro, Victor Frankenstein",
+        "overviewOrBio": "",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "1738cb74-8171-47d4-9244-c0666d3d3d8a",
+      "localName": "Charlie Gillespie",
+      "localBirthDate": "1998-08-26",
+      "localCountry": "Canadá",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Só por Uma Noite"
+      ],
+      "imdbId": null,
+      "queryUsed": "Charlie Gillespie",
+      "endpointUsed": "/search/person?query=Charlie%20Gillespie&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Charlie Gillespie\" (TMDB ID: 2044745).",
+      "candidate": {
+        "tmdbId": 2044745,
+        "titleOrName": "Charlie Gillespie",
+        "releaseDateOrBirthDate": "1998-08-26",
+        "directorsOrKnownFor": "Acting | Obras: The Class, Runt, Dezesseis Facadas",
+        "overviewOrBio": "",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "6687f7fb-1788-4478-83b6-176eefef5f61",
+      "localName": "Charlize Theron",
+      "localBirthDate": "1975-08-07",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "A Odisseia"
+      ],
+      "imdbId": null,
+      "queryUsed": "Charlize Theron",
+      "endpointUsed": "/search/person?query=Charlize%20Theron&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Charlize Theron\" (TMDB ID: 6885).",
+      "candidate": {
+        "tmdbId": 6885,
+        "titleOrName": "Charlize Theron",
+        "releaseDateOrBirthDate": "1975-08-07",
+        "directorsOrKnownFor": "Acting | Obras: Velozes & Furiosos 10, Monster: Desejo Assassino, Jogo Duro",
+        "overviewOrBio": "Charlize Theron (Benoni, 7 de agosto de 1975) é uma atriz, produtora e ex-modelo sul-africana vencedora do Oscar de melhor atriz. Possui cidadania americana. Ganhou reconhecimento na mídia no final dos anos 1990 após o seu papel nos filmes Poderoso Joe, O Advogado do Diabo e Regras da Vida. Recebeu muitos elogios e críticas, e o Oscar de Melhor Atriz por sua interpretação da serial killer Aileen Wuornos no filme Monster - Desejo Assassino, assim, se tornou a primeira atriz sul-africana a ganhar um Oscar nessa categoria. Também recebeu uma segunda indicação ao Oscar nesta categoria por seu desempenho no filme Terra Fria.",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "4c73ef52-1481-4d11-b727-5af80360b7a9",
+      "localName": "Charmian Carr",
+      "localBirthDate": "1942-12-27",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "A Noviça Rebelde"
+      ],
+      "imdbId": null,
+      "queryUsed": "Charmian Carr",
+      "endpointUsed": "/search/person?query=Charmian%20Carr&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Charmian Carr\" (TMDB ID: 1041410).",
+      "candidate": {
+        "tmdbId": 1041410,
+        "titleOrName": "Charmian Carr",
+        "releaseDateOrBirthDate": "1942-12-27",
+        "directorsOrKnownFor": "Acting | Obras: A Noviça Rebelde, Evening Primrose, Salzburg Sight and Sound",
+        "overviewOrBio": "",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "79f25338-c604-4a3b-9818-9b5cc21aec95",
+      "localName": "Chirstopher Nolan",
+      "localBirthDate": "1970-07-30",
+      "localCountry": "Inglaterra",
+      "localPrimaryRoles": [
+        "Diretor"
+      ],
+      "localCreditsCount": 2,
+      "localFilmTitles": [
+        "A Odisseia",
+        "A Odisseia"
+      ],
+      "imdbId": null,
+      "queryUsed": "Christopher Nolan",
+      "endpointUsed": "/search/person?query=Christopher%20Nolan&language=pt-BR",
+      "resultsCount": 6,
+      "classification": "AMBIGUOUS",
+      "justification": "Correspondência ambígua ou presença de divergência/homônimos. Candidato sugerido: \"Christopher Nolan\" (TMDB ID: 525).",
+      "candidate": {
+        "tmdbId": 525,
+        "titleOrName": "Christopher Nolan",
+        "releaseDateOrBirthDate": "1970-07-30",
+        "directorsOrKnownFor": "Directing | Obras: Batman Unmasked: The Psychology of The Dark Knight, Heath Ledger: A Tribute, These Amazing Shadows",
+        "overviewOrBio": "Christopher Edward Nolan (nascido em 30 de julho de 1970) é um diretor, roteirista e produtor de cinema anglo-americano. Ele nasceu em Londres, Inglaterra e possui cidadania americana devido à sua mãe. Ele é conhecido por escrever e dirigir filmes aclamados pela crítica como Amnésia (2000), O Grande Truque(2006), a trilogia Cavaleiro das Trevas (2005-12), A Origem (2010), Interestelar (2014) e Dunkirk (2017).  Nolan é o fundador da produtora Syncopy Films. Ele frequentemente colabora com sua esposa, a produtora Emma Thomas, e seu irmão, o roteirista Jonathan Nolan.\n\nNo Oscar 2024, ele foi indicado ao Oscar de Melhor Diretor pela segunda vez em sua carreira com Oppenheimer (sendo a primeira com Dunkirk, no Oscar 2018). Oppenheimer foi indicado em outras 12 categorias além de melhor direção, incluindo: Melhor filme, melhor roteiro adaptado, melhor ator, melhor ator coadjuvante e melhor atriz coadjuvante.",
+        "score": 70,
+        "divergences": [
+          "Variação nominal: Local \"Chirstopher Nolan\" vs TMDB \"Christopher Nolan\""
+        ]
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 6279344,
+          "titleOrName": "Christopher Nolan",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Directing | Obras: I'm Never Showing My Face Again, Justin Bieber Followed Me?!?, Why I'm Quitting Music",
+          "overviewOrBio": "",
+          "score": 20,
+          "divergences": [
+            "Variação nominal: Local \"Chirstopher Nolan\" vs TMDB \"Christopher Nolan\""
+          ]
+        },
+        {
+          "tmdbId": 4066940,
+          "titleOrName": "Christopher Nolan",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Acting | Obras: Chandamama raave ASAP, Chandamama raave ASAP",
+          "overviewOrBio": "",
+          "score": 20,
+          "divergences": [
+            "Variação nominal: Local \"Chirstopher Nolan\" vs TMDB \"Christopher Nolan\""
+          ]
+        }
+      ],
+      "divergences": [
+        "Variação nominal: Local \"Chirstopher Nolan\" vs TMDB \"Christopher Nolan\""
+      ]
+    },
+    {
+      "internalId": "0c27c8d1-e668-48fb-94bd-1ed42f7b0d64",
+      "localName": "Christian Petzold",
+      "localBirthDate": "1960-09-14",
+      "localCountry": "Alemanha",
+      "localPrimaryRoles": [
+        "Diretor"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Miroirs No. 3"
+      ],
+      "imdbId": null,
+      "queryUsed": "Christian Petzold",
+      "endpointUsed": "/search/person?query=Christian%20Petzold&language=pt-BR",
+      "resultsCount": 3,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Christian Petzold\" (TMDB ID: 2332).",
+      "candidate": {
+        "tmdbId": 2332,
+        "titleOrName": "Christian Petzold",
+        "releaseDateOrBirthDate": "1960-09-14",
+        "directorsOrKnownFor": "Directing | Obras: Auge in Auge - Eine deutsche Filmgeschichte, Der Beigeschmack des Todes, Isaak Babel - Die Reiterarmee",
+        "overviewOrBio": "",
+        "score": 85,
+        "divergences": []
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 3953898,
+          "titleOrName": "Christian Petzold",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Production | Obras: Ein Tag im Leben der Endverbraucher, Ein Tag im Leben der Endverbraucher",
+          "overviewOrBio": "",
+          "score": 60,
+          "divergences": []
+        },
+        {
+          "tmdbId": 2089507,
+          "titleOrName": "Bo-Christian Riedel-Petzold",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Crew | Obras: We Will Survive, Follower, Follower",
+          "overviewOrBio": "",
+          "score": 30,
+          "divergences": [
+            "Variação nominal: Local \"Christian Petzold\" vs TMDB \"Bo-Christian Riedel-Petzold\""
+          ]
+        }
+      ],
+      "divergences": []
+    },
+    {
+      "internalId": "8a6768f7-7ff9-4730-b0dc-3da7157f500b",
+      "localName": "Christopher Plummer",
+      "localBirthDate": "1929-12-13",
+      "localCountry": "Canadá",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "A Noviça Rebelde"
+      ],
+      "imdbId": null,
+      "queryUsed": "Christopher Plummer",
+      "endpointUsed": "/search/person?query=Christopher%20Plummer&language=pt-BR",
+      "resultsCount": 5,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Christopher Plummer\" (TMDB ID: 290).",
+      "candidate": {
+        "tmdbId": 290,
+        "titleOrName": "Christopher Plummer",
+        "releaseDateOrBirthDate": "1929-12-13",
+        "directorsOrKnownFor": "Acting | Obras: Os 12 Macacos, Jornada nas Estrelas VI: A Terra Desconhecida, Syriana: A Indústria do Petróleo",
+        "overviewOrBio": "Arthur Christopher Orme Plummer, mais conhecido como Christopher Plummer (Toronto, 13 de dezembro de 1929 – Weston, 5 de fevereiro de 2021), foi um ator canadense. Sua carreira durou sete décadas, ganhando reconhecimento por suas atuações no cinema, na televisão e no palco. Plummer fez sua estreia na Broadway em 1954 e continuou a atuar em papéis principais no palco interpretando Cyrano de Bergerac em Cyrano (1974), Iago em Othello, bem como interpretando papéis titulares em Hamlet at Elsinore (1964), Macbeth, Rei Lear e Barrymore. Plummer também atuou nas produções teatrais J.B., No Man's Land e Inherit the Wind.",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 1622403,
+          "titleOrName": "Christopher Plummer",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Art | Obras: Qual Seu Número?, Shockwave Darkside, A Caixa",
+          "overviewOrBio": "",
+          "score": 60,
+          "divergences": []
+        },
+        {
+          "tmdbId": 3253981,
+          "titleOrName": "Christopher Plummer",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Acting | Obras: Viva! A Babá Morreu, Viva! A Babá Morreu",
+          "overviewOrBio": "",
+          "score": 60,
+          "divergences": []
+        }
+      ],
+      "divergences": []
+    },
+    {
+      "internalId": "0062e3da-5591-49a9-9f1b-c2e0e757b72f",
+      "localName": "Cooper Tomlinson",
+      "localBirthDate": "1999-06-26",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Obsessão"
+      ],
+      "imdbId": null,
+      "queryUsed": "Cooper Tomlinson",
+      "endpointUsed": "/search/person?query=Cooper%20Tomlinson&language=pt-BR",
+      "resultsCount": 5,
+      "classification": "AMBIGUOUS",
+      "justification": "Correspondência ambígua ou presença de divergência/homônimos. Candidato sugerido: \"Cooper Tomlinson\" (TMDB ID: 2823609).",
+      "candidate": {
+        "tmdbId": 2823609,
+        "titleOrName": "Cooper Tomlinson",
+        "releaseDateOrBirthDate": "1999-01-11",
+        "directorsOrKnownFor": "Acting | Obras: Because of Mika, Aberdeen, Mank",
+        "overviewOrBio": "",
+        "score": 75,
+        "divergences": [
+          "Data de nascimento divergente: Local \"1999-06-26\" vs TMDB \"1999-01-11\""
+        ]
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 3615256,
+          "titleOrName": "Cooper Tomlinson",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Acting | Obras: ",
+          "overviewOrBio": "",
+          "score": 60,
+          "divergences": []
+        },
+        {
+          "tmdbId": 5846314,
+          "titleOrName": "Cooper Tomlinson",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Acting | Obras: ",
+          "overviewOrBio": "",
+          "score": 60,
+          "divergences": []
+        }
+      ],
+      "divergences": [
+        "Data de nascimento divergente: Local \"1999-06-26\" vs TMDB \"1999-01-11\""
+      ]
+    },
+    {
+      "internalId": "6d9e3c31-5d18-4940-acdf-3059ebc1da16",
+      "localName": "Corey Hawkins",
+      "localBirthDate": "1988-10-22",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 0,
+      "localFilmTitles": [],
+      "imdbId": null,
+      "queryUsed": "Corey Hawkins",
+      "endpointUsed": "/search/person?query=Corey%20Hawkins&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Corey Hawkins\" (TMDB ID: 1154054).",
+      "candidate": {
+        "tmdbId": 1154054,
+        "titleOrName": "Corey Hawkins",
+        "releaseDateOrBirthDate": "1988-10-22",
+        "directorsOrKnownFor": "Acting | Obras: Piano de Família, Tempestade, Sem Escalas",
+        "overviewOrBio": "",
+        "score": 85,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "0e132240-b399-438b-8d50-00e369d5aa50",
+      "localName": "Curry Barker",
+      "localBirthDate": "1995-09-05",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Diretor",
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Obsessão"
+      ],
+      "imdbId": null,
+      "queryUsed": "Curry Barker",
+      "endpointUsed": "/search/person?query=Curry%20Barker&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "AMBIGUOUS",
+      "justification": "Correspondência ambígua ou presença de divergência/homônimos. Candidato sugerido: \"Curry Barker\" (TMDB ID: 2381985).",
+      "candidate": {
+        "tmdbId": 2381985,
+        "titleOrName": "Curry Barker",
+        "releaseDateOrBirthDate": "1999-09-22",
+        "directorsOrKnownFor": "Directing | Obras: B-Side: For Taylor, Anything but Ghosts, Obsessão",
+        "overviewOrBio": "",
+        "score": 75,
+        "divergences": [
+          "Data de nascimento divergente: Local \"1995-09-05\" vs TMDB \"1999-09-22\""
+        ]
+      },
+      "alternativeCandidates": [],
+      "divergences": [
+        "Data de nascimento divergente: Local \"1995-09-05\" vs TMDB \"1999-09-22\""
+      ]
+    },
+    {
+      "internalId": "81d93a67-6dc8-46b4-bde9-f05a27b18367",
+      "localName": "Damien Chazelle",
+      "localBirthDate": "1985-01-19",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Diretor"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "La La Land: Cantando Estações"
+      ],
+      "imdbId": null,
+      "queryUsed": "Damien Chazelle",
+      "endpointUsed": "/search/person?query=Damien%20Chazelle&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Damien Chazelle\" (TMDB ID: 136495).",
+      "candidate": {
+        "tmdbId": 136495,
+        "titleOrName": "Damien Chazelle",
+        "releaseDateOrBirthDate": "1985-01-19",
+        "directorsOrKnownFor": "Directing | Obras: A Panoramic Canvas Called Babylon, The Costumes of Babylon, Sergio Leone - L'italiano che inventò l'America",
+        "overviewOrBio": "",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "8dabc131-aa2c-4317-b74e-6578561b2f4b",
+      "localName": "David Robert Mitchell",
+      "localBirthDate": "1974-10-19",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Diretor"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "O Fim da Rua"
+      ],
+      "imdbId": null,
+      "queryUsed": "David Robert Mitchell",
+      "endpointUsed": "/search/person?query=David%20Robert%20Mitchell&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"David Robert Mitchell\" (TMDB ID: 558929).",
+      "candidate": {
+        "tmdbId": 558929,
+        "titleOrName": "David Robert Mitchell",
+        "releaseDateOrBirthDate": "1974-10-19",
+        "directorsOrKnownFor": "Directing | Obras: O mito da liberdade, O mito da liberdade, Corrente do Mal",
+        "overviewOrBio": "",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "7e0901df-773d-4ced-8cdd-cf6d61ced6dd",
+      "localName": "Debbie Turner",
+      "localBirthDate": "1956-09-05",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "A Noviça Rebelde"
+      ],
+      "imdbId": null,
+      "queryUsed": "Debbie Turner",
+      "endpointUsed": "/search/person?query=Debbie%20Turner&language=pt-BR",
+      "resultsCount": 4,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Debbie Turner\" (TMDB ID: 1198142).",
+      "candidate": {
+        "tmdbId": 1198142,
+        "titleOrName": "Debbie Turner",
+        "releaseDateOrBirthDate": "1956-09-05",
+        "directorsOrKnownFor": "Acting | Obras: A Noviça Rebelde, Hollywood Screen Tests: Take 1, Heróis Sem Amanhã",
+        "overviewOrBio": "",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 3755076,
+          "titleOrName": "Debbie Turner",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Acting | Obras: Supersonic, Supersonic",
+          "overviewOrBio": "",
+          "score": 60,
+          "divergences": []
+        },
+        {
+          "tmdbId": 5299287,
+          "titleOrName": "Debbie Turner",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Acting | Obras: ",
+          "overviewOrBio": "",
+          "score": 60,
+          "divergences": []
+        }
+      ],
+      "divergences": []
+    },
+    {
+      "internalId": "2ed62b99-99e9-4c85-bb45-b7325a48b214",
+      "localName": "Destin Daniel Cretton",
+      "localBirthDate": "1978-11-23",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Diretor"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Homem-Aranha: Um Novo Dia"
+      ],
+      "imdbId": null,
+      "queryUsed": "Destin Daniel Cretton",
+      "endpointUsed": "/search/person?query=Destin%20Daniel%20Cretton&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Destin Daniel Cretton\" (TMDB ID: 1144604).",
+      "candidate": {
+        "tmdbId": 1144604,
+        "titleOrName": "Destin Daniel Cretton",
+        "releaseDateOrBirthDate": "1978-11-23",
+        "directorsOrKnownFor": "Directing | Obras: Short Term 12: Behind the Scenes, Generations: The Evolution of Spider-Man, Shang-Chi e a Lenda dos Dez Anéis",
+        "overviewOrBio": "",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "489f0aba-3f4d-494c-b958-9156643e856c",
+      "localName": "Duane Chase",
+      "localBirthDate": "1950-12-12",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "A Noviça Rebelde"
+      ],
+      "imdbId": null,
+      "queryUsed": "Duane Chase",
+      "endpointUsed": "/search/person?query=Duane%20Chase&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Duane Chase\" (TMDB ID: 1243355).",
+      "candidate": {
+        "tmdbId": 1243355,
+        "titleOrName": "Duane Chase",
+        "releaseDateOrBirthDate": "1950-12-12",
+        "directorsOrKnownFor": "Acting | Obras: Nunca é Tarde para Amar, A Noviça Rebelde, A Noviça Rebelde",
+        "overviewOrBio": "",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "e74bd4b0-6c90-4f91-8dba-0ccf72fb753c",
+      "localName": "Edward Norton",
+      "localBirthDate": "1969-08-18",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "O Convite"
+      ],
+      "imdbId": null,
+      "queryUsed": "Edward Norton",
+      "endpointUsed": "/search/person?query=Edward%20Norton&language=pt-BR",
+      "resultsCount": 8,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Edward Norton\" (TMDB ID: 819).",
+      "candidate": {
+        "tmdbId": 819,
+        "titleOrName": "Edward Norton",
+        "releaseDateOrBirthDate": "1969-08-18",
+        "directorsOrKnownFor": "Acting | Obras: A Outra História Americana, The 53rd Calypso, Clube da Luta",
+        "overviewOrBio": "Edward Harrison Norton (Boston, 18 de agosto de 1969) é um ator, roteirista, diretor de cinema e produtor americano. Em 1996, seu papel coadjuvante no drama do tribunal de Primal Fear lhe rendeu uma indicação para o Oscar de Melhor Ator Coadjuvante. Dois anos mais tarde, seu papel principal como skinhead skinhead da American History X ganhou uma indicação ao Oscar de Melhor Ator. Seus outros filmes incluem dramas de época como The Kingdom of Heaven (2005), The Illusionist (2006) e The Painted Veil (2006); e outros filmes notáveis ​​como Rounders (1998), Fight Club (1999), 25th Hour (2002), Red Dragon (2002) e The Incredible Hulk (2008).",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 5781441,
+          "titleOrName": "Edward Norton",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Acting | Obras: The Single Track, The Single Track",
+          "overviewOrBio": "",
+          "score": 60,
+          "divergences": []
+        },
+        {
+          "tmdbId": 3402466,
+          "titleOrName": "Edward Norton",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Acting | Obras: Kaer, Kaer",
+          "overviewOrBio": "",
+          "score": 60,
+          "divergences": []
+        }
+      ],
+      "divergences": []
+    },
+    {
+      "internalId": "325aece6-8c12-4e0a-9d07-20e047d3554a",
+      "localName": "Eleanor Parker",
+      "localBirthDate": "1922-06-26",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "A Noviça Rebelde"
+      ],
+      "imdbId": null,
+      "queryUsed": "Eleanor Parker",
+      "endpointUsed": "/search/person?query=Eleanor%20Parker&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Eleanor Parker\" (TMDB ID: 7331).",
+      "candidate": {
+        "tmdbId": 7331,
+        "titleOrName": "Eleanor Parker",
+        "releaseDateOrBirthDate": "1922-06-26",
+        "directorsOrKnownFor": "Acting | Obras: O Homem do Braço de Ouro, Chaga de Fogo, Home for the Holidays",
+        "overviewOrBio": "",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "72988817-eea2-4188-b243-c04ca2ddb10e",
+      "localName": "Elliot Page",
+      "localBirthDate": "1987-02-21",
+      "localCountry": "Canadá",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "A Odisseia"
+      ],
+      "imdbId": null,
+      "queryUsed": "Elliot Page",
+      "endpointUsed": "/search/person?query=Elliot%20Page&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Elliot Page\" (TMDB ID: 27578).",
+      "candidate": {
+        "tmdbId": 27578,
+        "titleOrName": "Elliot Page",
+        "releaseDateOrBirthDate": "1987-02-21",
+        "directorsOrKnownFor": "Acting | Obras: Naya: A Lenda do Golfinho Dourado, Menina Má.Com, Garota Fantástica",
+        "overviewOrBio": "Elliot Page (anteriormente Ellen Page; Halifax, 21 de fevereiro de 1987) é um ator, diretor e produtor canadense. Page recebeu uma indicação ao Globo de Ouro e ao Oscar por seu papel como protagonista do filme Juno.\n\nTambém é conhecido por seus papéis em Menina Má .com (2005), Vivendo e Aprendendo (2008), Garota Fantástica (2009), como a mutante Kitty Pryde em X-Men: O Confronto Final (2006) e  X-Men: Dias de um Futuro Esquecido (2014) e como Ariadne, em A Origem (2010). Elliot também recebeu atenção no Canadá, sua terra natal, por seus premiados papéis em Pit Pony e Marion Bridge, bem como pelas séries Trailer Park Boys e Genesis.\n\nPage nasceu em Halifax, Nova Escócia, Canadá, filho de Martha Philpotts, uma professora, e Dennis Page, um designer gráfico. Ele frequentou a Halifax Grammar School, passou algum tempo no Queen Elizabeth High School, se formou pela Shambhala School, em 2005. Elliot também passou dois anos em Toronto, Ontário estudando no Interact Program na Vaughan Road Academy, juntamente com o amigo e colega ator canadense, Mark Rendall.\n\nPage reside atualmente na cidade de Los Angeles, nos EUA, com a sua esposa, a dançarina Emma Portner, com quem tem um cachorro chamado Patters. Elliot é sonâmbulo. Em 2008, foi uma das 30 celebridades que participou de uma série de anúncios online para U.S. Campaign for Burma, pedindo o fim da ditadura militar na Birmânia. Em 2008, se declarou como sendo feminista. No outono de 2008, participou de projetos de permacultura no Lost Valley Educational Center.",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "c30fbfdf-5fe6-4202-a1a1-f5cb5a6140ee",
+      "localName": "Emma Stone",
+      "localBirthDate": "1988-08-06",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "La La Land: Cantando Estações"
+      ],
+      "imdbId": null,
+      "queryUsed": "Emma Stone",
+      "endpointUsed": "/search/person?query=Emma%20Stone&language=pt-BR",
+      "resultsCount": 7,
+      "classification": "AMBIGUOUS",
+      "justification": "Correspondência ambígua ou presença de divergência/homônimos. Candidato sugerido: \"Emma Stone\" (TMDB ID: 54693).",
+      "candidate": {
+        "tmdbId": 54693,
+        "titleOrName": "Emma Stone",
+        "releaseDateOrBirthDate": "1988-11-06",
+        "directorsOrKnownFor": "Acting | Obras: O Roqueiro, Superbad: É Hoje, Minhas Adoráveis Ex-Namoradas",
+        "overviewOrBio": "Emily Jean Stone, mais conhecida como Emma Stone (Scottsdale, 6 de novembro de 1988) é uma atriz, dubladora e modelo norte-americana. Stone começou sua carreira como atriz mirim atuando em peças teatrais até ganhar reconhecimento pelo seus desempenhos em Superbad (2007) e Zumbilândia (2009). Recebeu aclamação da crítica pelo seu papel na comédia Easy A (2011) que a fez tornar uma das mais promissoras atrizes em Hollywood. Ganhou notoriedade também pelo seus desempenhos na comédia romântica Crazy Stupid Love (2012), e pelo drama aclamado pela critica The Help (2012). 2 vezes vencedora do Oscar, é uma das estrelas mais populares e influentes do Cinema Mundial.",
+        "score": 75,
+        "divergences": [
+          "Data de nascimento divergente: Local \"1988-08-06\" vs TMDB \"1988-11-06\""
+        ]
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 2374117,
+          "titleOrName": "Emma Stone",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Production | Obras: Laços de Amor, Liga da Justiça, Aamir",
+          "overviewOrBio": "",
+          "score": 60,
+          "divergences": []
+        },
+        {
+          "tmdbId": 2080867,
+          "titleOrName": "Emma Stone",
+          "releaseDateOrBirthDate": "1988-11-06",
+          "directorsOrKnownFor": "Acting | Obras: White Angel, White Angel",
+          "overviewOrBio": "",
+          "score": 50,
+          "divergences": [
+            "Data de nascimento divergente: Local \"1988-08-06\" vs TMDB \"1988-11-06\""
+          ]
+        }
+      ],
+      "divergences": [
+        "Data de nascimento divergente: Local \"1988-08-06\" vs TMDB \"1988-11-06\""
+      ]
+    },
+    {
+      "internalId": "54ffba65-0b9c-4ac2-8e13-684cd144e4d4",
+      "localName": "Enno Trebs",
+      "localBirthDate": "1995-10-05",
+      "localCountry": "Alemanha",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Miroirs No. 3"
+      ],
+      "imdbId": null,
+      "queryUsed": "Enno Trebs",
+      "endpointUsed": "/search/person?query=Enno%20Trebs&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Enno Trebs\" (TMDB ID: 1597840).",
+      "candidate": {
+        "tmdbId": 1597840,
+        "titleOrName": "Enno Trebs",
+        "releaseDateOrBirthDate": "1995-10-05",
+        "directorsOrKnownFor": "Acting | Obras: Vollendet, Wir sind dann wohl die Angehörigen, Niemand ist bei den Kälbern",
+        "overviewOrBio": "",
+        "score": 85,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "ea2cc2a2-05ca-42b6-a9d2-e9a6e54815b2",
+      "localName": "Ewan Bremner",
+      "localBirthDate": "1972-01-23",
+      "localCountry": "Inglaterra",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Ponto Sem Retorno"
+      ],
+      "imdbId": null,
+      "queryUsed": "Ewen Bremner",
+      "endpointUsed": "/search/person?query=Ewen%20Bremner&language=pt-BR",
+      "resultsCount": 3,
+      "classification": "AMBIGUOUS",
+      "justification": "Correspondência ambígua ou presença de divergência/homônimos. Candidato sugerido: \"Ewen Bremner\" (TMDB ID: 1125).",
+      "candidate": {
+        "tmdbId": 1125,
+        "titleOrName": "Ewen Bremner",
+        "releaseDateOrBirthDate": "1972-01-23",
+        "directorsOrKnownFor": "Acting | Obras: Snatch: Porcos e Diamantes, Falcão Negro em Perigo, Alien vs. Predador",
+        "overviewOrBio": "",
+        "score": 70,
+        "divergences": [
+          "Variação nominal: Local \"Ewan Bremner\" vs TMDB \"Ewen Bremner\""
+        ]
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 1664000,
+          "titleOrName": "Ewen Bremner",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Acting | Obras: ",
+          "overviewOrBio": "",
+          "score": 20,
+          "divergences": [
+            "Variação nominal: Local \"Ewan Bremner\" vs TMDB \"Ewen Bremner\""
+          ]
+        },
+        {
+          "tmdbId": 4498098,
+          "titleOrName": "Ewen Bremner",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Acting | Obras: ",
+          "overviewOrBio": "",
+          "score": 20,
+          "divergences": [
+            "Variação nominal: Local \"Ewan Bremner\" vs TMDB \"Ewen Bremner\""
+          ]
+        }
+      ],
+      "divergences": [
+        "Variação nominal: Local \"Ewan Bremner\" vs TMDB \"Ewen Bremner\""
+      ]
+    },
+    {
+      "internalId": "e37d6726-a256-47dc-8dce-0740bcb75de2",
+      "localName": "Ewan Mcgregor",
+      "localBirthDate": "1971-03-31",
+      "localCountry": "Escócia",
+      "localPrimaryRoles": [
+        "Ator",
+        "Diretor"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "O Fim da Rua"
+      ],
+      "imdbId": null,
+      "queryUsed": "Ewan Mcgregor",
+      "endpointUsed": "/search/person?query=Ewan%20Mcgregor&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Ewan McGregor\" (TMDB ID: 3061).",
+      "candidate": {
+        "tmdbId": 3061,
+        "titleOrName": "Ewan McGregor",
+        "releaseDateOrBirthDate": "1971-03-31",
+        "directorsOrKnownFor": "Acting | Obras: Pecados Ardentes, Falcão Negro em Perigo, Peixe Grande e Suas Histórias Maravilhosas",
+        "overviewOrBio": "Ewan Gordon McGregor (Crieff, Perthshire, 31 de março de 1971) é um ator escocês. Foi considerado uma das melhores estrelas de cinema em 1997 segundo a Empire. É conhecido por ter interpretado Obi Wan Kenobi, nos filmes Star Wars: Episódio I - A Ameaça Fantasma, em 1999; Star Wars: Episódio II - Ataque dos Clones, em 2002, e Star Wars: Episódio III - A vingança dos Sith, em 2005 e foi Roman Sionis/Máscara Negra, em Aves de Rapina de 2020.",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "23c977f6-3977-4933-bcd8-48eab578ad50",
+      "localName": "Florence Pugh",
+      "localBirthDate": "1996-01-03",
+      "localCountry": "Inglaterra",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Homem-Aranha: Um Novo Dia"
+      ],
+      "imdbId": null,
+      "queryUsed": "Florence Pugh",
+      "endpointUsed": "/search/person?query=Florence%20Pugh&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Florence Pugh\" (TMDB ID: 1373737).",
+      "candidate": {
+        "tmdbId": 1373737,
+        "titleOrName": "Florence Pugh",
+        "releaseDateOrBirthDate": "1996-01-03",
+        "directorsOrKnownFor": "Acting | Obras: Clichês de Hollywood: O Cinema Como Você Sempre Viu, The Trident, Todo Tempo Que Temos",
+        "overviewOrBio": "Florence Pugh (nascida em 3 de janeiro de 1996) é uma atriz inglesa. Ela fez sua estreia como atriz em 2014 no filme dramático The Falling. Pugh ganhou reconhecimento em 2016 por interpretar a protagonista em Lady Macbeth, ganhando o British Independent Film Award. Também recebeu elogios por estrelar a minissérie The Little Drummer Girl (2018).\n\nO reconhecimento internacional de Pugh veio em 2019 quando fez alguns papéis de destaque como quando interpretou a lutadora de Wrestling Saraya no filme biográfico Lutando Pela Família (Saraya que ficou famosa por sua passagem pela WWE onde usava o nome Paige); também esteve no premiado drama Midsommar: O Mal Não Espera a Noite: e também atuou ao lado de Saoirse Ronan e Emma Watson em Adoráveis Mulheres. Nesse, ela recebeu indicações ao Oscar e ao BAFTA. Pugh recebeu o Trophée Chopard no Festival de Cinema de Cannes de 2019.\n\nEla interpretou Yelena Belova no Universo Cinematográfico Marvel, começando com Viúva Negra (2021) e Gavião Arqueiro (2021). Ela repetirá seu papel novamente no filme Thunderbolts. Em 2022, ela estrelou o thriller Não Se Preocupe, Querida e o drama ao Milagre, também deu voz a Cachinhos Dourados no filme de animação O Gato de Botas 2. Pugh também interpretou Jean Tatlock no filme biográfico dirigido por Christopher Nolan, Oppenheimer (2023), e a Princesa Irulan no épico de ficção científica de Denis Villeneuve, Duna: Parte Dois (2024).",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "2ef39893-120a-42cb-a9c2-3d461dd47598",
+      "localName": "Gunnar Björnstrand",
+      "localBirthDate": "1909-11-13",
+      "localCountry": "Suécia",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Persona"
+      ],
+      "imdbId": null,
+      "queryUsed": "Gunnar Björnstrand",
+      "endpointUsed": "/search/person?query=Gunnar%20Bj%C3%B6rnstrand&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Gunnar Björnstrand\" (TMDB ID: 6649).",
+      "candidate": {
+        "tmdbId": 6649,
+        "titleOrName": "Gunnar Björnstrand",
+        "releaseDateOrBirthDate": "1909-11-13",
+        "directorsOrKnownFor": "Acting | Obras: O Sétimo Selo, Morangos Silvestres, Quando Duas Mulheres Pecam",
+        "overviewOrBio": "Gunnar Björnstrand (Estocolmo, 13 de novembro de 1909 — Estocolmo, 26 de maio de 1986) foi um ator sueco conhecido pelos seus trabalhos com o diretor/escritor Ingmar Bergman. Atuou em mais de 180 filmes. Björnstrand foi um ator versátil em diferentes estilos, tanto na comédia como no drama. Sua filha Veronica Björnstrand também é atriz. A sua colaboração de longa data com Ingmar Bergman (papéis em 17 filmes) começou já durante os anos da guerra quando participou em Spöksonaten em Medborgarhuset em Estocolmo , e em Tree Painting em Malmö. Em 1946 ele apareceu em seu primeiro filme de Bergman \"Chove sobre nosso amor\".",
+        "score": 85,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "2f1096f4-a03d-4b11-8149-4a5f243f2452",
+      "localName": "Guy Pearce",
+      "localBirthDate": "1967-10-05",
+      "localCountry": "Inglaterra",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Ponto Sem Retorno"
+      ],
+      "imdbId": null,
+      "queryUsed": "Guy Pearce",
+      "endpointUsed": "/search/person?query=Guy%20Pearce&language=pt-BR",
+      "resultsCount": 2,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Guy Pearce\" (TMDB ID: 529).",
+      "candidate": {
+        "tmdbId": 529,
+        "titleOrName": "Guy Pearce",
+        "releaseDateOrBirthDate": "1967-10-05",
+        "directorsOrKnownFor": "Acting | Obras: Amnésia, Los Angeles: Cidade Proibida, A Máquina do Tempo",
+        "overviewOrBio": "Guy Edward Pearce (Cambridgeshire, 5 de outubro de 1967) é um ator e músico australiano nascido na Inglaterra, conhecido por seus papéis como Leonard Shelby em Memento de Christopher Nolan, Tenente Ed Exley no filme LA Confidential, uma drag queen no filme cult The Adventures of Priscilla, Rainha do Deserto, Mike Young na popular série de televisão australiana Neighbours e King Edward VIII (\"David\") no vencedor do Oscar de Melhor Filme de 2010, O Discurso do Rei. Em maio de 2012, Pearce foi escalado para estrelar David Michôd The Rover. Em 2013, ele vai estrelar como Dr. Aldrich Killian no filme, Homem de Ferro 3.",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 1377159,
+          "titleOrName": "Guy Pearce",
+          "releaseDateOrBirthDate": "1893-12-14",
+          "directorsOrKnownFor": "Costume & Make-Up | Obras: O Segredo do Pântano, A Preferida, The Guinea Pig",
+          "overviewOrBio": "",
+          "score": 50,
+          "divergences": [
+            "Data de nascimento divergente: Local \"1967-10-05\" vs TMDB \"1893-12-14\""
+          ]
+        }
+      ],
+      "divergences": []
+    },
+    {
+      "internalId": "3ff0cbdc-a69a-4693-90fe-fd8551aed4f8",
+      "localName": "Heather Menzies",
+      "localBirthDate": "1949-12-03",
+      "localCountry": "Canadá",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "A Noviça Rebelde"
+      ],
+      "imdbId": null,
+      "queryUsed": "Heather Menzies",
+      "endpointUsed": "/search/person?query=Heather%20Menzies&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Heather Menzies\" (TMDB ID: 92691).",
+      "candidate": {
+        "tmdbId": 92691,
+        "titleOrName": "Heather Menzies",
+        "releaseDateOrBirthDate": "1949-12-03",
+        "directorsOrKnownFor": "Acting | Obras: Piranha, Tail Gunner Joe, Hawaii",
+        "overviewOrBio": "",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "3ace0c06-1f6e-4730-b3a0-4eafe05acb30",
+      "localName": "Himesh Patel",
+      "localBirthDate": "1990-10-13",
+      "localCountry": "Inglaterra",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "A Odisseia"
+      ],
+      "imdbId": null,
+      "queryUsed": "Himesh Patel",
+      "endpointUsed": "/search/person?query=Himesh%20Patel&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Himesh Patel\" (TMDB ID: 1227717).",
+      "candidate": {
+        "tmdbId": 1227717,
+        "titleOrName": "Himesh Patel",
+        "releaseDateOrBirthDate": "1990-10-13",
+        "directorsOrKnownFor": "Acting | Obras: The Fox, Gananciosos, Do Outro Lado da Dor",
+        "overviewOrBio": "",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "f40cbc88-7813-4104-8c25-12a09adb0adb",
+      "localName": "Inde Navarrette",
+      "localBirthDate": "2001-03-03",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Obsessão"
+      ],
+      "imdbId": null,
+      "queryUsed": "Inde Navarrette",
+      "endpointUsed": "/search/person?query=Inde%20Navarrette&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Inde Navarrette\" (TMDB ID: 2638587).",
+      "candidate": {
+        "tmdbId": 2638587,
+        "titleOrName": "Inde Navarrette",
+        "releaseDateOrBirthDate": "2001-03-03",
+        "directorsOrKnownFor": "Acting | Obras: #Whitina, Boca de Fumo, Wander Darkly: Sem Rumo",
+        "overviewOrBio": "Danielle Fabiola “Inde” Navarrette é uma atriz americana. Ela ganhou destaque por sua atuação marcante como Nikki Freeman no filme de terror Obsessão (2026). Ela também é conhecida por interpretar Sarah Cushing na série Superman & Lois (2021–2024).",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "69b7be65-79ba-4297-bb48-08b7102ebf16",
+      "localName": "Ingmar Bergman",
+      "localBirthDate": "1918-07-14",
+      "localCountry": "Suécia",
+      "localPrimaryRoles": [
+        "Diretor"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Persona"
+      ],
+      "imdbId": null,
+      "queryUsed": "Ingmar Bergman",
+      "endpointUsed": "/search/person?query=Ingmar%20Bergman&language=pt-BR",
+      "resultsCount": 3,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Ingmar Bergman\" (TMDB ID: 6648).",
+      "candidate": {
+        "tmdbId": 6648,
+        "titleOrName": "Ingmar Bergman",
+        "releaseDateOrBirthDate": "1918-07-14",
+        "directorsOrKnownFor": "Directing | Obras: Ingmar Bergman - Herr der Dämonen, Ingrid Bergman Remembered, Ingmar Bergman á Íslandi",
+        "overviewOrBio": "Ernst Ingmar Bergman (Uppsala, 14 de julho de 1918 — Fårö, 30 de julho de 2007) foi um diretor, escritor e produtor sueco que trabalhou em cinema, televisão, teatro e rádio. Considerado um dos cineastas mais talentosos e influentes de todos os tempos, os filmes de Bergman incluem \"Sommarnattens leende\" (1955), \"O Sétimo Selo\" (1957), \"Morangos Silvestres\" (1957), \"Persona\" ( 1966), \"Viskningar och rop\" (1972), \"Scener ur ett äktenskap\" (1973) e \"Fanny e Alexander\" (1982); os dois últimos existem em versões estendidas de televisão. Bergman dirigiu mais de sessenta filmes e documentários para lançamento cinematográfico e para exibições de televisão, a maioria dos quais também escreveu. Ele também dirigiu mais de 170 peças.",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 5100320,
+          "titleOrName": "Ingmar Bergman",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Acting | Obras: Kuse och kaka, låt oss få smaka, A Little Night Music: Ravinia Festival Concert, Kuse och kaka, låt oss få smaka",
+          "overviewOrBio": "",
+          "score": 60,
+          "divergences": []
+        },
+        {
+          "tmdbId": 2148964,
+          "titleOrName": "Ingmar Bergman Jr.",
+          "releaseDateOrBirthDate": "1951-04-30",
+          "directorsOrKnownFor": "Acting | Obras: A Ilha de Bergman, Den obesegrade kvinnligheten, Procurando por Ingmar Bergman",
+          "overviewOrBio": "",
+          "score": 30,
+          "divergences": [
+            "Variação nominal: Local \"Ingmar Bergman\" vs TMDB \"Ingmar Bergman Jr.\"",
+            "Data de nascimento divergente: Local \"1918-07-14\" vs TMDB \"1951-04-30\""
+          ]
+        }
+      ],
+      "divergences": []
+    },
+    {
+      "internalId": "aae27e8f-0aed-4f16-9205-4f8a0a611edf",
+      "localName": "J.K. Simmons",
+      "localBirthDate": "1955-01-09",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "La La Land: Cantando Estações"
+      ],
+      "imdbId": null,
+      "queryUsed": "J.K. Simmons",
+      "endpointUsed": "/search/person?query=J.K.%20Simmons&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"J.K. Simmons\" (TMDB ID: 18999).",
+      "candidate": {
+        "tmdbId": 18999,
+        "titleOrName": "J.K. Simmons",
+        "releaseDateOrBirthDate": "1955-01-09",
+        "directorsOrKnownFor": "Acting | Obras: Homem-Aranha, Homem-Aranha 2, Homem-Aranha 3",
+        "overviewOrBio": "Jonathan Kimble \"J. K.\" Simmons (Detroit, 9 de Janeiro de 1955) é um ator estadunidense, vencedor do Óscar de Melhor ator coadjuvante pelo filme de 2014 Whiplash. Conhecido pelo seu papel na série Oz, da HBO, como o neonazista Vernon Schillinger, como J. Jonah Jameson no filme Homem-Aranha, e actualmente como o assistente-chefe Will Pope em The Closer, da TNT, bem como diversas outras papéis na televisão e cinema. Dará vida ao Comissário Gordon no Universo Estendido da DC, sua primeira aparição como o personagem será em Liga da Justiça - Parte 1",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "5ad7868c-ae34-4ccd-a5f9-69826b99d56e",
+      "localName": "Jacob Batalon",
+      "localBirthDate": "1996-10-09",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Homem-Aranha: Um Novo Dia"
+      ],
+      "imdbId": null,
+      "queryUsed": "Jacob Batalon",
+      "endpointUsed": "/search/person?query=Jacob%20Batalon&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Jacob Batalon\" (TMDB ID: 1649152).",
+      "candidate": {
+        "tmdbId": 1649152,
+        "titleOrName": "Jacob Batalon",
+        "releaseDateOrBirthDate": "1996-10-09",
+        "directorsOrKnownFor": "Acting | Obras: Lift: Roubo nas Alturas, O Tarô da Morte, Caminhos Tortos",
+        "overviewOrBio": "Jacob Batalon é um ator americano que teve seu papel de destaque como Ned Leeds no Universo Cinematográfico Marvel, começando com Homem-Aranha: De Volta ao Lar (2017) e suas sequências, Longe de Casa (2019) e De jeito nenhum para casa (2021), junto com aparições em Vingadores: Guerra Infinita. (2018) e Vingadores: Ultimato (2019).",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "6f714726-a5e7-41f6-890d-dda513794dff",
+      "localName": "Jacob Elordi",
+      "localBirthDate": "1997-06-26",
+      "localCountry": "Austrália",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Ponto Sem Retorno"
+      ],
+      "imdbId": null,
+      "queryUsed": "Jacob Elordi",
+      "endpointUsed": "/search/person?query=Jacob%20Elordi&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Jacob Elordi\" (TMDB ID: 2034418).",
+      "candidate": {
+        "tmdbId": 2034418,
+        "titleOrName": "Jacob Elordi",
+        "releaseDateOrBirthDate": "1997-06-26",
+        "directorsOrKnownFor": "Acting | Obras: Apostas & Segredos, Saltburn, Oh, Canadá",
+        "overviewOrBio": "Jacob Elordi (nascido em 26 de junho de 1997) é um ator australiano. Mudou-se para Los Angeles em 2017 para seguir a carreira artística e ganhou destaque ao interpretar Noah Flynn, o típico \"bad boy\" romântico, na franquia de filmes A Barraca do Beijo (2018–2021), da Netflix. Também ficou conhecido por seu papel como Nate Jacobs, um jogador de futebol americano com problemas emocionais, na série adolescente Euphoria (2019–presente), da HBO. Em 2023, interpretou Elvis Presley no filme biográfico Priscilla e viveu um estudante universitário rico em Saltburn, papel que lhe rendeu uma indicação ao BAFTA de Melhor Ator Coadjuvante.",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "640b7c5d-5227-4e87-b73e-d31d1c6c8817",
+      "localName": "Jarreth J. Merz",
+      "localBirthDate": "1970-05-01",
+      "localCountry": "Suiça",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 0,
+      "localFilmTitles": [],
+      "imdbId": null,
+      "queryUsed": "Jarreth J. Merz",
+      "endpointUsed": "/search/person?query=Jarreth%20J.%20Merz&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Jarreth J. Merz\" (TMDB ID: 84706).",
+      "candidate": {
+        "tmdbId": 84706,
+        "titleOrName": "Jarreth J. Merz",
+        "releaseDateOrBirthDate": "1970-05-01",
+        "directorsOrKnownFor": "Acting | Obras: Dark Streets, A Maldição De Helena, The Royal Nanny",
+        "overviewOrBio": "",
+        "score": 85,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "08640665-6ec4-4a36-828e-d3cc4830644a",
+      "localName": "John Legend",
+      "localBirthDate": "1978-12-28",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Ator",
+        "Cantor"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "La La Land: Cantando Estações"
+      ],
+      "imdbId": null,
+      "queryUsed": "John Legend",
+      "endpointUsed": "/search/person?query=John%20Legend&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"John Legend\" (TMDB ID: 113461).",
+      "candidate": {
+        "tmdbId": 113461,
+        "titleOrName": "John Legend",
+        "releaseDateOrBirthDate": "1978-12-28",
+        "directorsOrKnownFor": "Acting | Obras: Roast do Justin Bieber, Stevie Wonder: Songs in the Key of Life - An All-Star Grammy Salute, John Legend - Live at the House of Blues",
+        "overviewOrBio": "John Roger Stephens, conhecido pelo nome artístico John Legend, é um cantor e compositor norte-americano, vencedor do Oscar de Melhor Canção Original pela canção Glory para o filme Selma.",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "eccd9eec-399b-480f-982f-85915e90d8dc",
+      "localName": "John Leguizamo",
+      "localBirthDate": "1970-07-22",
+      "localCountry": "Colômbia",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "A Odisseia"
+      ],
+      "imdbId": null,
+      "queryUsed": "John Leguizamo",
+      "endpointUsed": "/search/person?query=John%20Leguizamo&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "AMBIGUOUS",
+      "justification": "Correspondência ambígua ou presença de divergência/homônimos. Candidato sugerido: \"John Leguizamo\" (TMDB ID: 5723).",
+      "candidate": {
+        "tmdbId": 5723,
+        "titleOrName": "John Leguizamo",
+        "releaseDateOrBirthDate": "1960-07-22",
+        "directorsOrKnownFor": "Acting | Obras: A Era do Gelo, Romeu + Julieta, A Era do Gelo 2",
+        "overviewOrBio": "",
+        "score": 75,
+        "divergences": [
+          "Data de nascimento divergente: Local \"1970-07-22\" vs TMDB \"1960-07-22\""
+        ]
+      },
+      "alternativeCandidates": [],
+      "divergences": [
+        "Data de nascimento divergente: Local \"1970-07-22\" vs TMDB \"1960-07-22\""
+      ]
+    },
+    {
+      "internalId": "ffdb6782-633e-4161-8ac5-7531e9ff2d22",
+      "localName": "Jon Bernthal",
+      "localBirthDate": "1976-09-20",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 2,
+      "localFilmTitles": [
+        "A Odisseia",
+        "Homem-Aranha: Um Novo Dia"
+      ],
+      "imdbId": null,
+      "queryUsed": "Jon Bernthal",
+      "endpointUsed": "/search/person?query=Jon%20Bernthal&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Jon Bernthal\" (TMDB ID: 19498).",
+      "candidate": {
+        "tmdbId": 19498,
+        "titleOrName": "Jon Bernthal",
+        "releaseDateOrBirthDate": "1976-09-20",
+        "directorsOrKnownFor": "Acting | Obras: Origin, As Torres Gêmeas, O Escritor Fantasma",
+        "overviewOrBio": "Jonathan Edward Bernthal (Washington, 20 de setembro de 1976) é um ator norte-americano.\n\nBernthal nasceu e cresceu em Washington onde graduou-se na Sidwell Friends School. Ele estudou no Skidmore College, e em seguida, na Moscow Art Theatre na Rússia, instituição pela qual também jogou baseball profissional, filiado à federação de beisebol profissional europeu. Enquanto em Moscou, foi notado pelo diretor da Formação Avançada de Teatro da Universidade Harvard no American Repertory Theatre.\n\nDesde que se formou em 2002, ele já se apresentou em mais de 30 execuções a nível regional e fora da Broadway, incluindo muitos com a sua própria premiada companhia de teatro Fovea Floods. Ele agora vive em Venice, Califórnia com sua mulher Erin Angle. Estrelou o sitcom da CBS The Class, na temporada 2006-2007. Teve uma participação no filme: Uma Noite no Museu 2, em 2009 no papel de Al Capone (em preto e branco). Em março de 2010, Bernthal ganhou o papel de Shane Walsh em The Walking Dead, série de televisão baseada na série de quadrinhos The Walking Dead. Foi também em março de 2010 que estreou a série The Pacific, produzida por Steven Spielberg e Tom Hanks, na qual interpreta o Sgt. Manuel \"Manny\" Rodriguez. Fez uma participação no filme As Torres Gêmeas em 2006, além de um filme chamado \"O Acordo\" com The Rock. Em 2014 participou do filme Corações de Ferro, juntamente com Brad Pitt, Shia Labeouf, Michael Peña e Logan Lerman, interpretando Grady Travis, nas batalhas finais da Segunda Guerra Mundial, diante do desesperado exército alemão. Em junho de 2015 foi anunciado que ele viria a interpretar o personagem Justiceiro na série da Netflix com a Marvel Comics Daredevil (Demolidor). Em novembro de 2017 estreou a série O Justiceiro onde interpreta o personagem principal Frank Castle.",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "15f584ea-16d8-4f35-a6ee-9fc10481a33f",
+      "localName": "Jörgen Lindström",
+      "localBirthDate": "1951-05-19",
+      "localCountry": "Suécia",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Persona"
+      ],
+      "imdbId": null,
+      "queryUsed": "Jörgen Lindström",
+      "endpointUsed": "/search/person?query=J%C3%B6rgen%20Lindstr%C3%B6m&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Jörgen Lindström\" (TMDB ID: 11918).",
+      "candidate": {
+        "tmdbId": 11918,
+        "titleOrName": "Jörgen Lindström",
+        "releaseDateOrBirthDate": "1951-05-19",
+        "directorsOrKnownFor": "Acting | Obras: Quando Duas Mulheres Pecam, O Silêncio, Nattlek",
+        "overviewOrBio": "",
+        "score": 85,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "992d33fc-0bcf-40db-a0d9-673f7f53281a",
+      "localName": "Josh Brolin",
+      "localBirthDate": "1968-02-12",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Ponto Sem Retorno"
+      ],
+      "imdbId": null,
+      "queryUsed": "Josh Brolin",
+      "endpointUsed": "/search/person?query=Josh%20Brolin&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Josh Brolin\" (TMDB ID: 16851).",
+      "candidate": {
+        "tmdbId": 16851,
+        "titleOrName": "Josh Brolin",
+        "releaseDateOrBirthDate": "1968-02-12",
+        "directorsOrKnownFor": "Acting | Obras: Sin City: A Dama Fatal, Procurando Encrenca, Milk: A Voz da Igualdade",
+        "overviewOrBio": "Josh James Brolin (Los Angeles, 12 de fevereiro de 1968) é um ator americano. É filho do também ator James Brolin com a atriz Jane Cameron Agee. Brolin é conhecido principalmente por seus papéis nos filmes The Goonies, No Country for Old Men, Milk, True Grit, Men in Black III, Gangster Squad, Gangster Americano, Deadpool 2, Vingadores: Guerra Infinita e Avengers 4.",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "1bbeb4d3-29d2-4012-a003-163fc6ab7e0e",
+      "localName": "Julie Andrews",
+      "localBirthDate": "1935-10-01",
+      "localCountry": "Inglaterra",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "A Noviça Rebelde"
+      ],
+      "imdbId": null,
+      "queryUsed": "Julie Andrews",
+      "endpointUsed": "/search/person?query=Julie%20Andrews&language=pt-BR",
+      "resultsCount": 6,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Julie Andrews\" (TMDB ID: 5823).",
+      "candidate": {
+        "tmdbId": 5823,
+        "titleOrName": "Julie Andrews",
+        "releaseDateOrBirthDate": "1935-10-01",
+        "directorsOrKnownFor": "Acting | Obras: Mary Poppins, Shrek Para Sempre, Shrek 2",
+        "overviewOrBio": "Dame Julia Elizabeth Andrews (DBE), mais conhecida como Julie Andrews,  é uma atriz, cantora e escritora britânica em cinema e teatro. Ela recebeu os prêmios Globo de Ouro, Emmy, Grammy, BAFTA, People's Choice Award, Theatre World Award, Screen Actors Guild e Academy Award.\n\nJulie foi atriz e cantora infantil na Inglaterra e estreou na Broadway em 1954 com The Boy Friend, e ganhou destaque estrelando outros musicais na Broadway  como My Fair Lady e Camelot e filmes musicais em Hollywood como Mary Poppins (1964), com o qual ganhou o Oscar de Melhor Atriz e A Noviça Rebelde (1965): papéis pelos quais ela ainda é mais conhecida. Sua voz, que originalmente media quatro oitavas, foi danificada por uma operação na garganta em 1997.\n\nJulie teve um renascimento de sua carreira cinematográfica nos anos 2000 em filmes de família, como O Diário da Princesa (2001), sua sequência O Diário da Princesa 2: Casamento Real (2004), Shrek (2004-2010) e Meu Malvado Favorito (2010). Em 2003, Julie revisitou seu primeiro sucesso na Broadway, desta vez como diretora de teatro, com uma remontagem de The Boy Friend no Bay Street Theatre, Sag Harbor, Nova York (e posteriormente na Goodspeed Opera House, em East Haddam, Connecticut, em 2005 )\n\nJulie também é autora de livros infantis e, em 2008, publicou uma autobiografia, Home: A Memoir of My Early Years.",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 2010778,
+          "titleOrName": "Julie Andrews",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Sound | Obras: A Lenda do Cavaleiro Sem Cabeça, A Fuga das Galinhas, A Múmia",
+          "overviewOrBio": "",
+          "score": 60,
+          "divergences": []
+        },
+        {
+          "tmdbId": 4224099,
+          "titleOrName": "Julie Andrews",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Directing | Obras: When Colorado Went Major League, When Colorado Went Major League, When Colorado Went Major League",
+          "overviewOrBio": "",
+          "score": 60,
+          "divergences": []
+        }
+      ],
+      "divergences": []
+    },
+    {
+      "internalId": "0a8daa6d-dec9-445c-a82e-759338949f47",
+      "localName": "King Princess",
+      "localBirthDate": "1998-12-19",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Só por Uma Noite"
+      ],
+      "imdbId": null,
+      "queryUsed": "King Princess",
+      "endpointUsed": "/search/person?query=King%20Princess&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"King Princess\" (TMDB ID: 2463999).",
+      "candidate": {
+        "tmdbId": 2463999,
+        "titleOrName": "King Princess",
+        "releaseDateOrBirthDate": "1998-12-19",
+        "directorsOrKnownFor": "Acting | Obras: Song Sung Blue: Um Sonho a Dois, Só por Uma Noite, Song Sung Blue: Um Sonho a Dois",
+        "overviewOrBio": "",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "62479ced-a10d-421c-8e8a-4c9650f8d943",
+      "localName": "Kym Karath",
+      "localBirthDate": "1958-08-04",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "A Noviça Rebelde"
+      ],
+      "imdbId": null,
+      "queryUsed": "Kym Karath",
+      "endpointUsed": "/search/person?query=Kym%20Karath&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Kym Karath\" (TMDB ID: 1194314).",
+      "candidate": {
+        "tmdbId": 1194314,
+        "titleOrName": "Kym Karath",
+        "releaseDateOrBirthDate": "1958-08-04",
+        "directorsOrKnownFor": "Acting | Obras: Tempero do Amor, A Noviça Rebelde, Os Nove Irmãos",
+        "overviewOrBio": "",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "3f11fef3-b318-4220-bb24-ad2b717add6f",
+      "localName": "LeVar Burton",
+      "localBirthDate": "1957-02-16",
+      "localCountry": "Alemanha",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Só por Uma Noite"
+      ],
+      "imdbId": null,
+      "queryUsed": "LeVar Burton",
+      "endpointUsed": "/search/person?query=LeVar%20Burton&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"LeVar Burton\" (TMDB ID: 2390).",
+      "candidate": {
+        "tmdbId": 2390,
+        "titleOrName": "LeVar Burton",
+        "releaseDateOrBirthDate": "1957-02-16",
+        "directorsOrKnownFor": "Acting | Obras: Jornada nas Estrelas: Generations, Jornada nas Estrelas: Nêmesis, Jornada nas Estrelas: Primeiro Contato",
+        "overviewOrBio": "",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "f0658346-c89a-4fcc-8539-91f377453b77",
+      "localName": "Liv Ullmann",
+      "localBirthDate": "1938-12-16",
+      "localCountry": "Japão",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Persona"
+      ],
+      "imdbId": null,
+      "queryUsed": "Liv Ullmann",
+      "endpointUsed": "/search/person?query=Liv%20Ullmann&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Liv Ullmann\" (TMDB ID: 11916).",
+      "candidate": {
+        "tmdbId": 11916,
+        "titleOrName": "Liv Ullmann",
+        "releaseDateOrBirthDate": "1938-12-16",
+        "directorsOrKnownFor": "Acting | Obras: Quando Duas Mulheres Pecam, Gritos e Sussurros, Ingrid Bergman Remembered",
+        "overviewOrBio": "Liv Johanne Ullmann (Tóquio, Japão, 16 de Dezembro de 1938) é uma atriz, diretora de cinema e escritora noruegesa, filha de Viggo Ullmann, um engenheiro aeronáutico norueguês e de Janna (nascida Lund), também norueguesa. Nascida no Japão, onde seus pais estavam a trabalhar e recebeu duas nacionalidades, japonesa e norueguesa. Começou a fazer teatro na escola, estudou no Teatro Nacional de Oslo, e seu primeiro trabalho profissional foi a representação de Anne Frank, aos dezoito anos de idade. Viveu com Ingmar Bergman entre 1966 e 1971, com quem fez dez filmes e com quem tem uma filha, a escritora Linn Ullmann.",
+        "score": 85,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "7cb2d680-21a1-4cb8-9c43-4d848647409b",
+      "localName": "Liza Colón-Zayas",
+      "localBirthDate": "1972-07-15",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Homem-Aranha: Um Novo Dia"
+      ],
+      "imdbId": null,
+      "queryUsed": "Liza Colón-Zayas",
+      "endpointUsed": "/search/person?query=Liza%20Col%C3%B3n-Zayas&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Liza Colón-Zayas\" (TMDB ID: 59693).",
+      "candidate": {
+        "tmdbId": 59693,
+        "titleOrName": "Liza Colón-Zayas",
+        "releaseDateOrBirthDate": "1972-07-15",
+        "directorsOrKnownFor": "Acting | Obras: Por Conta do Destino, Voo United 93, A Luta Por Um Ideal",
+        "overviewOrBio": "",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "ad418be7-54c2-4066-92cd-d5a5895a57fb",
+      "localName": "Lupita Nyong'o",
+      "localBirthDate": "1983-03-01",
+      "localCountry": "México",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "A Odisseia"
+      ],
+      "imdbId": null,
+      "queryUsed": "Lupita Nyong'o",
+      "endpointUsed": "/search/person?query=Lupita%20Nyong'o&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Lupita Nyong'o\" (TMDB ID: 1267329).",
+      "candidate": {
+        "tmdbId": 1267329,
+        "titleOrName": "Lupita Nyong'o",
+        "releaseDateOrBirthDate": "1983-03-01",
+        "directorsOrKnownFor": "Acting | Obras: Nos Bastidores de Pantera Negra: Wakanda para Sempre, 2021 Rock & Roll Hall of Fame Induction Ceremony, 12 Anos de Escravidão",
+        "overviewOrBio": "Lupita Amondi Nyong'o (Mexico City, 1 de março de 1983) é uma atriz e autora queniana-mexicana.  Ela começou sua carreira em Hollywood como assistente de produção.  Em 2008, ela fez sua estréia como atriz com o curta-metragem East River e, posteriormente, retornou ao Quênia para estrelar a série de televisão Shuga (2009-2012).  Em 2009, escreveu, produziu e dirigiu o documentário In My Genes.  Ela então fez um mestrado em atuação na Yale School of Drama.  Ela teve seu primeiro papel no cinema como Patsey em 12 Anos de Escravidão (2013), pelo qual recebeu elogios da crítica e ganhou vários prêmios, incluindo o Oscar de Melhor Atriz Coadjuvante.",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "daba70dd-c2b1-49d6-af9c-b3bb7cfa74b3",
+      "localName": "Marcel Heupermann",
+      "localBirthDate": "1994-10-28",
+      "localCountry": "Alemanha",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Miroirs No. 3"
+      ],
+      "imdbId": null,
+      "queryUsed": "Marcel Heupermann",
+      "endpointUsed": "/search/person?query=Marcel%20Heupermann&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "AMBIGUOUS",
+      "justification": "Correspondência ambígua ou presença de divergência/homônimos. Candidato sugerido: \"Marcel Heupermann\" (TMDB ID: 1430482).",
+      "candidate": {
+        "tmdbId": 1430482,
+        "titleOrName": "Marcel Heupermann",
+        "releaseDateOrBirthDate": "1994-10-14",
+        "directorsOrKnownFor": "Acting | Obras: Als wir träumten, Smalltown Girl, Die Räuber",
+        "overviewOrBio": "",
+        "score": 50,
+        "divergences": [
+          "Data de nascimento divergente: Local \"1994-10-28\" vs TMDB \"1994-10-14\""
+        ]
+      },
+      "alternativeCandidates": [],
+      "divergences": [
+        "Data de nascimento divergente: Local \"1994-10-28\" vs TMDB \"1994-10-14\""
+      ]
+    },
+    {
+      "internalId": "7d6ad6a0-dfd2-42eb-b0cc-a522e793e7ed",
+      "localName": "Margaret Qualley",
+      "localBirthDate": "1994-10-23",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Ponto Sem Retorno"
+      ],
+      "imdbId": null,
+      "queryUsed": "Margaret Qualley",
+      "endpointUsed": "/search/person?query=Margaret%20Qualley&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Margaret Qualley\" (TMDB ID: 1392137).",
+      "candidate": {
+        "tmdbId": 1392137,
+        "titleOrName": "Margaret Qualley",
+        "releaseDateOrBirthDate": "1994-10-23",
+        "directorsOrKnownFor": "Acting | Obras: A Substância, Pobres Criaturas, Garotas em Fuga",
+        "overviewOrBio": "",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "d6c760bc-936b-4bf7-8293-697eafb70cc8",
+      "localName": "Margaretha Krook",
+      "localBirthDate": "1925-10-15",
+      "localCountry": "Suécia",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Persona"
+      ],
+      "imdbId": null,
+      "queryUsed": "Margaretha Krook",
+      "endpointUsed": "/search/person?query=Margaretha%20Krook&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Margaretha Krook\" (TMDB ID: 11917).",
+      "candidate": {
+        "tmdbId": 11917,
+        "titleOrName": "Margaretha Krook",
+        "releaseDateOrBirthDate": "1925-10-15",
+        "directorsOrKnownFor": "Acting | Obras: Quando Duas Mulheres Pecam, Stängda dörrar, Karlsson på taket",
+        "overviewOrBio": "",
+        "score": 85,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "8f7fc538-8315-413b-b100-f8f6a29117a9",
+      "localName": "Marisa Tomei",
+      "localBirthDate": "1964-12-04",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Homem-Aranha: Um Novo Dia"
+      ],
+      "imdbId": null,
+      "queryUsed": "Marisa Tomei",
+      "endpointUsed": "/search/person?query=Marisa%20Tomei&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Marisa Tomei\" (TMDB ID: 3141).",
+      "candidate": {
+        "tmdbId": 3141,
+        "titleOrName": "Marisa Tomei",
+        "releaseDateOrBirthDate": "1964-12-04",
+        "directorsOrKnownFor": "Acting | Obras: Grande Hotel, Tudo Pelo Poder, Entre Quatro Paredes",
+        "overviewOrBio": "Marisa Veriga Tomei, (Brooklyn, 4 de dezembro de 1964) é uma atriz estadunidense de origem italiana, vencedora do Oscar de melhor atriz coadjuvante pela atuação em Meu Primo Vinny (1992). Recentemente atuou como May Parker no Universo Marvel Cinematográfico, teve sua primeira aparição no filme Capitão América: Guerra Civil (2016), repetindo o papel em Homem-Aranha: De Volta ao Lar (2017), Vingadores: Ultimato (2019), Homem-Aranha: Longe de Casa (2019) e Homem-Aranha: Sem Volta para Casa (2021).",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "cf95890a-645a-452d-b6f2-7bd9ea86e4c6",
+      "localName": "Mark Ruffalo",
+      "localBirthDate": "1967-11-22",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Homem-Aranha: Um Novo Dia"
+      ],
+      "imdbId": null,
+      "queryUsed": "Mark Ruffalo",
+      "endpointUsed": "/search/person?query=Mark%20Ruffalo&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Mark Ruffalo\" (TMDB ID: 103).",
+      "candidate": {
+        "tmdbId": 103,
+        "titleOrName": "Mark Ruffalo",
+        "releaseDateOrBirthDate": "1967-11-22",
+        "directorsOrKnownFor": "Acting | Obras: Brilho Eterno de uma Mente sem Lembranças, A Última Fortaleza, Colateral",
+        "overviewOrBio": "Mark Alan Ruffalo (Kenosha, 22 de novembro de 1967) é um ator, cineasta, produtor e roteirista norte-americano, mais conhecido pelo papel de Bruce Banner / Hulk no Universo Cinematográfico Marvel, além de outros filmes como Colateral com Tom Cruise e Jamie Foxx, Shutter Island com Leonardo DiCaprio. Em 2002, Ruffalo foi diagnosticado com um tumor cerebral e submetido a cirurgia, o que resultou em um período de paralisia facial parcial, embora o tumor encontrado fosse benigno. Ele se recuperou totalmente da paralisia e regressou à boa saúde.",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "80b57d5f-e25f-4c0a-b040-1f32da9903c8",
+      "localName": "Mateo Ray Garcia",
+      "localBirthDate": "2012-11-17",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Só por Uma Noite"
+      ],
+      "imdbId": null,
+      "queryUsed": "Mateo Ray Garcia",
+      "endpointUsed": "/search/person?query=Mateo%20Ray%20Garcia&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Mateo Ray Garcia\" (TMDB ID: 2593684).",
+      "candidate": {
+        "tmdbId": 2593684,
+        "titleOrName": "Mateo Ray Garcia",
+        "releaseDateOrBirthDate": "2012-11-17",
+        "directorsOrKnownFor": "Acting | Obras: The Divisible, The Purple Night, The Daily War",
+        "overviewOrBio": "",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "2311dbc4-3632-4c4c-b8d3-458f0a946c5e",
+      "localName": "Matt Damon",
+      "localBirthDate": "1970-10-08",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "A Odisseia"
+      ],
+      "imdbId": null,
+      "queryUsed": "Matt Damon",
+      "endpointUsed": "/search/person?query=Matt%20Damon&language=pt-BR",
+      "resultsCount": 2,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Matt Damon\" (TMDB ID: 1892).",
+      "candidate": {
+        "tmdbId": 1892,
+        "titleOrName": "Matt Damon",
+        "releaseDateOrBirthDate": "1970-10-08",
+        "directorsOrKnownFor": "Acting | Obras: Onze Homens e um Segredo, Doze Homens e Outro Segredo, Syriana: A Indústria do Petróleo",
+        "overviewOrBio": "Matthew \"Matt\" Paige Damon (Cambridge, 8 de outubro de 1970) é um ator, roteirista, produtor e filantropo norte-americano, cuja carreira foi lançada após o sucesso do filme de drama Good Will Hunting (1997) a partir do roteiro que ele co-escreveu com o amigo e ator Ben Affleck. A dupla ganhou o Oscar de melhor roteiro original e o Globo de Ouro de melhor roteiro por seu trabalho. Por sua atuação no filme, Damon recebeu indicações para o Oscar, Globo de Ouro, Satellite Award, e o Screen Actors Guild Awards de Melhor Ator. No filme \"Onze Homens e Um Segredo\", Damon atuou ao lado de grandes estrelas de Hollywood como George Clooney, Andy Garcia e Brad Pitt.",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 78047,
+          "titleOrName": "Matt Rippy",
+          "releaseDateOrBirthDate": "1968-01-26",
+          "directorsOrKnownFor": "Acting | Obras: Operação Sombra: Jack Ryan, Dia dos Mortos, O Pesadelo 3",
+          "overviewOrBio": "",
+          "score": 10,
+          "divergences": [
+            "Variação nominal: Local \"Matt Damon\" vs TMDB \"Matt Rippy\"",
+            "Data de nascimento divergente: Local \"1970-10-08\" vs TMDB \"1968-01-26\""
+          ]
+        }
+      ],
+      "divergences": []
+    },
+    {
+      "internalId": "596075dc-44eb-4be1-8539-179be30eb09d",
+      "localName": "Matthias Brandt",
+      "localBirthDate": "1961-10-07",
+      "localCountry": "Alemanha",
+      "localPrimaryRoles": [
+        "Diretor"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Miroirs No. 3"
+      ],
+      "imdbId": null,
+      "queryUsed": "Matthias Brandt",
+      "endpointUsed": "/search/person?query=Matthias%20Brandt&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Matthias Brandt\" (TMDB ID: 35382).",
+      "candidate": {
+        "tmdbId": 35382,
+        "titleOrName": "Matthias Brandt",
+        "releaseDateOrBirthDate": "1961-10-07",
+        "directorsOrKnownFor": "Acting | Obras: Gegenüber, Ein Prachtexemplar, Der Tote am Strand",
+        "overviewOrBio": "",
+        "score": 85,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "389b2501-553b-49ec-84d8-cc48f44cdd2d",
+      "localName": "Maya Hawke",
+      "localBirthDate": "1998-07-08",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Só por Uma Noite"
+      ],
+      "imdbId": null,
+      "queryUsed": "Maya Hawke",
+      "endpointUsed": "/search/person?query=Maya%20Hawke&language=pt-BR",
+      "resultsCount": 2,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Maya Hawke\" (TMDB ID: 1903874).",
+      "candidate": {
+        "tmdbId": 1903874,
+        "titleOrName": "Maya Hawke",
+        "releaseDateOrBirthDate": "1998-07-08",
+        "directorsOrKnownFor": "Acting | Obras: Wildcat, Revolver, Asteroid City",
+        "overviewOrBio": "",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 1498686,
+          "titleOrName": "Maya Daisy Hawke",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Editing | Obras: The Winter of the Beard, The Winter of the Beard, Cowboy Poets",
+          "overviewOrBio": "",
+          "score": 40,
+          "divergences": [
+            "Variação nominal: Local \"Maya Hawke\" vs TMDB \"Maya Daisy Hawke\""
+          ]
+        }
+      ],
+      "divergences": []
+    },
+    {
+      "internalId": "b0607712-f39b-4372-9a1a-247440ec6fc9",
+      "localName": "Megan Lawless",
+      "localBirthDate": "2000-04-11",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Obsessão"
+      ],
+      "imdbId": null,
+      "queryUsed": "Megan Lawless",
+      "endpointUsed": "/search/person?query=Megan%20Lawless&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Megan Lawless\" (TMDB ID: 1519711).",
+      "candidate": {
+        "tmdbId": 1519711,
+        "titleOrName": "Megan Lawless",
+        "releaseDateOrBirthDate": "2000-04-11",
+        "directorsOrKnownFor": "Acting | Obras: À Espera da Morte, Convidados sem honra, O Ódio que Você Semeia",
+        "overviewOrBio": "",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "5eead754-f5f5-43ad-9f13-38c1cba4861a",
+      "localName": "Mia Goth",
+      "localBirthDate": "1993-10-25",
+      "localCountry": "Inglaterra",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "A Odisseia"
+      ],
+      "imdbId": null,
+      "queryUsed": "Mia Goth",
+      "endpointUsed": "/search/person?query=Mia%20Goth&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Mia Goth\" (TMDB ID: 1137824).",
+      "candidate": {
+        "tmdbId": 1137824,
+        "titleOrName": "Mia Goth",
+        "releaseDateOrBirthDate": "1993-10-25",
+        "directorsOrKnownFor": "Acting | Obras: Piscina Infinita, As Filhas Do Fazendeiro, Frankenstein",
+        "overviewOrBio": "Mia Gypsy Mello da Silva Goth (nascida em 1993) é uma atriz inglesa. Ela começou sua carreira de modelo ainda adolescente e fez sua estréia no cinema em Nymphomaniac (2013), de Lars von Trier. Ela foi posteriormente escalada para o thriller The Survivalist (2015) e o filme de terror psicológico A Cure for Wellness (2016). Em 2018, Goth teve papéis coadjuvantes no filme de mistério de ficção científica de Claire Denis, High Life, e no remake de Suspiria, de Luca Guadagnino. Mais tarde, ela apareceu na comédia romântica Emma (2020) e estrelou os filmes de terror X (2022) e Pearl (2022).",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "13166ba9-325f-43b1-b5a3-811f812c2c71",
+      "localName": "Michael Johnston",
+      "localBirthDate": "1996-02-22",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Obsessão"
+      ],
+      "imdbId": null,
+      "queryUsed": "Michael Johnston",
+      "endpointUsed": "/search/person?query=Michael%20Johnston&language=pt-BR",
+      "resultsCount": 16,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Michael Johnston\" (TMDB ID: 1561370).",
+      "candidate": {
+        "tmdbId": 1561370,
+        "titleOrName": "Michael Johnston",
+        "releaseDateOrBirthDate": "1996-02-22",
+        "directorsOrKnownFor": "Acting | Obras: Slash, Bornless Ones, Drama Drama",
+        "overviewOrBio": "",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 1525723,
+          "titleOrName": "Michael Johnston",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Writing | Obras: A Fúria do Dragão, Landspeed, A Fúria do Dragão",
+          "overviewOrBio": "",
+          "score": 60,
+          "divergences": []
+        },
+        {
+          "tmdbId": 2587817,
+          "titleOrName": "Michael Johnston",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Costume & Make-Up | Obras: Eagles: Hell Freezes Over, Na Ponta dos Pés, Bob Esponja: Descobrindo a Atlântida",
+          "overviewOrBio": "",
+          "score": 60,
+          "divergences": []
+        }
+      ],
+      "divergences": []
+    },
+    {
+      "internalId": "b4ce5184-36e0-4c56-a927-d3bed1f70611",
+      "localName": "Michael Mando",
+      "localBirthDate": "1981-07-13",
+      "localCountry": "Canadá",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Homem-Aranha: Um Novo Dia"
+      ],
+      "imdbId": null,
+      "queryUsed": "Michael Mando",
+      "endpointUsed": "/search/person?query=Michael%20Mando&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Michael Mando\" (TMDB ID: 829372).",
+      "candidate": {
+        "tmdbId": 829372,
+        "titleOrName": "Michael Mando",
+        "releaseDateOrBirthDate": "1981-07-13",
+        "directorsOrKnownFor": "Acting | Obras: Territories, King Ivory: Vício das Ruas, Uma Boa Mentira",
+        "overviewOrBio": "",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "66f47901-f35a-4840-9c25-06ba3c620c85",
+      "localName": "Molly Ringwald",
+      "localBirthDate": "1968-02-18",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Só por Uma Noite"
+      ],
+      "imdbId": null,
+      "queryUsed": "Molly Ringwald",
+      "endpointUsed": "/search/person?query=Molly%20Ringwald&language=pt-BR",
+      "resultsCount": 2,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Molly Ringwald\" (TMDB ID: 21625).",
+      "candidate": {
+        "tmdbId": 21625,
+        "titleOrName": "Molly Ringwald",
+        "releaseDateOrBirthDate": "1968-02-18",
+        "directorsOrKnownFor": "Acting | Obras: Clube dos Cinco, Cut: Cenas de Horror, Tentação Fatal",
+        "overviewOrBio": "Molly Kathleen Ringwald é uma atriz, cantora, dançarina e escritora, norte-americana. Ringwald estrelou Sixteen Candles, The Breakfast Club e Pretty in Pink. Interpretou Anne Juergens na série The Secret Life of the American Teenager, da ABC Family, exibida no Brasil pelo canal pago Boomerang.",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 5738859,
+          "titleOrName": "Molly Ringwald",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Acting | Obras: ",
+          "overviewOrBio": "",
+          "score": 60,
+          "divergences": []
+        }
+      ],
+      "divergences": []
+    },
+    {
+      "internalId": "7a7b726b-1acd-4779-aee0-e8ab2109ec67",
+      "localName": "Monica Barbaro",
+      "localBirthDate": "1990-06-17",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Só por Uma Noite"
+      ],
+      "imdbId": null,
+      "queryUsed": "Monica Barbaro",
+      "endpointUsed": "/search/person?query=Monica%20Barbaro&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "AMBIGUOUS",
+      "justification": "Correspondência ambígua ou presença de divergência/homônimos. Candidato sugerido: \"Monica Barbaro\" (TMDB ID: 1525043).",
+      "candidate": {
+        "tmdbId": 1525043,
+        "titleOrName": "Monica Barbaro",
+        "releaseDateOrBirthDate": "1989-06-17",
+        "directorsOrKnownFor": "Acting | Obras: Um Completo Desconhecido, Eu Sou Charlie Walker, Bullish",
+        "overviewOrBio": "",
+        "score": 75,
+        "divergences": [
+          "Data de nascimento divergente: Local \"1990-06-17\" vs TMDB \"1989-06-17\""
+        ]
+      },
+      "alternativeCandidates": [],
+      "divergences": [
+        "Data de nascimento divergente: Local \"1990-06-17\" vs TMDB \"1989-06-17\""
+      ]
+    },
+    {
+      "internalId": "40a84d21-67c2-4fc0-8d29-f987becc2868",
+      "localName": "Nicholas Hammond",
+      "localBirthDate": "1950-05-15",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "A Noviça Rebelde"
+      ],
+      "imdbId": null,
+      "queryUsed": "Nicholas Hammond",
+      "endpointUsed": "/search/person?query=Nicholas%20Hammond&language=pt-BR",
+      "resultsCount": 3,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Nicholas Hammond\" (TMDB ID: 29095).",
+      "candidate": {
+        "tmdbId": 29095,
+        "titleOrName": "Nicholas Hammond",
+        "releaseDateOrBirthDate": "1950-05-15",
+        "directorsOrKnownFor": "Acting | Obras: Stealth: Ameaça Invisível, Catch-22, A Noviça Rebelde",
+        "overviewOrBio": "",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 4712225,
+          "titleOrName": "Nicholas Hammond",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Acting | Obras: Minutemen: Viajantes do Tempo, Minutemen: Viajantes do Tempo",
+          "overviewOrBio": "",
+          "score": 60,
+          "divergences": []
+        },
+        {
+          "tmdbId": 4729942,
+          "titleOrName": "Nicholas Hammond",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Acting | Obras: ",
+          "overviewOrBio": "",
+          "score": 60,
+          "divergences": []
+        }
+      ],
+      "divergences": []
+    },
+    {
+      "internalId": "6f1d6606-43e2-4019-8279-896445903b83",
+      "localName": "Okieriete Onaodowan",
+      "localBirthDate": "1987-08-16",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Só por Uma Noite"
+      ],
+      "imdbId": null,
+      "queryUsed": "Okieriete Onaodowan",
+      "endpointUsed": "/search/person?query=Okieriete%20Onaodowan&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Okieriete Onaodowan\" (TMDB ID: 1419065).",
+      "candidate": {
+        "tmdbId": 1419065,
+        "titleOrName": "Okieriete Onaodowan",
+        "releaseDateOrBirthDate": "1987-08-16",
+        "directorsOrKnownFor": "Acting | Obras: The Family Meeting, Ficção Americana, Molli and Max in the Future",
+        "overviewOrBio": "",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "ccc57074-ba99-4381-b065-87756d0d59e1",
+      "localName": "Olivia Wilde",
+      "localBirthDate": "1984-03-10",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Atriz",
+        "Diretora"
+      ],
+      "localCreditsCount": 2,
+      "localFilmTitles": [
+        "O Convite",
+        "O Convite"
+      ],
+      "imdbId": null,
+      "queryUsed": "Olivia Wilde",
+      "endpointUsed": "/search/person?query=Olivia%20Wilde&language=pt-BR",
+      "resultsCount": 3,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Olivia Wilde\" (TMDB ID: 59315).",
+      "candidate": {
+        "tmdbId": 59315,
+        "titleOrName": "Olivia Wilde",
+        "releaseDateOrBirthDate": "1984-03-10",
+        "directorsOrKnownFor": "Acting | Obras: A Morte e a Vida de Bobby Z, Tron: O Legado, Alpha Dog",
+        "overviewOrBio": "",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 4027226,
+          "titleOrName": "Olivia Wilde",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Writing | Obras: Long Play, Long Play",
+          "overviewOrBio": "",
+          "score": 60,
+          "divergences": []
+        },
+        {
+          "tmdbId": 4317494,
+          "titleOrName": "Olivia Wilder",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Acting | Obras: Let Love In, Let Love In",
+          "overviewOrBio": "",
+          "score": 20,
+          "divergences": [
+            "Variação nominal: Local \"Olivia Wilde\" vs TMDB \"Olivia Wilder\""
+          ]
+        }
+      ],
+      "divergences": []
+    },
+    {
+      "internalId": "3162c028-966b-4873-8a27-0ca395bf2bb5",
+      "localName": "Paula Beer",
+      "localBirthDate": "1995-02-01",
+      "localCountry": "Alemanha",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Miroirs No. 3"
+      ],
+      "imdbId": null,
+      "queryUsed": "Paula Beer",
+      "endpointUsed": "/search/person?query=Paula%20Beer&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "AMBIGUOUS",
+      "justification": "Correspondência ambígua ou presença de divergência/homônimos. Candidato sugerido: \"Paula Beer\" (TMDB ID: 894116).",
+      "candidate": {
+        "tmdbId": 894116,
+        "titleOrName": "Paula Beer",
+        "releaseDateOrBirthDate": "1995-02-23",
+        "directorsOrKnownFor": "Acting | Obras: Poll, Afire, O Sabor das Sementes de Maçã",
+        "overviewOrBio": "",
+        "score": 50,
+        "divergences": [
+          "Data de nascimento divergente: Local \"1995-02-01\" vs TMDB \"1995-02-23\""
+        ]
+      },
+      "alternativeCandidates": [],
+      "divergences": [
+        "Data de nascimento divergente: Local \"1995-02-01\" vs TMDB \"1995-02-23\""
+      ]
+    },
+    {
+      "internalId": "7f4eea0f-324e-4835-a602-d028a526ea6e",
+      "localName": "Penélope Cruz",
+      "localBirthDate": "1974-04-28",
+      "localCountry": "Espanha",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "O Convite"
+      ],
+      "imdbId": null,
+      "queryUsed": "Penélope Cruz",
+      "endpointUsed": "/search/person?query=Pen%C3%A9lope%20Cruz&language=pt-BR",
+      "resultsCount": 2,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Penélope Cruz\" (TMDB ID: 955).",
+      "candidate": {
+        "tmdbId": 955,
+        "titleOrName": "Penélope Cruz",
+        "releaseDateOrBirthDate": "1974-04-28",
+        "directorsOrKnownFor": "Acting | Obras: Tudo Sobre Minha Mãe, Volver, Carne Trêmula",
+        "overviewOrBio": "Penélope Cruz Sánchez (Alcobendas, 28 de abril de 1974) é uma atriz espanhola, a primeira intérprete do país a levar o Óscar, Melhor Atriz Coadjuvante por Vicky Cristina Barcelona. De 1997 a 2000, participou de filmes que lhe deram sucesso entre os críticos e começaram a torná-la conhecida internacionalmente. As aparições em Abre los ojos, Carne Trémula e La niña de tus ojos, lhe renderam boas resenhas, o que lhe abriu caminho para papéis maiores. Em 2001, estrelou os sucessos comerciais Blow e Vanilla Sky (refilmagem de Abre los Ojos), ao lado de Johnny Depp e Tom Cruise, respectivamente.",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 4763132,
+          "titleOrName": "Aliyah Penelope Cruz",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Directing | Obras: Scavengers, Scavengers",
+          "overviewOrBio": "",
+          "score": 40,
+          "divergences": [
+            "Variação nominal: Local \"Penélope Cruz\" vs TMDB \"Aliyah Penelope Cruz\""
+          ]
+        }
+      ],
+      "divergences": []
+    },
+    {
+      "internalId": "e5cf5974-e36d-45ca-945d-39f231da10b0",
+      "localName": "Philip Froissant",
+      "localBirthDate": "1994-01-01",
+      "localCountry": "Alemanha",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Miroirs No. 3"
+      ],
+      "imdbId": null,
+      "queryUsed": "Philip Froissant",
+      "endpointUsed": "/search/person?query=Philip%20Froissant&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Philip Froissant\" (TMDB ID: 3147083).",
+      "candidate": {
+        "tmdbId": 3147083,
+        "titleOrName": "Philip Froissant",
+        "releaseDateOrBirthDate": "1994-01-01",
+        "directorsOrKnownFor": "Acting | Obras: GRRRL, Ilha de Segredos, Mirrors No. 3",
+        "overviewOrBio": "",
+        "score": 85,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "fd64b8c9-be8a-49d3-b9d7-6247f7c6508f",
+      "localName": "Quintessa Swindell",
+      "localBirthDate": "1997-02-08",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Só por Uma Noite"
+      ],
+      "imdbId": null,
+      "queryUsed": "Quintessa Swindell",
+      "endpointUsed": "/search/person?query=Quintessa%20Swindell&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Quintessa Swindell\" (TMDB ID: 2042690).",
+      "candidate": {
+        "tmdbId": 2042690,
+        "titleOrName": "Quintessa Swindell",
+        "releaseDateOrBirthDate": "1997-02-08",
+        "directorsOrKnownFor": "Acting | Obras: Jardim dos Desejos, Adão Negro: Herói ou Vilão?, Granada Nights",
+        "overviewOrBio": "Quintessa Swindell é uma atriz americana, mais conhecida pelo papel de Tabitha Foster no drama adolescente da Netflix Trinkets, e por sua breve aparição como Anna na série da HBO Euphoria, além de aparecer no filme da DC Adão Negro.",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "23791fcf-1a50-4951-9cc1-bb80c0a0b535",
+      "localName": "Ridley Scott",
+      "localBirthDate": "1937-11-30",
+      "localCountry": "Inglaterra",
+      "localPrimaryRoles": [
+        "Diretor"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Ponto Sem Retorno"
+      ],
+      "imdbId": null,
+      "queryUsed": "Ridley Scott",
+      "endpointUsed": "/search/person?query=Ridley%20Scott&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Ridley Scott\" (TMDB ID: 578).",
+      "candidate": {
+        "tmdbId": 578,
+        "titleOrName": "Ridley Scott",
+        "releaseDateOrBirthDate": "1937-11-30",
+        "directorsOrKnownFor": "Directing | Obras: Deck-A-Rep: The True Nature of Rick Deckard, Sacrificial Sheep: The Novel vs. the Film, Filme, o Registro Vivo de Nossa Memória",
+        "overviewOrBio": "Ridley Leighton Scott, (South Shields, 30 de novembro de 1937) é um renomado diretor e produtor de cinema britânico, notório por realizar grandes produções de ficção científica, suspense e épico mesclando ocasionalmente os três gêneros em uma mesma obra. Ao longo de uma extensa e aclamada carreira cinematográfica, Scott dirigiu alguns dos filmes mais bem-sucedidos de sua geração, como o suspense Alien (1979), o distópico Blade Runner (1982), o filme de aventura Thelma and Louise (1991) e os épicos Gladiator (2000), Black Hawk Down (2001) e Kingdom of Heaven (2005).",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "88f76b62-20cd-42c1-a9f0-06d39e60b928",
+      "localName": "Robert Pattinson",
+      "localBirthDate": "1983-05-13",
+      "localCountry": "Inglaterra",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "A Odisseia"
+      ],
+      "imdbId": null,
+      "queryUsed": "Robert Pattinson",
+      "endpointUsed": "/search/person?query=Robert%20Pattinson&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "AMBIGUOUS",
+      "justification": "Correspondência ambígua ou presença de divergência/homônimos. Candidato sugerido: \"Robert Pattinson\" (TMDB ID: 11288).",
+      "candidate": {
+        "tmdbId": 11288,
+        "titleOrName": "Robert Pattinson",
+        "releaseDateOrBirthDate": "1986-05-13",
+        "directorsOrKnownFor": "Acting | Obras: Harry Potter e o Cálice de Fogo, O Anel dos Nibelungos, The Haunted Airman",
+        "overviewOrBio": "Robert Douglas Thomas Pattinson (Londres, 13 de maio de 1986) é um ator, modelo e músico britânico. É mais conhecido por interpretar Edward Cullen nas cinco adaptações cinematográficas da saga Crepúsculo - Twilight, Bruce Wayne/Batman em The Batman de Matt Reeves pela DC Comics, Cedrico Diggory em \"Harry Potter e o Cálice de Fogo\" e Neil em Tenet de Christopher Nolan. Protagonista das adaptações cinematográficas dos romances de Crepúsculo (2008-2012). Depois de estrelar os dramas românticos Remember Me (2010) e Water for Elephants (2011), Pattinson começou a trabalhar em filmes independentes.",
+        "score": 75,
+        "divergences": [
+          "Data de nascimento divergente: Local \"1983-05-13\" vs TMDB \"1986-05-13\""
+        ]
+      },
+      "alternativeCandidates": [],
+      "divergences": [
+        "Data de nascimento divergente: Local \"1983-05-13\" vs TMDB \"1986-05-13\""
+      ]
+    },
+    {
+      "internalId": "dc64983d-0471-4fad-987d-d691e7d4c380",
+      "localName": "Robert Wise",
+      "localBirthDate": "1914-09-10",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Diretor"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "A Noviça Rebelde"
+      ],
+      "imdbId": null,
+      "queryUsed": "Robert Wise",
+      "endpointUsed": "/search/person?query=Robert%20Wise&language=pt-BR",
+      "resultsCount": 11,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Robert Wise\" (TMDB ID: 1744).",
+      "candidate": {
+        "tmdbId": 1744,
+        "titleOrName": "Robert Wise",
+        "releaseDateOrBirthDate": "1914-09-10",
+        "directorsOrKnownFor": "Directing | Obras: Glanz und Elend in Hollywood: Natalie Wood, Männer im Trenchcoat, Frauen im Pelz, Hollywood Screen Tests: Take 1",
+        "overviewOrBio": "Robert Earl Wise (10 de setembro de 1914 - 14 de setembro de 2005) foi um editor de efeitos sonoros, editor de filmes, produtor e diretor de cinema americano. Ele ganhou o Oscar de Melhor Diretor por A Noviça Rebelde (1965) e West Side Story (1961), bem como indicações como Melhor Edição de Filme por Cidadão Kane (1941) e Melhor Filme por The Sand Pebbles (1966). Entre seus outros filmes estão Born to Kill; Destino Gobi; O Hindenburg; Jornada nas Estrelas: O Filme; O Dia em que a Terra Parou; Corra Silencioso, Corra Profundo; A estirpe de Andrômeda; A Montagem; A caçada; e O Ladrão de Corpos. O período de trabalho de Wise abrangeu as décadas de 1930 a 1990.",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 1554128,
+          "titleOrName": "Robert Wise",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Art | Obras: Deadly Ex, Quase Felizes para Sempre, Hollywood Sex Wars",
+          "overviewOrBio": "",
+          "score": 60,
+          "divergences": []
+        },
+        {
+          "tmdbId": 4878186,
+          "titleOrName": "Robert Wise",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Production | Obras: Strong Kids Against Crime, Victims Fight Back, Strong Kids Against Crime",
+          "overviewOrBio": "",
+          "score": 60,
+          "divergences": []
+        }
+      ],
+      "divergences": []
+    },
+    {
+      "internalId": "7fb505f9-3d1e-43a7-8842-31a301fb3e9f",
+      "localName": "Rosemarie DeWitt",
+      "localBirthDate": "1971-10-26",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "La La Land: Cantando Estações"
+      ],
+      "imdbId": null,
+      "queryUsed": "Rosemarie DeWitt",
+      "endpointUsed": "/search/person?query=Rosemarie%20DeWitt&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Rosemarie DeWitt\" (TMDB ID: 14892).",
+      "candidate": {
+        "tmdbId": 14892,
+        "titleOrName": "Rosemarie DeWitt",
+        "releaseDateOrBirthDate": "1971-10-26",
+        "directorsOrKnownFor": "Acting | Obras: A Luta pela Esperança, O Casamento de Rachel, How I Got Lost",
+        "overviewOrBio": "",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "9f2e6d45-3069-45bc-969d-114f13ca8669",
+      "localName": "Ryan Gosling",
+      "localBirthDate": "1980-11-12",
+      "localCountry": "Canadá",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "La La Land: Cantando Estações"
+      ],
+      "imdbId": null,
+      "queryUsed": "Ryan Gosling",
+      "endpointUsed": "/search/person?query=Ryan%20Gosling&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Ryan Gosling\" (TMDB ID: 30614).",
+      "candidate": {
+        "tmdbId": 30614,
+        "titleOrName": "Ryan Gosling",
+        "releaseDateOrBirthDate": "1980-11-12",
+        "directorsOrKnownFor": "Acting | Obras: Tudo Pelo Poder, Duelo de Titãs, Tolerância Zero",
+        "overviewOrBio": "Ryan Thomas Gosling (Cornwall, Ontário, 12 de novembro de 1980) é um ator, cineasta e músico canadiano. Ele começou sua carreira como um ator mirim no programa da Disney Channel, Clube do Mickey (1993-1995). Gosling recebeu aclamação do publico por seu desempenho Diário de Uma Paixão (2004), pelo qual ele recebeu quatro Teen Choice Award e um MTV Movie Award. Ele também se tornou um dos atores mais elogiados criticamente, depois de seu desempenho como um professor viciado em drogas em Half Nelson (2006), pelo qual venceu o Independent Spirit Award e o National Board of Review Award e recebeu sua primeira indicação ao Óscar.",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "eb2a8b34-4fd3-4f15-81a9-7568c3ab9605",
+      "localName": "Sadie Sink",
+      "localBirthDate": "2002-04-16",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Homem-Aranha: Um Novo Dia"
+      ],
+      "imdbId": null,
+      "queryUsed": "Sadie Sink",
+      "endpointUsed": "/search/person?query=Sadie%20Sink&language=pt-BR",
+      "resultsCount": 2,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Sadie Sink\" (TMDB ID: 1590797).",
+      "candidate": {
+        "tmdbId": 1590797,
+        "titleOrName": "Sadie Sink",
+        "releaseDateOrBirthDate": "2002-04-16",
+        "directorsOrKnownFor": "Acting | Obras: O'Dessa, All Too Well: The Short Film, A Seita",
+        "overviewOrBio": "Sadie  Elizabeth Sink nasceu em 16 de abril de 2002 em Brenham, Texas. Sua mãe colocou ela e seu irmão mais velho - Mitchell - em aulas de atuação quando ela tinha 10 anos e começou sua carreira aos onze na produção da Broadway de Annie. Sadie é conhecida por seu papel como Suzanne Ballard no programa American Odyssey. Ela também atuou em The Glass Castle em 2017. Ela é a atriz que interpreta Max na segunda e terceira temporada de Stranger Things.",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 6175712,
+          "titleOrName": "Sadie Sink",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Acting | Obras: The Last Light, The Last Light",
+          "overviewOrBio": "",
+          "score": 60,
+          "divergences": []
+        }
+      ],
+      "divergences": []
+    },
+    {
+      "internalId": "08bd243f-29d7-4d50-932c-4468baa7b7be",
+      "localName": "Seth Rogan",
+      "localBirthDate": "1982-04-15",
+      "localCountry": "Canadá",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "O Convite"
+      ],
+      "imdbId": null,
+      "queryUsed": "Seth Rogen",
+      "endpointUsed": "/search/person?query=Seth%20Rogen&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "AMBIGUOUS",
+      "justification": "Correspondência ambígua ou presença de divergência/homônimos. Candidato sugerido: \"Seth Rogen\" (TMDB ID: 19274).",
+      "candidate": {
+        "tmdbId": 19274,
+        "titleOrName": "Seth Rogen",
+        "releaseDateOrBirthDate": "1982-04-15",
+        "directorsOrKnownFor": "Acting | Obras: Segurando as Pontas, Super Mario Bros. O Filme, Dois é Bom, Três é Demais",
+        "overviewOrBio": "",
+        "score": 70,
+        "divergences": [
+          "Variação nominal: Local \"Seth Rogan\" vs TMDB \"Seth Rogen\""
+        ]
+      },
+      "alternativeCandidates": [],
+      "divergences": [
+        "Variação nominal: Local \"Seth Rogan\" vs TMDB \"Seth Rogen\""
+      ]
+    },
+    {
+      "internalId": "5f34c43b-2701-415b-b85a-32e9e4f98ae6",
+      "localName": "Tom Holland",
+      "localBirthDate": "1996-06-01",
+      "localCountry": "Inglaterra",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 2,
+      "localFilmTitles": [
+        "A Odisseia",
+        "Homem-Aranha: Um Novo Dia"
+      ],
+      "imdbId": null,
+      "queryUsed": "Tom Holland",
+      "endpointUsed": "/search/person?query=Tom%20Holland&language=pt-BR",
+      "resultsCount": 7,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Tom Holland\" (TMDB ID: 1136406).",
+      "candidate": {
+        "tmdbId": 1136406,
+        "titleOrName": "Tom Holland",
+        "releaseDateOrBirthDate": "1996-06-01",
+        "directorsOrKnownFor": "Acting | Obras: Venom: Tempo de Carnificina, Last Call, O Impossível",
+        "overviewOrBio": "Thomas Stanley Holland, conhecido apenas como Tom Holland, é um ator, dançarino, diretor e dublador britânico. Ganhou destaque no cinema no papel de Lucas Bennett no filme O Impossível, papel principal também em Billy Elliot e teve reconhecimento internacional ao interpretar Peter Parker / Homem-Aranha nos filmes do Universo Cinematográfico Marvel.",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 1277187,
+          "titleOrName": "Tom Holland",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Acting | Obras: Mexicali Shmoes, Señorella and the Glass Huarache, Mexican Boarders",
+          "overviewOrBio": "",
+          "score": 60,
+          "divergences": []
+        },
+        {
+          "tmdbId": 64796,
+          "titleOrName": "Tom Holland",
+          "releaseDateOrBirthDate": "1943-07-11",
+          "directorsOrKnownFor": "Directing | Obras: In Search of Darkness: Part III, Robot Dracula, The Occult",
+          "overviewOrBio": "",
+          "score": 50,
+          "divergences": [
+            "Data de nascimento divergente: Local \"1996-06-01\" vs TMDB \"1943-07-11\""
+          ]
+        }
+      ],
+      "divergences": []
+    },
+    {
+      "internalId": "75715ec7-0fb5-4bdd-acb7-10f47b8565a0",
+      "localName": "Tramell Tillman",
+      "localBirthDate": "1985-06-17",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Homem-Aranha: Um Novo Dia"
+      ],
+      "imdbId": null,
+      "queryUsed": "Tramell Tillman",
+      "endpointUsed": "/search/person?query=Tramell%20Tillman&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Tramell Tillman\" (TMDB ID: 2028037).",
+      "candidate": {
+        "tmdbId": 2028037,
+        "titleOrName": "Tramell Tillman",
+        "releaseDateOrBirthDate": "1985-06-17",
+        "directorsOrKnownFor": "Acting | Obras: Sweethearts, Missão: Impossível - O Acerto Final, Barron's Cove",
+        "overviewOrBio": "",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "f8562d0a-9f8a-403c-939d-1df5018aebf8",
+      "localName": "Travis Scott",
+      "localBirthDate": "1991-04-30",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Ator",
+        "Cantor"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "A Odisseia"
+      ],
+      "imdbId": null,
+      "queryUsed": "Travis Scott",
+      "endpointUsed": "/search/person?query=Travis%20Scott&language=pt-BR",
+      "resultsCount": 9,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Travis Scott\" (TMDB ID: 1978406).",
+      "candidate": {
+        "tmdbId": 1978406,
+        "titleOrName": "Travis Scott",
+        "releaseDateOrBirthDate": "1991-04-30",
+        "directorsOrKnownFor": "Acting | Obras: Travis Scott: Live at the Mountain, Astroworld: Concert from Hell, Trolls: Celebrando em Harmonia",
+        "overviewOrBio": "",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 4375535,
+          "titleOrName": "Scott Travis",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Directing | Obras: Mother Doesn't Know Best, Mother Doesn't Know Best, Mother Doesn't Know Best",
+          "overviewOrBio": "",
+          "score": 60,
+          "divergences": []
+        },
+        {
+          "tmdbId": 1179911,
+          "titleOrName": "Scott Travis",
+          "releaseDateOrBirthDate": "1961-09-06",
+          "directorsOrKnownFor": "Acting | Obras: Judas Priest: British Steel 30th Anniversary, Judas Priest: Epitaph, 2022 Rock & Roll Hall of Fame Induction Ceremony",
+          "overviewOrBio": "",
+          "score": 50,
+          "divergences": [
+            "Data de nascimento divergente: Local \"1991-04-30\" vs TMDB \"1961-09-06\""
+          ]
+        }
+      ],
+      "divergences": []
+    },
+    {
+      "internalId": "dbdbbe67-e8ba-4891-996c-ce38011e1a69",
+      "localName": "Victoire Laly",
+      "localBirthDate": "1991-05-05",
+      "localCountry": "Alemanha",
+      "localPrimaryRoles": [
+        "Ator"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Miroirs No. 3"
+      ],
+      "imdbId": null,
+      "queryUsed": "Victoire Laly",
+      "endpointUsed": "/search/person?query=Victoire%20Laly&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "AMBIGUOUS",
+      "justification": "Correspondência ambígua ou presença de divergência/homônimos. Candidato sugerido: \"Victoire Laly\" (TMDB ID: 1524310).",
+      "candidate": {
+        "tmdbId": 1524310,
+        "titleOrName": "Victoire Laly",
+        "releaseDateOrBirthDate": "1991-07-21",
+        "directorsOrKnownFor": "Acting | Obras: Die Geschichte einer Familie, Flügel aus Beton, Die Misandristinnen",
+        "overviewOrBio": "",
+        "score": 50,
+        "divergences": [
+          "Data de nascimento divergente: Local \"1991-05-05\" vs TMDB \"1991-07-21\""
+        ]
+      },
+      "alternativeCandidates": [],
+      "divergences": [
+        "Data de nascimento divergente: Local \"1991-05-05\" vs TMDB \"1991-07-21\""
+      ]
+    },
+    {
+      "internalId": "44bab1d8-90eb-4913-8894-9301f7ead4ad",
+      "localName": "Will Gluck",
+      "localBirthDate": "1978-11-07",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Diretor"
+      ],
+      "localCreditsCount": 1,
+      "localFilmTitles": [
+        "Só por Uma Noite"
+      ],
+      "imdbId": null,
+      "queryUsed": "Will Gluck",
+      "endpointUsed": "/search/person?query=Will%20Gluck&language=pt-BR",
+      "resultsCount": 1,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Will Gluck\" (TMDB ID: 82511).",
+      "candidate": {
+        "tmdbId": 82511,
+        "titleOrName": "Will Gluck",
+        "releaseDateOrBirthDate": "1978-11-07",
+        "directorsOrKnownFor": "Directing | Obras: The Making of Easy A, O Seu Jeito de Andar, A Mentira",
+        "overviewOrBio": "",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [],
+      "divergences": []
+    },
+    {
+      "internalId": "4c9577d1-dfb4-411b-9307-c78d7c16bed0",
+      "localName": "Zendaya",
+      "localBirthDate": "1996-09-01",
+      "localCountry": "Estados Unidos",
+      "localPrimaryRoles": [
+        "Atriz"
+      ],
+      "localCreditsCount": 2,
+      "localFilmTitles": [
+        "A Odisseia",
+        "Homem-Aranha: Um Novo Dia"
+      ],
+      "imdbId": null,
+      "queryUsed": "Zendaya",
+      "endpointUsed": "/search/person?query=Zendaya&language=pt-BR",
+      "resultsCount": 2,
+      "classification": "HIGH",
+      "justification": "Correspondência confirmada pela API TMDB para \"Zendaya\" (TMDB ID: 505710).",
+      "candidate": {
+        "tmdbId": 505710,
+        "titleOrName": "Zendaya",
+        "releaseDateOrBirthDate": "1996-09-01",
+        "directorsOrKnownFor": "Acting | Obras: Aminimigos, Rivais, Os Jogos no Refúgio das Fadas",
+        "overviewOrBio": "Zendaya Maree Stoermer Coleman (1 de setembro de 1996) é uma atriz e cantora americana. Ela começou sua carreira como modelo infantil e dançarina de apoio, antes de ganhar destaque por seu papel como Rocky Blue na sitcom Boa Sorte, Charlie! (2010-2013), do Disney Channel.\n\nDe 2015 a 2018, ela produziu e estrelou a série Agente K.C., mas foi em 2019 quando ela ganhou verdadeira popularidade interpretando Rue Bennett na série dramática da HBO, Euphoria. Por esse papel, Zendaya recebeu elogios da crítica, bem como indicações a varias premiações como o Critics Choice Awards. No cinema, seus papéis mais populares são O Rei do Show (2017) e interpretando a personagem da Marvel Michelle 'MJ' Jones em Homem-Aranha: De Volta ao Lar (2017), Homem-Aranha: Longe de Casa (2019) e Homem-Aranha: Sem Volta Para Casa (2021).\n\nEm sua carreira musical, Zendaya também teve sucesso. Em 2013, seu primeiro álbum de estúdio estreou na posição 51 na parada Billboard 200. \"Rewrite the Stars\", da trilha sonora de O Rei do Show (2017), foi lançado como single em 2018 e alcançou números incríveis nas paradas dos Estados Unidos, Reino Unido e Austrália.",
+        "score": 110,
+        "divergences": []
+      },
+      "alternativeCandidates": [
+        {
+          "tmdbId": 6447336,
+          "titleOrName": "Zendaya Scott",
+          "releaseDateOrBirthDate": "",
+          "directorsOrKnownFor": "Acting | Obras: HiT Favorites: Preschool Fun, HiT Favorites: Preschool Fun",
+          "overviewOrBio": "",
+          "score": 30,
+          "divergences": [
+            "Variação nominal: Local \"Zendaya\" vs TMDB \"Zendaya Scott\""
+          ]
+        }
+      ],
+      "divergences": []
+    }
+  ]
+}

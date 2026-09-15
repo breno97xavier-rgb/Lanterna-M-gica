@@ -21,6 +21,9 @@ export interface SupabasePessoa {
   status: ContentStatus;
   published_at: string | null;
   scheduled_at: string | null;
+  tmdb_id?: number | null;
+  tmdb_synced_at?: string | null;
+  imdb_id?: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -42,6 +45,9 @@ export interface CreatePessoaInput {
   published_at?: string | null;
   scheduled_at?: string | null;
   legacy_id?: string | null;
+  tmdb_id?: number | null;
+  tmdb_synced_at?: string | null;
+  imdb_id?: string | null;
 }
 
 export interface UpdatePessoaInput {
@@ -60,6 +66,9 @@ export interface UpdatePessoaInput {
   status?: ContentStatus;
   published_at?: string | null;
   scheduled_at?: string | null;
+  tmdb_id?: number | null;
+  tmdb_synced_at?: string | null;
+  imdb_id?: string | null;
 }
 
 /**
@@ -327,6 +336,9 @@ export async function createPessoa(
     published_at: input.published_at || (input.status === 'published' ? new Date().toISOString() : null),
     scheduled_at: input.scheduled_at || null,
     legacy_id: input.legacy_id || null,
+    tmdb_id: input.tmdb_id ? Number(input.tmdb_id) : null,
+    tmdb_synced_at: input.tmdb_synced_at || null,
+    imdb_id: input.imdb_id?.trim() || null,
   };
 
   try {
@@ -445,6 +457,18 @@ export async function updatePessoa(
 
   if (input.scheduled_at !== undefined) {
     payload.scheduled_at = input.scheduled_at;
+  }
+
+  if (input.tmdb_id !== undefined) {
+    payload.tmdb_id = input.tmdb_id ? Number(input.tmdb_id) : null;
+  }
+
+  if (input.tmdb_synced_at !== undefined) {
+    payload.tmdb_synced_at = input.tmdb_synced_at || null;
+  }
+
+  if (input.imdb_id !== undefined) {
+    payload.imdb_id = input.imdb_id?.trim() || null;
   }
 
   try {

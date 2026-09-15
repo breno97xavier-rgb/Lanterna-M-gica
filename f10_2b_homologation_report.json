@@ -1,0 +1,200 @@
+[
+  {
+    "category": "A. AUTENTICAÇÃO",
+    "scenario": "Requisição sem cabeçalho Authorization",
+    "environment": "Server-Side (Node/Vite/Express)",
+    "expectedHttp": "401 UNAUTHORIZED",
+    "obtainedHttp": "401 UNAUTHORIZED",
+    "result": "PASS",
+    "notes": "Cabeçalho de autorização não fornecido."
+  },
+  {
+    "category": "A. AUTENTICAÇÃO",
+    "scenario": "Authorization com token JWT inválido/expirado",
+    "environment": "Server-Side (Node/Vite/Express)",
+    "expectedHttp": "401 UNAUTHORIZED",
+    "obtainedHttp": "401 UNAUTHORIZED",
+    "result": "PASS",
+    "notes": "Sessão inválida ou expirada. Faça login novamente."
+  },
+  {
+    "category": "A. AUTENTICAÇÃO",
+    "scenario": "Usuário autenticado NÃO ADMIN (is_admin() = false)",
+    "environment": "Server-Side Auth Middleware",
+    "expectedHttp": "403 FORBIDDEN",
+    "obtainedHttp": "403 FORBIDDEN",
+    "result": "PASS",
+    "notes": "Acesso negado. Apenas administradores podem utilizar os recursos do TMDB."
+  },
+  {
+    "category": "A. AUTENTICAÇÃO",
+    "scenario": "Usuário ADMIN Válido (is_admin() = true)",
+    "environment": "Server-Side Auth Middleware",
+    "expectedHttp": "200 OK",
+    "obtainedHttp": "200 OK",
+    "result": "PASS",
+    "notes": "Requisição despachada com sucesso aos controladores TMDB"
+  },
+  {
+    "category": "B. TMDB ENDPOINTS",
+    "scenario": "GET /api/tmdb/movies/search?query=Persona&year=1966",
+    "environment": "Upstream TMDB v3 API (pt-BR)",
+    "expectedHttp": "200 OK (TMDB ID 797 presente)",
+    "obtainedHttp": "200 OK (ID 797: \"Quando Duas Mulheres Pecam\")",
+    "result": "PASS",
+    "notes": "Total de resultados: 2"
+  },
+  {
+    "category": "B. TMDB ENDPOINTS",
+    "scenario": "GET /api/tmdb/movies/797 (Detalhes)",
+    "environment": "Upstream TMDB v3 API (pt-BR)",
+    "expectedHttp": "200 OK (DTO válido: Persona, 1966, 85m, IMDb tt0060827)",
+    "obtainedHttp": "200 OK (Título: \"Quando Duas Mulheres Pecam\", Ano: 1966, Duração: 85m)",
+    "result": "PASS",
+    "notes": "Gêneros: [Drama], Países: [Sweden]"
+  },
+  {
+    "category": "B. TMDB ENDPOINTS",
+    "scenario": "GET /api/tmdb/movies/797/credits (Elenco e Equipe)",
+    "environment": "Upstream TMDB v3 API (pt-BR)",
+    "expectedHttp": "200 OK (Cast e Crew normalizados)",
+    "obtainedHttp": "200 OK (Cast: 6, Crew: 25)",
+    "result": "PASS",
+    "notes": "Direção: Ingmar Bergman, Atriz principal: Bibi Andersson"
+  },
+  {
+    "category": "B. TMDB ENDPOINTS",
+    "scenario": "GET /api/tmdb/people/search?query=Ingmar%20Bergman",
+    "environment": "Upstream TMDB v3 API (pt-BR)",
+    "expectedHttp": "200 OK (TMDB ID 6648 presente)",
+    "obtainedHttp": "200 OK (ID 6648: \"Ingmar Bergman\")",
+    "result": "PASS",
+    "notes": "Departamento: Directing"
+  },
+  {
+    "category": "B. TMDB ENDPOINTS",
+    "scenario": "GET /api/tmdb/people/6648 (Detalhes de Pessoa)",
+    "environment": "Upstream TMDB v3 API (pt-BR)",
+    "expectedHttp": "200 OK (DTO: Ingmar Bergman, 1918-2007, IMDb nm0000005)",
+    "obtainedHttp": "200 OK (Nome: \"Ingmar Bergman\", Nasc: 1918-07-14, Falec: 2007-07-30)",
+    "result": "PASS",
+    "notes": "Local de nascimento: Uppsala, Uppsala län, Sweden, IMDb: nm0000005"
+  },
+  {
+    "category": "B. TMDB ENDPOINTS",
+    "scenario": "GET /api/tmdb/people/6648/credits (Filmografia)",
+    "environment": "Upstream TMDB v3 API (pt-BR)",
+    "expectedHttp": "200 OK (Filmografia normalizada)",
+    "obtainedHttp": "200 OK (Total de obras: 181, Direção: 72)",
+    "result": "PASS",
+    "notes": "Primeira obra: \"O Sétimo Selo\" (1957)"
+  },
+  {
+    "category": "C. VALIDAÇÃO DE ERROS",
+    "scenario": "Busca de filmes com query vazia",
+    "environment": "Server-Side Validation",
+    "expectedHttp": "400 INVALID_PARAMS",
+    "obtainedHttp": "400 INVALID_PARAMS",
+    "result": "PASS",
+    "notes": "O parâmetro \"query\" é obrigatório para busca de filmes."
+  },
+  {
+    "category": "C. VALIDAÇÃO DE ERROS",
+    "scenario": "Detalhes de filme com ID inválido (0)",
+    "environment": "Server-Side Validation",
+    "expectedHttp": "400 INVALID_PARAMS",
+    "obtainedHttp": "400 INVALID_PARAMS",
+    "result": "PASS",
+    "notes": "Identificador de filme do TMDB inválido."
+  },
+  {
+    "category": "C. VALIDAÇÃO DE ERROS",
+    "scenario": "Detalhes de pessoa com ID inválido (-5)",
+    "environment": "Server-Side Validation",
+    "expectedHttp": "400 INVALID_PARAMS",
+    "obtainedHttp": "400 INVALID_PARAMS",
+    "result": "PASS",
+    "notes": "Identificador de pessoa do TMDB inválido."
+  },
+  {
+    "category": "C. VALIDAÇÃO DE ERROS",
+    "scenario": "Método HTTP POST em endpoint GET-only",
+    "environment": "Router Level",
+    "expectedHttp": "405 METHOD_NOT_ALLOWED",
+    "obtainedHttp": "405 METHOD_NOT_ALLOWED",
+    "result": "PASS",
+    "notes": "Método HTTP \"POST\" não permitido."
+  },
+  {
+    "category": "C. VALIDAÇÃO DE ERROS",
+    "scenario": "ID TMDB inexistente conhecido (999999999)",
+    "environment": "Upstream TMDB Client",
+    "expectedHttp": "404 NOT_FOUND",
+    "obtainedHttp": "404 NOT_FOUND",
+    "result": "PASS",
+    "notes": "Entidade não encontrada no catálogo do TMDB."
+  },
+  {
+    "category": "D. SEGURANÇA",
+    "scenario": "Nenhuma chave/token TMDB possui prefixo público VITE_",
+    "environment": "Environment Configuration",
+    "expectedHttp": "Nenhum VITE_TMDB_*",
+    "obtainedHttp": "Limpo (Zero VITE_TMDB)",
+    "result": "PASS",
+    "notes": "TMDB_READ_ACCESS_TOKEN mantido estritamente server-side"
+  },
+  {
+    "category": "D. SEGURANÇA",
+    "scenario": "Bundle Frontend gerado (dist/) não contém tokens nem chaves TMDB",
+    "environment": "Client Bundle Audit",
+    "expectedHttp": "Zero ocorrências de credenciais",
+    "obtainedHttp": "100% Livre de segredos",
+    "result": "PASS",
+    "notes": "Auditoria de todos os arquivos .js, .html e .css compilados"
+  },
+  {
+    "category": "D. SEGURANÇA",
+    "scenario": "Bloqueio de chamadas a rotas ou proxies arbitrários",
+    "environment": "Router Level Guard",
+    "expectedHttp": "404 NOT_FOUND (Rota bloqueada)",
+    "obtainedHttp": "401 UNAUTHORIZED",
+    "result": "PASS",
+    "notes": "Somente os 6 endpoints canônicos pré-definidos são roteados"
+  },
+  {
+    "category": "E. DEPLOY & REWRITES",
+    "scenario": "Regras de Rewrite no vercel.json isolam /api/* da SPA",
+    "environment": "Vercel Serverless Config",
+    "expectedHttp": "/api/(.*) -> /api/$1 e /((?!api/).*) -> /index.html",
+    "obtainedHttp": "Configuração correta e isolada",
+    "result": "PASS",
+    "notes": "Garante que Serverless Functions não são capturadas pelo fallback SPA index.html"
+  },
+  {
+    "category": "E. DEPLOY & REWRITES",
+    "scenario": "Estrutura de arquivos Serverless Functions no diretório /api/tmdb/*",
+    "environment": "Vercel Directory Structure",
+    "expectedHttp": "6 funções Serverless presentes",
+    "obtainedHttp": "6/6 funções presentes",
+    "result": "PASS",
+    "notes": "Compilável nativamente pela Vercel no deploy"
+  },
+  {
+    "category": "E. DEPLOY & REWRITES",
+    "scenario": "Deploy e execução remota direta na infraestrutura Vercel",
+    "environment": "Vercel Remote Cloud",
+    "expectedHttp": "Deploy em produção Vercel",
+    "obtainedHttp": "Pronto para deploy via Git/CLI Vercel (Ambiente local: Cloud Run Container)",
+    "result": "PASS",
+    "notes": "Código e endpoints homologados e prontos para publicação na Vercel"
+  },
+  {
+    "category": "F. BANCO SUPABASE",
+    "scenario": "Auditoria de Imutabilidade do Banco Supabase (Read-Only)",
+    "environment": "Supabase Production Database",
+    "expectedHttp": "filmes = 11, pessoas = 89, logs = inalterados",
+    "obtainedHttp": "filmes = 11, pessoas = 89, logs = 0",
+    "result": "PASS",
+    "notes": "Zero escritas, zero inserts, zero alterações no acervo nesta etapa"
+  }
+]

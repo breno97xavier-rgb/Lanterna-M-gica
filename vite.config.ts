@@ -1,11 +1,42 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import {defineConfig} from 'vite';
+import { defineConfig, Plugin } from 'vite';
+import { handleTmdbApiRequest } from './api/_lib/router';
+
+function tmdbApiDevMiddleware(): Plugin {
+  return {
+    name: 'tmdb-api-dev-middleware',
+    configureServer(server) {
+      server.middlewares.use(async (req, res, next) => {
+        if (req.url && (req.url.startsWith('/api/tmdb/') || req.url === '/api/tmdb')) {
+          try {
+            await handleTmdbApiRequest(req, res);
+          } catch (err: any) {
+            console.error('[Vite TMDB Dev Middleware Error]:', err);
+            if (!res.writableEnded) {
+              res.writeHead(500, { 'Content-Type': 'application/json' });
+              res.end(
+                JSON.stringify({
+                  error: {
+                    code: 'INTERNAL_ERROR',
+                    message: 'Erro interno no middleware TMDB de desenvolvimento.',
+                  },
+                })
+              );
+            }
+          }
+          return;
+        }
+        next();
+      });
+    },
+  };
+}
 
 export default defineConfig(() => {
   return {
-    plugins: [react(), tailwindcss()],
+    plugins: [react(), tailwindcss(), tmdbApiDevMiddleware()],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),

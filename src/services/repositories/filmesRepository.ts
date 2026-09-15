@@ -33,6 +33,10 @@ export interface SupabaseFilme {
   status: ContentStatus;
   published_at: string | null;
   scheduled_at: string | null;
+  tmdb_id?: number | null;
+  tmdb_synced_at?: string | null;
+  original_language?: string | null;
+  imdb_id?: string | null;
   created_at: string;
   updated_at: string;
   legacy_director_name: string | null;
@@ -65,6 +69,10 @@ export interface CreateFilmeInput {
   status?: ContentStatus;
   published_at?: string | null;
   scheduled_at?: string | null;
+  tmdb_id?: number | null;
+  tmdb_synced_at?: string | null;
+  original_language?: string | null;
+  imdb_id?: string | null;
   legacy_director_name?: string | null;
   genero_ids?: string[];
   country_ids?: string[];
@@ -85,6 +93,10 @@ export interface UpdateFilmeInput {
   status?: ContentStatus;
   published_at?: string | null;
   scheduled_at?: string | null;
+  tmdb_id?: number | null;
+  tmdb_synced_at?: string | null;
+  original_language?: string | null;
+  imdb_id?: string | null;
   legacy_director_name?: string | null;
   genero_ids?: string[];
   country_ids?: string[];
@@ -159,6 +171,10 @@ function mapRawFilmToSupabaseFilme(row: any): SupabaseFilme {
     status: row.status || 'published',
     published_at: row.published_at || null,
     scheduled_at: row.scheduled_at || null,
+    tmdb_id: row.tmdb_id ? Number(row.tmdb_id) : null,
+    tmdb_synced_at: row.tmdb_synced_at || null,
+    original_language: row.original_language || null,
+    imdb_id: row.imdb_id || null,
     created_at: row.created_at,
     updated_at: row.updated_at,
     legacy_director_name: row.legacy_director_name || null,
@@ -426,6 +442,10 @@ export async function createFilme(input: CreateFilmeInput): Promise<{ data: Supa
         status,
         published_at: publishedAt,
         scheduled_at: scheduledAt,
+        tmdb_id: input.tmdb_id ? Number(input.tmdb_id) : null,
+        tmdb_synced_at: input.tmdb_synced_at || null,
+        original_language: input.original_language?.trim() || null,
+        imdb_id: input.imdb_id?.trim() || null,
         legacy_director_name: input.legacy_director_name?.trim() || null,
       })
       .select()
@@ -508,6 +528,10 @@ export async function updateFilme(id: string, input: UpdateFilmeInput): Promise<
     if (input.synopsis !== undefined) updatePayload.synopsis = input.synopsis?.trim() || null;
     if (input.editorial_rating !== undefined) updatePayload.editorial_rating = input.editorial_rating ? Number(input.editorial_rating) : null;
     if (input.legacy_director_name !== undefined) updatePayload.legacy_director_name = input.legacy_director_name?.trim() || null;
+    if (input.tmdb_id !== undefined) updatePayload.tmdb_id = input.tmdb_id ? Number(input.tmdb_id) : null;
+    if (input.tmdb_synced_at !== undefined) updatePayload.tmdb_synced_at = input.tmdb_synced_at || null;
+    if (input.original_language !== undefined) updatePayload.original_language = input.original_language?.trim() || null;
+    if (input.imdb_id !== undefined) updatePayload.imdb_id = input.imdb_id?.trim() || null;
 
     if (input.status !== undefined) {
       updatePayload.status = input.status;

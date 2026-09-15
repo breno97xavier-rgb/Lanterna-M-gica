@@ -1,0 +1,917 @@
+{
+  "metadata": {
+    "generated_at": "2026-09-14T13:44:58.919Z",
+    "tmdb_api_authenticated": true,
+    "validation_method": "DIRECT_GET_ENTITY_ENDPOINT_HTTP_200",
+    "movies_total": 11,
+    "people_total": 89,
+    "duplicate_movie_ids": 0,
+    "duplicate_person_ids": 0,
+    "invalid_movie_ids": 0,
+    "invalid_person_ids": 0
+  },
+  "movies": [
+    {
+      "internal_uuid": "449a8c24-1901-4df1-a3fa-6de1f2edf934",
+      "local_title": "A Noviça Rebelde",
+      "tmdb_id": 15121,
+      "tmdb_title": "A Noviça Rebelde",
+      "tmdb_original_title": "The Sound of Music",
+      "tmdb_release_date": "1965-03-29",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "1b32374e-d28c-41ac-bcd1-4cb8792c2764",
+      "local_title": "A Odisseia",
+      "tmdb_id": 1368337,
+      "tmdb_title": "A Odisseia",
+      "tmdb_original_title": "The Odyssey",
+      "tmdb_release_date": "2026-07-15",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "fffa6c06-dd44-46c0-bfcd-875dd2e10f06",
+      "local_title": "Homem-Aranha: Um Novo Dia",
+      "tmdb_id": 969681,
+      "tmdb_title": "Homem-Aranha: Um Novo Dia",
+      "tmdb_original_title": "Spider-Man: Brand New Day",
+      "tmdb_release_date": "2026-07-29",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "971fea96-855e-45f2-a962-0e98cd00d4de",
+      "local_title": "La La Land: Cantando Estações",
+      "tmdb_id": 313369,
+      "tmdb_title": "La La Land: Cantando Estações",
+      "tmdb_original_title": "La La Land",
+      "tmdb_release_date": "2016-12-01",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "c224f859-7888-4424-9566-be58a9619cae",
+      "local_title": "Miroirs No. 3",
+      "tmdb_id": 1178602,
+      "tmdb_title": "Mirrors No. 3",
+      "tmdb_original_title": "Miroirs No. 3",
+      "tmdb_release_date": "2025-08-27",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "c39a1a2d-b86f-403e-a4d6-95c6c1f330c5",
+      "local_title": "O Convite",
+      "tmdb_id": 950028,
+      "tmdb_title": "O Convite",
+      "tmdb_original_title": "The Invite",
+      "tmdb_release_date": "2026-06-25",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "b518c724-96cb-4862-9662-cc66d2fa19d9",
+      "local_title": "O Fim da Rua",
+      "tmdb_id": 1101383,
+      "tmdb_title": "O Fim da Rua",
+      "tmdb_original_title": "The End of Oak Street",
+      "tmdb_release_date": "2026-08-12",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "0248e063-5c69-4527-9813-6a374b216825",
+      "local_title": "Obsessão",
+      "tmdb_id": 1339713,
+      "tmdb_title": "Obsessão",
+      "tmdb_original_title": "Obsession",
+      "tmdb_release_date": "2026-05-13",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "3ecb01f8-41d3-45ae-b0cd-be7c25d1048a",
+      "local_title": "Persona",
+      "tmdb_id": 797,
+      "tmdb_title": "Quando Duas Mulheres Pecam",
+      "tmdb_original_title": "Persona",
+      "tmdb_release_date": "1966-10-18",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "04ae3ecd-10ca-4b8b-835b-05820bc045c0",
+      "local_title": "Ponto Sem Retorno",
+      "tmdb_id": 1384216,
+      "tmdb_title": "Ponto Sem Retorno",
+      "tmdb_original_title": "The Dog Stars",
+      "tmdb_release_date": "2026-08-26",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "b5091b5f-a2e4-4a5a-9794-b9b253f28745",
+      "local_title": "Só por Uma Noite",
+      "tmdb_id": 1433367,
+      "tmdb_title": "Só por Uma Noite",
+      "tmdb_original_title": "One Night Only",
+      "tmdb_release_date": "2026-08-06",
+      "validation_status": "VALID"
+    }
+  ],
+  "people": [
+    {
+      "internal_uuid": "0f05fd0b-6c69-4b54-a256-b652d9c8478d",
+      "local_name": "Allison Janney",
+      "tmdb_id": 19,
+      "tmdb_name": "Allison Janney",
+      "tmdb_birthday": "1959-11-19",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "65c8e5bd-f9ac-4fc5-85fc-09631299788f",
+      "local_name": "Andy Richter",
+      "tmdb_id": 28637,
+      "tmdb_name": "Andy Richter",
+      "tmdb_birthday": "1966-10-28",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "daebdb82-1854-440e-9203-18533fca72d1",
+      "local_name": "Angela Cartwright",
+      "tmdb_id": 121640,
+      "tmdb_name": "Angela Cartwright",
+      "tmdb_birthday": "1952-09-09",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "ac8ef972-c882-4613-b089-5a8ea321bd04",
+      "local_name": "Anne Hathaway",
+      "tmdb_id": 1813,
+      "tmdb_name": "Anne Hathaway",
+      "tmdb_birthday": "1982-11-12",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "0eda86a0-0d81-4489-8959-d76b1d7108f4",
+      "local_name": "Barbara Auer",
+      "tmdb_id": 2340,
+      "tmdb_name": "Barbara Auer",
+      "tmdb_birthday": "1959-02-01",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "5f0eb385-46d7-4ebd-b4bf-10221574fb73",
+      "local_name": "Benedict Wong",
+      "tmdb_id": 30082,
+      "tmdb_name": "Benedict Wong",
+      "tmdb_birthday": "1971-07-03",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "ddc40c16-3066-4164-a295-964e39ef982e",
+      "local_name": "Benny Safdie",
+      "tmdb_id": 227564,
+      "tmdb_name": "Benny Safdie",
+      "tmdb_birthday": "1986-02-24",
+      "tmdb_department": "Directing",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "8536a8e7-7fa0-43cf-b9f2-feedeb9ad649",
+      "local_name": "Bibi Andersson",
+      "tmdb_id": 6657,
+      "tmdb_name": "Bibi Andersson",
+      "tmdb_birthday": "1935-11-11",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "7c9ad357-35f7-4005-a1e9-30f2f3f54bbd",
+      "local_name": "Brian De Palma",
+      "tmdb_id": 1150,
+      "tmdb_name": "Brian De Palma",
+      "tmdb_birthday": "1940-09-11",
+      "tmdb_department": "Directing",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "97744d7a-1414-4b4d-96d7-9c46a6b51094",
+      "local_name": "Callum Turner",
+      "tmdb_id": 1371041,
+      "tmdb_name": "Callum Turner",
+      "tmdb_birthday": "1990-02-15",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "1738cb74-8171-47d4-9244-c0666d3d3d8a",
+      "local_name": "Charlie Gillespie",
+      "tmdb_id": 2044745,
+      "tmdb_name": "Charlie Gillespie",
+      "tmdb_birthday": "1998-08-26",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "6687f7fb-1788-4478-83b6-176eefef5f61",
+      "local_name": "Charlize Theron",
+      "tmdb_id": 6885,
+      "tmdb_name": "Charlize Theron",
+      "tmdb_birthday": "1975-08-07",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "4c73ef52-1481-4d11-b727-5af80360b7a9",
+      "local_name": "Charmian Carr",
+      "tmdb_id": 1041410,
+      "tmdb_name": "Charmian Carr",
+      "tmdb_birthday": "1942-12-27",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "79f25338-c604-4a3b-9818-9b5cc21aec95",
+      "local_name": "Chirstopher Nolan",
+      "tmdb_id": 525,
+      "tmdb_name": "Christopher Nolan",
+      "tmdb_birthday": "1970-07-30",
+      "tmdb_department": "Directing",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "0c27c8d1-e668-48fb-94bd-1ed42f7b0d64",
+      "local_name": "Christian Petzold",
+      "tmdb_id": 2332,
+      "tmdb_name": "Christian Petzold",
+      "tmdb_birthday": "1960-09-14",
+      "tmdb_department": "Directing",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "8a6768f7-7ff9-4730-b0dc-3da7157f500b",
+      "local_name": "Christopher Plummer",
+      "tmdb_id": 290,
+      "tmdb_name": "Christopher Plummer",
+      "tmdb_birthday": "1929-12-13",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "0062e3da-5591-49a9-9f1b-c2e0e757b72f",
+      "local_name": "Cooper Tomlinson",
+      "tmdb_id": 2823609,
+      "tmdb_name": "Cooper Tomlinson",
+      "tmdb_birthday": "1999-01-11",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "6d9e3c31-5d18-4940-acdf-3059ebc1da16",
+      "local_name": "Corey Hawkins",
+      "tmdb_id": 1154054,
+      "tmdb_name": "Corey Hawkins",
+      "tmdb_birthday": "1988-10-22",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "0e132240-b399-438b-8d50-00e369d5aa50",
+      "local_name": "Curry Barker",
+      "tmdb_id": 2381985,
+      "tmdb_name": "Curry Barker",
+      "tmdb_birthday": "1999-09-22",
+      "tmdb_department": "Directing",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "81d93a67-6dc8-46b4-bde9-f05a27b18367",
+      "local_name": "Damien Chazelle",
+      "tmdb_id": 136495,
+      "tmdb_name": "Damien Chazelle",
+      "tmdb_birthday": "1985-01-19",
+      "tmdb_department": "Directing",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "8dabc131-aa2c-4317-b74e-6578561b2f4b",
+      "local_name": "David Robert Mitchell",
+      "tmdb_id": 558929,
+      "tmdb_name": "David Robert Mitchell",
+      "tmdb_birthday": "1974-10-19",
+      "tmdb_department": "Directing",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "7e0901df-773d-4ced-8cdd-cf6d61ced6dd",
+      "local_name": "Debbie Turner",
+      "tmdb_id": 1198142,
+      "tmdb_name": "Debbie Turner",
+      "tmdb_birthday": "1956-09-05",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "2ed62b99-99e9-4c85-bb45-b7325a48b214",
+      "local_name": "Destin Daniel Cretton",
+      "tmdb_id": 1144604,
+      "tmdb_name": "Destin Daniel Cretton",
+      "tmdb_birthday": "1978-11-23",
+      "tmdb_department": "Directing",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "489f0aba-3f4d-494c-b958-9156643e856c",
+      "local_name": "Duane Chase",
+      "tmdb_id": 1243355,
+      "tmdb_name": "Duane Chase",
+      "tmdb_birthday": "1950-12-12",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "e74bd4b0-6c90-4f91-8dba-0ccf72fb753c",
+      "local_name": "Edward Norton",
+      "tmdb_id": 819,
+      "tmdb_name": "Edward Norton",
+      "tmdb_birthday": "1969-08-18",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "325aece6-8c12-4e0a-9d07-20e047d3554a",
+      "local_name": "Eleanor Parker",
+      "tmdb_id": 7331,
+      "tmdb_name": "Eleanor Parker",
+      "tmdb_birthday": "1922-06-26",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "72988817-eea2-4188-b243-c04ca2ddb10e",
+      "local_name": "Elliot Page",
+      "tmdb_id": 27578,
+      "tmdb_name": "Elliot Page",
+      "tmdb_birthday": "1987-02-21",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "c30fbfdf-5fe6-4202-a1a1-f5cb5a6140ee",
+      "local_name": "Emma Stone",
+      "tmdb_id": 54693,
+      "tmdb_name": "Emma Stone",
+      "tmdb_birthday": "1988-11-06",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "54ffba65-0b9c-4ac2-8e13-684cd144e4d4",
+      "local_name": "Enno Trebs",
+      "tmdb_id": 1597840,
+      "tmdb_name": "Enno Trebs",
+      "tmdb_birthday": "1995-10-05",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "ea2cc2a2-05ca-42b6-a9d2-e9a6e54815b2",
+      "local_name": "Ewan Bremner",
+      "tmdb_id": 1125,
+      "tmdb_name": "Ewen Bremner",
+      "tmdb_birthday": "1972-01-23",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "e37d6726-a256-47dc-8dce-0740bcb75de2",
+      "local_name": "Ewan Mcgregor",
+      "tmdb_id": 3061,
+      "tmdb_name": "Ewan McGregor",
+      "tmdb_birthday": "1971-03-31",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "23c977f6-3977-4933-bcd8-48eab578ad50",
+      "local_name": "Florence Pugh",
+      "tmdb_id": 1373737,
+      "tmdb_name": "Florence Pugh",
+      "tmdb_birthday": "1996-01-03",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "2ef39893-120a-42cb-a9c2-3d461dd47598",
+      "local_name": "Gunnar Björnstrand",
+      "tmdb_id": 6649,
+      "tmdb_name": "Gunnar Björnstrand",
+      "tmdb_birthday": "1909-11-13",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "2f1096f4-a03d-4b11-8149-4a5f243f2452",
+      "local_name": "Guy Pearce",
+      "tmdb_id": 529,
+      "tmdb_name": "Guy Pearce",
+      "tmdb_birthday": "1967-10-05",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "3ff0cbdc-a69a-4693-90fe-fd8551aed4f8",
+      "local_name": "Heather Menzies",
+      "tmdb_id": 92691,
+      "tmdb_name": "Heather Menzies",
+      "tmdb_birthday": "1949-12-03",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "3ace0c06-1f6e-4730-b3a0-4eafe05acb30",
+      "local_name": "Himesh Patel",
+      "tmdb_id": 1227717,
+      "tmdb_name": "Himesh Patel",
+      "tmdb_birthday": "1990-10-13",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "f40cbc88-7813-4104-8c25-12a09adb0adb",
+      "local_name": "Inde Navarrette",
+      "tmdb_id": 2638587,
+      "tmdb_name": "Inde Navarrette",
+      "tmdb_birthday": "2001-03-03",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "69b7be65-79ba-4297-bb48-08b7102ebf16",
+      "local_name": "Ingmar Bergman",
+      "tmdb_id": 6648,
+      "tmdb_name": "Ingmar Bergman",
+      "tmdb_birthday": "1918-07-14",
+      "tmdb_department": "Directing",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "aae27e8f-0aed-4f16-9205-4f8a0a611edf",
+      "local_name": "J.K. Simmons",
+      "tmdb_id": 18999,
+      "tmdb_name": "J.K. Simmons",
+      "tmdb_birthday": "1955-01-09",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "5ad7868c-ae34-4ccd-a5f9-69826b99d56e",
+      "local_name": "Jacob Batalon",
+      "tmdb_id": 1649152,
+      "tmdb_name": "Jacob Batalon",
+      "tmdb_birthday": "1996-10-09",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "6f714726-a5e7-41f6-890d-dda513794dff",
+      "local_name": "Jacob Elordi",
+      "tmdb_id": 2034418,
+      "tmdb_name": "Jacob Elordi",
+      "tmdb_birthday": "1997-06-26",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "640b7c5d-5227-4e87-b73e-d31d1c6c8817",
+      "local_name": "Jarreth J. Merz",
+      "tmdb_id": 84706,
+      "tmdb_name": "Jarreth J. Merz",
+      "tmdb_birthday": "1970-05-01",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "08640665-6ec4-4a36-828e-d3cc4830644a",
+      "local_name": "John Legend",
+      "tmdb_id": 113461,
+      "tmdb_name": "John Legend",
+      "tmdb_birthday": "1978-12-28",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "eccd9eec-399b-480f-982f-85915e90d8dc",
+      "local_name": "John Leguizamo",
+      "tmdb_id": 5723,
+      "tmdb_name": "John Leguizamo",
+      "tmdb_birthday": "1960-07-22",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "ffdb6782-633e-4161-8ac5-7531e9ff2d22",
+      "local_name": "Jon Bernthal",
+      "tmdb_id": 19498,
+      "tmdb_name": "Jon Bernthal",
+      "tmdb_birthday": "1976-09-20",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "15f584ea-16d8-4f35-a6ee-9fc10481a33f",
+      "local_name": "Jörgen Lindström",
+      "tmdb_id": 11918,
+      "tmdb_name": "Jörgen Lindström",
+      "tmdb_birthday": "1951-05-19",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "992d33fc-0bcf-40db-a0d9-673f7f53281a",
+      "local_name": "Josh Brolin",
+      "tmdb_id": 16851,
+      "tmdb_name": "Josh Brolin",
+      "tmdb_birthday": "1968-02-12",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "1bbeb4d3-29d2-4012-a003-163fc6ab7e0e",
+      "local_name": "Julie Andrews",
+      "tmdb_id": 5823,
+      "tmdb_name": "Julie Andrews",
+      "tmdb_birthday": "1935-10-01",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "0a8daa6d-dec9-445c-a82e-759338949f47",
+      "local_name": "King Princess",
+      "tmdb_id": 2463999,
+      "tmdb_name": "King Princess",
+      "tmdb_birthday": "1998-12-19",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "62479ced-a10d-421c-8e8a-4c9650f8d943",
+      "local_name": "Kym Karath",
+      "tmdb_id": 1194314,
+      "tmdb_name": "Kym Karath",
+      "tmdb_birthday": "1958-08-04",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "3f11fef3-b318-4220-bb24-ad2b717add6f",
+      "local_name": "LeVar Burton",
+      "tmdb_id": 2390,
+      "tmdb_name": "LeVar Burton",
+      "tmdb_birthday": "1957-02-16",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "f0658346-c89a-4fcc-8539-91f377453b77",
+      "local_name": "Liv Ullmann",
+      "tmdb_id": 11916,
+      "tmdb_name": "Liv Ullmann",
+      "tmdb_birthday": "1938-12-16",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "7cb2d680-21a1-4cb8-9c43-4d848647409b",
+      "local_name": "Liza Colón-Zayas",
+      "tmdb_id": 59693,
+      "tmdb_name": "Liza Colón-Zayas",
+      "tmdb_birthday": "1972-07-15",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "ad418be7-54c2-4066-92cd-d5a5895a57fb",
+      "local_name": "Lupita Nyong'o",
+      "tmdb_id": 1267329,
+      "tmdb_name": "Lupita Nyong'o",
+      "tmdb_birthday": "1983-03-01",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "daba70dd-c2b1-49d6-af9c-b3bb7cfa74b3",
+      "local_name": "Marcel Heupermann",
+      "tmdb_id": 1430482,
+      "tmdb_name": "Marcel Heupermann",
+      "tmdb_birthday": "1994-10-14",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "7d6ad6a0-dfd2-42eb-b0cc-a522e793e7ed",
+      "local_name": "Margaret Qualley",
+      "tmdb_id": 1392137,
+      "tmdb_name": "Margaret Qualley",
+      "tmdb_birthday": "1994-10-23",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "d6c760bc-936b-4bf7-8293-697eafb70cc8",
+      "local_name": "Margaretha Krook",
+      "tmdb_id": 11917,
+      "tmdb_name": "Margaretha Krook",
+      "tmdb_birthday": "1925-10-15",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "8f7fc538-8315-413b-b100-f8f6a29117a9",
+      "local_name": "Marisa Tomei",
+      "tmdb_id": 3141,
+      "tmdb_name": "Marisa Tomei",
+      "tmdb_birthday": "1964-12-04",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "cf95890a-645a-452d-b6f2-7bd9ea86e4c6",
+      "local_name": "Mark Ruffalo",
+      "tmdb_id": 103,
+      "tmdb_name": "Mark Ruffalo",
+      "tmdb_birthday": "1967-11-22",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "80b57d5f-e25f-4c0a-b040-1f32da9903c8",
+      "local_name": "Mateo Ray Garcia",
+      "tmdb_id": 2593684,
+      "tmdb_name": "Mateo Ray Garcia",
+      "tmdb_birthday": "2012-11-17",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "2311dbc4-3632-4c4c-b8d3-458f0a946c5e",
+      "local_name": "Matt Damon",
+      "tmdb_id": 1892,
+      "tmdb_name": "Matt Damon",
+      "tmdb_birthday": "1970-10-08",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "596075dc-44eb-4be1-8539-179be30eb09d",
+      "local_name": "Matthias Brandt",
+      "tmdb_id": 35382,
+      "tmdb_name": "Matthias Brandt",
+      "tmdb_birthday": "1961-10-07",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "389b2501-553b-49ec-84d8-cc48f44cdd2d",
+      "local_name": "Maya Hawke",
+      "tmdb_id": 1903874,
+      "tmdb_name": "Maya Hawke",
+      "tmdb_birthday": "1998-07-08",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "b0607712-f39b-4372-9a1a-247440ec6fc9",
+      "local_name": "Megan Lawless",
+      "tmdb_id": 1519711,
+      "tmdb_name": "Megan Lawless",
+      "tmdb_birthday": "2000-04-11",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "5eead754-f5f5-43ad-9f13-38c1cba4861a",
+      "local_name": "Mia Goth",
+      "tmdb_id": 1137824,
+      "tmdb_name": "Mia Goth",
+      "tmdb_birthday": "1993-10-25",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "13166ba9-325f-43b1-b5a3-811f812c2c71",
+      "local_name": "Michael Johnston",
+      "tmdb_id": 1561370,
+      "tmdb_name": "Michael Johnston",
+      "tmdb_birthday": "1996-02-22",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "b4ce5184-36e0-4c56-a927-d3bed1f70611",
+      "local_name": "Michael Mando",
+      "tmdb_id": 829372,
+      "tmdb_name": "Michael Mando",
+      "tmdb_birthday": "1981-07-13",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "66f47901-f35a-4840-9c25-06ba3c620c85",
+      "local_name": "Molly Ringwald",
+      "tmdb_id": 21625,
+      "tmdb_name": "Molly Ringwald",
+      "tmdb_birthday": "1968-02-18",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "7a7b726b-1acd-4779-aee0-e8ab2109ec67",
+      "local_name": "Monica Barbaro",
+      "tmdb_id": 1525043,
+      "tmdb_name": "Monica Barbaro",
+      "tmdb_birthday": "1989-06-17",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "40a84d21-67c2-4fc0-8d29-f987becc2868",
+      "local_name": "Nicholas Hammond",
+      "tmdb_id": 29095,
+      "tmdb_name": "Nicholas Hammond",
+      "tmdb_birthday": "1950-05-15",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "6f1d6606-43e2-4019-8279-896445903b83",
+      "local_name": "Okieriete Onaodowan",
+      "tmdb_id": 1419065,
+      "tmdb_name": "Okieriete Onaodowan",
+      "tmdb_birthday": "1987-08-16",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "ccc57074-ba99-4381-b065-87756d0d59e1",
+      "local_name": "Olivia Wilde",
+      "tmdb_id": 59315,
+      "tmdb_name": "Olivia Wilde",
+      "tmdb_birthday": "1984-03-10",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "3162c028-966b-4873-8a27-0ca395bf2bb5",
+      "local_name": "Paula Beer",
+      "tmdb_id": 894116,
+      "tmdb_name": "Paula Beer",
+      "tmdb_birthday": "1995-02-23",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "7f4eea0f-324e-4835-a602-d028a526ea6e",
+      "local_name": "Penélope Cruz",
+      "tmdb_id": 955,
+      "tmdb_name": "Penélope Cruz",
+      "tmdb_birthday": "1974-04-28",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "e5cf5974-e36d-45ca-945d-39f231da10b0",
+      "local_name": "Philip Froissant",
+      "tmdb_id": 3147083,
+      "tmdb_name": "Philip Froissant",
+      "tmdb_birthday": "1994-01-01",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "fd64b8c9-be8a-49d3-b9d7-6247f7c6508f",
+      "local_name": "Quintessa Swindell",
+      "tmdb_id": 2042690,
+      "tmdb_name": "Quintessa Swindell",
+      "tmdb_birthday": "1997-02-08",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "23791fcf-1a50-4951-9cc1-bb80c0a0b535",
+      "local_name": "Ridley Scott",
+      "tmdb_id": 578,
+      "tmdb_name": "Ridley Scott",
+      "tmdb_birthday": "1937-11-30",
+      "tmdb_department": "Directing",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "88f76b62-20cd-42c1-a9f0-06d39e60b928",
+      "local_name": "Robert Pattinson",
+      "tmdb_id": 11288,
+      "tmdb_name": "Robert Pattinson",
+      "tmdb_birthday": "1986-05-13",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "dc64983d-0471-4fad-987d-d691e7d4c380",
+      "local_name": "Robert Wise",
+      "tmdb_id": 1744,
+      "tmdb_name": "Robert Wise",
+      "tmdb_birthday": "1914-09-10",
+      "tmdb_department": "Directing",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "7fb505f9-3d1e-43a7-8842-31a301fb3e9f",
+      "local_name": "Rosemarie DeWitt",
+      "tmdb_id": 14892,
+      "tmdb_name": "Rosemarie DeWitt",
+      "tmdb_birthday": "1971-10-26",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "9f2e6d45-3069-45bc-969d-114f13ca8669",
+      "local_name": "Ryan Gosling",
+      "tmdb_id": 30614,
+      "tmdb_name": "Ryan Gosling",
+      "tmdb_birthday": "1980-11-12",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "eb2a8b34-4fd3-4f15-81a9-7568c3ab9605",
+      "local_name": "Sadie Sink",
+      "tmdb_id": 1590797,
+      "tmdb_name": "Sadie Sink",
+      "tmdb_birthday": "2002-04-16",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "08bd243f-29d7-4d50-932c-4468baa7b7be",
+      "local_name": "Seth Rogan",
+      "tmdb_id": 19274,
+      "tmdb_name": "Seth Rogen",
+      "tmdb_birthday": "1982-04-15",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "5f34c43b-2701-415b-b85a-32e9e4f98ae6",
+      "local_name": "Tom Holland",
+      "tmdb_id": 1136406,
+      "tmdb_name": "Tom Holland",
+      "tmdb_birthday": "1996-06-01",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "75715ec7-0fb5-4bdd-acb7-10f47b8565a0",
+      "local_name": "Tramell Tillman",
+      "tmdb_id": 2028037,
+      "tmdb_name": "Tramell Tillman",
+      "tmdb_birthday": "1985-06-17",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "f8562d0a-9f8a-403c-939d-1df5018aebf8",
+      "local_name": "Travis Scott",
+      "tmdb_id": 1978406,
+      "tmdb_name": "Travis Scott",
+      "tmdb_birthday": "1991-04-30",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "dbdbbe67-e8ba-4891-996c-ce38011e1a69",
+      "local_name": "Victoire Laly",
+      "tmdb_id": 1524310,
+      "tmdb_name": "Victoire Laly",
+      "tmdb_birthday": "1991-07-21",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "44bab1d8-90eb-4913-8894-9301f7ead4ad",
+      "local_name": "Will Gluck",
+      "tmdb_id": 82511,
+      "tmdb_name": "Will Gluck",
+      "tmdb_birthday": "1978-11-07",
+      "tmdb_department": "Directing",
+      "validation_status": "VALID"
+    },
+    {
+      "internal_uuid": "4c9577d1-dfb4-411b-9307-c78d7c16bed0",
+      "local_name": "Zendaya",
+      "tmdb_id": 505710,
+      "tmdb_name": "Zendaya",
+      "tmdb_birthday": "1996-09-01",
+      "tmdb_department": "Acting",
+      "validation_status": "VALID"
+    }
+  ]
+}

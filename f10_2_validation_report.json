@@ -1,0 +1,92 @@
+[
+  {
+    "scenario": "A. GET /api/tmdb/movies/search sem Authorization header",
+    "expected": "HTTP 401 UNAUTHORIZED",
+    "obtained": "HTTP 401 UNAUTHORIZED - Cabeçalho de autorização não fornecido.",
+    "status": "PASS"
+  },
+  {
+    "scenario": "B. GET /api/tmdb/movies/search com token JWT inválido/falso",
+    "expected": "HTTP 401 UNAUTHORIZED",
+    "obtained": "HTTP 401 UNAUTHORIZED - Sessão inválida ou expirada. Faça login novamente.",
+    "status": "PASS"
+  },
+  {
+    "scenario": "C. POST /api/tmdb/movies/search (Método não permitido)",
+    "expected": "HTTP 405 METHOD_NOT_ALLOWED",
+    "obtained": "HTTP 405 METHOD_NOT_ALLOWED - Método HTTP \"POST\" não permitido.",
+    "status": "PASS"
+  },
+  {
+    "scenario": "E. searchMovies com query vazia",
+    "expected": "400 INVALID_PARAMS",
+    "obtained": "400 INVALID_PARAMS: O parâmetro \"query\" é obrigatório para busca de filmes.",
+    "status": "PASS"
+  },
+  {
+    "scenario": "F. getMovieDetails com ID inválido (0)",
+    "expected": "400 INVALID_PARAMS",
+    "obtained": "400 INVALID_PARAMS: Identificador de filme do TMDB inválido.",
+    "status": "PASS"
+  },
+  {
+    "scenario": "G. getPersonDetails com ID inválido (-5)",
+    "expected": "400 INVALID_PARAMS",
+    "obtained": "400 INVALID_PARAMS: Identificador de pessoa do TMDB inválido.",
+    "status": "PASS"
+  },
+  {
+    "scenario": "H. Buscar filme \"Persona\" (1966)",
+    "expected": "Retornar lista com Persona (TMDB ID 797)",
+    "obtained": "Encontrado: \"Quando Duas Mulheres Pecam\" (TMDB ID 797, ano 1966)",
+    "status": "PASS"
+  },
+  {
+    "scenario": "I. Detalhes do filme TMDB 797 (Persona)",
+    "expected": "DTO normalizado com título, originalTitle, runtime, genres, countries e imdbId",
+    "obtained": "Título: \"Quando Duas Mulheres Pecam\", Orig: \"Persona\", Ano: 1966, Duração: 85m, IMDB: tt0060827, Gêneros: [Drama]",
+    "status": "PASS"
+  },
+  {
+    "scenario": "J. Buscar pessoa \"Ingmar Bergman\"",
+    "expected": "Retornar lista contendo Ingmar Bergman (TMDB ID 6648)",
+    "obtained": "Encontrado: \"Ingmar Bergman\" (TMDB ID 6648, Dept: Directing)",
+    "status": "PASS"
+  },
+  {
+    "scenario": "K. Detalhes da pessoa TMDB 6648 (Ingmar Bergman)",
+    "expected": "DTO normalizado com nome, nascimento (1918-07-14), falecimento (2007-07-30), bio, local e imdbId",
+    "obtained": "Nome: \"Ingmar Bergman\", Nasc: 1918-07-14, Morte: 2007-07-30, Local: \"Uppsala, Uppsala län, Sweden\", IMDB: nm0000005",
+    "status": "PASS"
+  },
+  {
+    "scenario": "L. Créditos do filme TMDB 797 (Persona)",
+    "expected": "Cast (Bibi Andersson, Liv Ullmann) e Crew (Diretor: Ingmar Bergman)",
+    "obtained": "Elenco: 6 atores (Ex: Bibi Andersson como Alma), Equipe: 25 técnicos (Diretor: Ingmar Bergman)",
+    "status": "PASS"
+  },
+  {
+    "scenario": "M. Filmografia/Créditos de Ingmar Bergman (TMDB 6648)",
+    "expected": "Lista de créditos com obras dirigidas/escritas (Persona, O Sétimo Selo, etc.)",
+    "obtained": "Total Crew: 181 obras (Direção: 72 obras, Ex: \"O Sétimo Selo\" (1957))",
+    "status": "PASS"
+  },
+  {
+    "scenario": "N. Respostas DTO da API não vazam segredos (Token/API Key)",
+    "expected": "Nenhum token ou chave nas respostas serializadas",
+    "obtained": "Nenhum segredo vazado em todos os 6 payloads testados.",
+    "status": "PASS"
+  },
+  {
+    "scenario": "O. Bundle/Código Frontend (src/) não possui segredos nem chamadas diretas ao TMDB",
+    "expected": "Zero referências a VITE_TMDB e zero chamadas a api.themoviedb.org no frontend",
+    "obtained": "VITE_TMDB presente: false, Chamadas diretas em src/: false",
+    "status": "PASS"
+  },
+  {
+    "scenario": "P. Auditoria de Escritas no Banco (Supabase)",
+    "expected": "Zero alterações, zero inserts em filmes/pessoas/logs nesta etapa",
+    "obtained": "Total Filmes: 11 (inalterado), Total Pessoas: 89 (inalterado), Logs TMDB: null (inalterado)",
+    "status": "PASS"
+  }
+]

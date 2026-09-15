@@ -1,0 +1,2507 @@
+{
+  "snapshot_metadata": {
+    "generated_at": "2026-09-14T14:17:06.089Z",
+    "protocol": "F9.4_CONTROLLED_TMDB_LINK",
+    "environment": "Supabase PostgreSQL Production",
+    "counts": {
+      "filmes": 11,
+      "pessoas": 89,
+      "film_credits": 92,
+      "filme_generos": 26,
+      "filme_countries": 11,
+      "criticas": 8,
+      "estreias": 5,
+      "uma_imagem": 0,
+      "listas": 1,
+      "lista_items": 10,
+      "especiais": 0,
+      "especial_items": 0,
+      "ensaios": 2,
+      "tags": 11,
+      "generos": 21,
+      "countries": 13
+    }
+  },
+  "filmes": [
+    {
+      "id": "449a8c24-1901-4df1-a3fa-6de1f2edf934",
+      "slug": "a-novica-rebelde",
+      "legacy_id": null,
+      "title": "A Noviça Rebelde",
+      "original_title": "The Sound of Music",
+      "year": 1965,
+      "duration_minutes": 176,
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "1b32374e-d28c-41ac-bcd1-4cb8792c2764",
+      "slug": "a-odisseia",
+      "legacy_id": null,
+      "title": "A Odisseia",
+      "original_title": "The Odyssey",
+      "year": 2026,
+      "duration_minutes": 172,
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "fffa6c06-dd44-46c0-bfcd-875dd2e10f06",
+      "slug": "homem-aranha-um-novo-dia",
+      "legacy_id": null,
+      "title": "Homem-Aranha: Um Novo Dia",
+      "original_title": "Spider-Man: Brand New Day",
+      "year": 2026,
+      "duration_minutes": 148,
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "971fea96-855e-45f2-a962-0e98cd00d4de",
+      "slug": "la-la-land-cantando-estacoes",
+      "legacy_id": null,
+      "title": "La La Land: Cantando Estações",
+      "original_title": "La La Land",
+      "year": 2016,
+      "duration_minutes": 128,
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "c224f859-7888-4424-9566-be58a9619cae",
+      "slug": "miroirs-no-3",
+      "legacy_id": null,
+      "title": "Miroirs No. 3",
+      "original_title": "Miroirs No. 3",
+      "year": 2025,
+      "duration_minutes": 86,
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "c39a1a2d-b86f-403e-a4d6-95c6c1f330c5",
+      "slug": "o-convite",
+      "legacy_id": null,
+      "title": "O Convite",
+      "original_title": "The Invite",
+      "year": 2026,
+      "duration_minutes": 107,
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "b518c724-96cb-4862-9662-cc66d2fa19d9",
+      "slug": "o-fim-da-rua",
+      "legacy_id": null,
+      "title": "O Fim da Rua",
+      "original_title": "The End of Oak Street",
+      "year": 2026,
+      "duration_minutes": 100,
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "0248e063-5c69-4527-9813-6a374b216825",
+      "slug": "obsessao",
+      "legacy_id": null,
+      "title": "Obsessão",
+      "original_title": "Obsession",
+      "year": 2026,
+      "duration_minutes": 108,
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "3ecb01f8-41d3-45ae-b0cd-be7c25d1048a",
+      "slug": "persona",
+      "legacy_id": null,
+      "title": "Persona",
+      "original_title": "Persona",
+      "year": 1966,
+      "duration_minutes": 83,
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "04ae3ecd-10ca-4b8b-835b-05820bc045c0",
+      "slug": "ponto-sem-retorno",
+      "legacy_id": null,
+      "title": "Ponto Sem Retorno",
+      "original_title": "The Dog Stars",
+      "year": 2026,
+      "duration_minutes": 118,
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "b5091b5f-a2e4-4a5a-9794-b9b253f28745",
+      "slug": "so-por-uma-noite",
+      "legacy_id": null,
+      "title": "Só por Uma Noite",
+      "original_title": "One Night Only",
+      "year": 2026,
+      "duration_minutes": 102,
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    }
+  ],
+  "pessoas": [
+    {
+      "id": "0f05fd0b-6c69-4b54-a256-b652d9c8478d",
+      "slug": "allison-janney",
+      "legacy_id": null,
+      "name": "Allison Janney",
+      "birth_date": "1959-11-19",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "65c8e5bd-f9ac-4fc5-85fc-09631299788f",
+      "slug": "andy-richter",
+      "legacy_id": null,
+      "name": "Andy Richter",
+      "birth_date": "1966-10-28",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "daebdb82-1854-440e-9203-18533fca72d1",
+      "slug": "angela-cartwright",
+      "legacy_id": null,
+      "name": "Angela Cartwright",
+      "birth_date": "1952-09-09",
+      "death_date": null,
+      "country": "Inglaterra",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "ac8ef972-c882-4613-b089-5a8ea321bd04",
+      "slug": "anne-hathaway",
+      "legacy_id": null,
+      "name": "Anne Hathaway",
+      "birth_date": "1982-11-12",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "0eda86a0-0d81-4489-8959-d76b1d7108f4",
+      "slug": "barbara-auer",
+      "legacy_id": null,
+      "name": "Barbara Auer",
+      "birth_date": "1959-02-01",
+      "death_date": null,
+      "country": "Alemanha",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "5f0eb385-46d7-4ebd-b4bf-10221574fb73",
+      "slug": "benedict-wong",
+      "legacy_id": null,
+      "name": "Benedict Wong",
+      "birth_date": "1971-07-03",
+      "death_date": null,
+      "country": "Inglaterra",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "ddc40c16-3066-4164-a295-964e39ef982e",
+      "slug": "benny-safdie",
+      "legacy_id": null,
+      "name": "Benny Safdie",
+      "birth_date": "1986-02-24",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "8536a8e7-7fa0-43cf-b9f2-feedeb9ad649",
+      "slug": "bibi-andersson",
+      "legacy_id": null,
+      "name": "Bibi Andersson",
+      "birth_date": "1935-11-11",
+      "death_date": "2019-04-14",
+      "country": "Suécia",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "7c9ad357-35f7-4005-a1e9-30f2f3f54bbd",
+      "slug": "brian-de-palma",
+      "legacy_id": null,
+      "name": "Brian De Palma",
+      "birth_date": "1940-09-11",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "97744d7a-1414-4b4d-96d7-9c46a6b51094",
+      "slug": "callum-turner",
+      "legacy_id": null,
+      "name": "Callum Turner",
+      "birth_date": "1990-02-15",
+      "death_date": null,
+      "country": "Inglaterra",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "1738cb74-8171-47d4-9244-c0666d3d3d8a",
+      "slug": "charlie-gillespie",
+      "legacy_id": null,
+      "name": "Charlie Gillespie",
+      "birth_date": "1998-08-26",
+      "death_date": null,
+      "country": "Canadá",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "6687f7fb-1788-4478-83b6-176eefef5f61",
+      "slug": "charlize-theron",
+      "legacy_id": null,
+      "name": "Charlize Theron",
+      "birth_date": "1975-08-07",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "4c73ef52-1481-4d11-b727-5af80360b7a9",
+      "slug": "charmian-carr",
+      "legacy_id": null,
+      "name": "Charmian Carr",
+      "birth_date": "1942-12-27",
+      "death_date": "2016-09-17",
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "79f25338-c604-4a3b-9818-9b5cc21aec95",
+      "slug": "chirstopher-nolan",
+      "legacy_id": null,
+      "name": "Chirstopher Nolan",
+      "birth_date": "1970-07-30",
+      "death_date": null,
+      "country": "Inglaterra",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "0c27c8d1-e668-48fb-94bd-1ed42f7b0d64",
+      "slug": "christian-petzold",
+      "legacy_id": null,
+      "name": "Christian Petzold",
+      "birth_date": "1960-09-14",
+      "death_date": null,
+      "country": "Alemanha",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "8a6768f7-7ff9-4730-b0dc-3da7157f500b",
+      "slug": "christopher-plummer",
+      "legacy_id": null,
+      "name": "Christopher Plummer",
+      "birth_date": "1929-12-13",
+      "death_date": "2021-02-05",
+      "country": "Canadá",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "0062e3da-5591-49a9-9f1b-c2e0e757b72f",
+      "slug": "cooper-tomlinson",
+      "legacy_id": null,
+      "name": "Cooper Tomlinson",
+      "birth_date": "1999-06-26",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "6d9e3c31-5d18-4940-acdf-3059ebc1da16",
+      "slug": "corey-hawkins",
+      "legacy_id": null,
+      "name": "Corey Hawkins",
+      "birth_date": "1988-10-22",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "0e132240-b399-438b-8d50-00e369d5aa50",
+      "slug": "curry-barker",
+      "legacy_id": null,
+      "name": "Curry Barker",
+      "birth_date": "1995-09-05",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "81d93a67-6dc8-46b4-bde9-f05a27b18367",
+      "slug": "damien-chazelle",
+      "legacy_id": null,
+      "name": "Damien Chazelle",
+      "birth_date": "1985-01-19",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "8dabc131-aa2c-4317-b74e-6578561b2f4b",
+      "slug": "david-robert-mitchell",
+      "legacy_id": null,
+      "name": "David Robert Mitchell",
+      "birth_date": "1974-10-19",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "7e0901df-773d-4ced-8cdd-cf6d61ced6dd",
+      "slug": "debbie-turner",
+      "legacy_id": null,
+      "name": "Debbie Turner",
+      "birth_date": "1956-09-05",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "2ed62b99-99e9-4c85-bb45-b7325a48b214",
+      "slug": "destin-daniel-cretton",
+      "legacy_id": null,
+      "name": "Destin Daniel Cretton",
+      "birth_date": "1978-11-23",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "489f0aba-3f4d-494c-b958-9156643e856c",
+      "slug": "duane-chase",
+      "legacy_id": null,
+      "name": "Duane Chase",
+      "birth_date": "1950-12-12",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "e74bd4b0-6c90-4f91-8dba-0ccf72fb753c",
+      "slug": "edward-norton",
+      "legacy_id": null,
+      "name": "Edward Norton",
+      "birth_date": "1969-08-18",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "325aece6-8c12-4e0a-9d07-20e047d3554a",
+      "slug": "eleanor-parker",
+      "legacy_id": null,
+      "name": "Eleanor Parker",
+      "birth_date": "1922-06-26",
+      "death_date": "2013-12-09",
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "72988817-eea2-4188-b243-c04ca2ddb10e",
+      "slug": "elliot-page",
+      "legacy_id": null,
+      "name": "Elliot Page",
+      "birth_date": "1987-02-21",
+      "death_date": null,
+      "country": "Canadá",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "c30fbfdf-5fe6-4202-a1a1-f5cb5a6140ee",
+      "slug": "emma-stone",
+      "legacy_id": null,
+      "name": "Emma Stone",
+      "birth_date": "1988-08-06",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "54ffba65-0b9c-4ac2-8e13-684cd144e4d4",
+      "slug": "enno-trebs",
+      "legacy_id": null,
+      "name": "Enno Trebs",
+      "birth_date": "1995-10-05",
+      "death_date": null,
+      "country": "Alemanha",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "ea2cc2a2-05ca-42b6-a9d2-e9a6e54815b2",
+      "slug": "ewan-bremner",
+      "legacy_id": null,
+      "name": "Ewan Bremner",
+      "birth_date": "1972-01-23",
+      "death_date": null,
+      "country": "Inglaterra",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "e37d6726-a256-47dc-8dce-0740bcb75de2",
+      "slug": "ewan-mcgregor",
+      "legacy_id": null,
+      "name": "Ewan Mcgregor",
+      "birth_date": "1971-03-31",
+      "death_date": null,
+      "country": "Escócia",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "23c977f6-3977-4933-bcd8-48eab578ad50",
+      "slug": "florence-pugh",
+      "legacy_id": null,
+      "name": "Florence Pugh",
+      "birth_date": "1996-01-03",
+      "death_date": null,
+      "country": "Inglaterra",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "2ef39893-120a-42cb-a9c2-3d461dd47598",
+      "slug": "gunnar-bjornstrand",
+      "legacy_id": null,
+      "name": "Gunnar Björnstrand",
+      "birth_date": "1909-11-13",
+      "death_date": "1986-05-26",
+      "country": "Suécia",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "2f1096f4-a03d-4b11-8149-4a5f243f2452",
+      "slug": "guy-pearce",
+      "legacy_id": null,
+      "name": "Guy Pearce",
+      "birth_date": "1967-10-05",
+      "death_date": null,
+      "country": "Inglaterra",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "3ff0cbdc-a69a-4693-90fe-fd8551aed4f8",
+      "slug": "heather-menzies",
+      "legacy_id": null,
+      "name": "Heather Menzies",
+      "birth_date": "1949-12-03",
+      "death_date": "2017-12-24",
+      "country": "Canadá",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "3ace0c06-1f6e-4730-b3a0-4eafe05acb30",
+      "slug": "himesh-patel",
+      "legacy_id": null,
+      "name": "Himesh Patel",
+      "birth_date": "1990-10-13",
+      "death_date": null,
+      "country": "Inglaterra",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "f40cbc88-7813-4104-8c25-12a09adb0adb",
+      "slug": "inde-navarrette",
+      "legacy_id": null,
+      "name": "Inde Navarrette",
+      "birth_date": "2001-03-03",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "69b7be65-79ba-4297-bb48-08b7102ebf16",
+      "slug": "ingmar-bergman",
+      "legacy_id": null,
+      "name": "Ingmar Bergman",
+      "birth_date": "1918-07-14",
+      "death_date": "2007-07-30",
+      "country": "Suécia",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "aae27e8f-0aed-4f16-9205-4f8a0a611edf",
+      "slug": "j-k-simmons",
+      "legacy_id": null,
+      "name": "J.K. Simmons",
+      "birth_date": "1955-01-09",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "5ad7868c-ae34-4ccd-a5f9-69826b99d56e",
+      "slug": "jacob-batalon",
+      "legacy_id": null,
+      "name": "Jacob Batalon",
+      "birth_date": "1996-10-09",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "6f714726-a5e7-41f6-890d-dda513794dff",
+      "slug": "jacob-elordi",
+      "legacy_id": null,
+      "name": "Jacob Elordi",
+      "birth_date": "1997-06-26",
+      "death_date": null,
+      "country": "Austrália",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "640b7c5d-5227-4e87-b73e-d31d1c6c8817",
+      "slug": "jarreth-j-merz",
+      "legacy_id": null,
+      "name": "Jarreth J. Merz",
+      "birth_date": "1970-05-01",
+      "death_date": null,
+      "country": "Suiça",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "08640665-6ec4-4a36-828e-d3cc4830644a",
+      "slug": "john-legend",
+      "legacy_id": null,
+      "name": "John Legend",
+      "birth_date": "1978-12-28",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "eccd9eec-399b-480f-982f-85915e90d8dc",
+      "slug": "john-leguizamo",
+      "legacy_id": null,
+      "name": "John Leguizamo",
+      "birth_date": "1970-07-22",
+      "death_date": null,
+      "country": "Colômbia",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "ffdb6782-633e-4161-8ac5-7531e9ff2d22",
+      "slug": "jon-bernthal",
+      "legacy_id": null,
+      "name": "Jon Bernthal",
+      "birth_date": "1976-09-20",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "15f584ea-16d8-4f35-a6ee-9fc10481a33f",
+      "slug": "jorgen-lindstrom",
+      "legacy_id": null,
+      "name": "Jörgen Lindström",
+      "birth_date": "1951-05-19",
+      "death_date": null,
+      "country": "Suécia",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "992d33fc-0bcf-40db-a0d9-673f7f53281a",
+      "slug": "josh-brolin",
+      "legacy_id": null,
+      "name": "Josh Brolin",
+      "birth_date": "1968-02-12",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "1bbeb4d3-29d2-4012-a003-163fc6ab7e0e",
+      "slug": "julie-andrews",
+      "legacy_id": null,
+      "name": "Julie Andrews",
+      "birth_date": "1935-10-01",
+      "death_date": null,
+      "country": "Inglaterra",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "0a8daa6d-dec9-445c-a82e-759338949f47",
+      "slug": "king-princess",
+      "legacy_id": null,
+      "name": "King Princess",
+      "birth_date": "1998-12-19",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "62479ced-a10d-421c-8e8a-4c9650f8d943",
+      "slug": "kym-karath",
+      "legacy_id": null,
+      "name": "Kym Karath",
+      "birth_date": "1958-08-04",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "3f11fef3-b318-4220-bb24-ad2b717add6f",
+      "slug": "levar-burton",
+      "legacy_id": null,
+      "name": "LeVar Burton",
+      "birth_date": "1957-02-16",
+      "death_date": null,
+      "country": "Alemanha",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "f0658346-c89a-4fcc-8539-91f377453b77",
+      "slug": "liv-ullmann",
+      "legacy_id": null,
+      "name": "Liv Ullmann",
+      "birth_date": "1938-12-16",
+      "death_date": null,
+      "country": "Japão",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "7cb2d680-21a1-4cb8-9c43-4d848647409b",
+      "slug": "liza-colon-zayas",
+      "legacy_id": null,
+      "name": "Liza Colón-Zayas",
+      "birth_date": "1972-07-15",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "ad418be7-54c2-4066-92cd-d5a5895a57fb",
+      "slug": "lupita-nyong-o",
+      "legacy_id": null,
+      "name": "Lupita Nyong'o",
+      "birth_date": "1983-03-01",
+      "death_date": null,
+      "country": "México",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "daba70dd-c2b1-49d6-af9c-b3bb7cfa74b3",
+      "slug": "marcel-heupermann",
+      "legacy_id": null,
+      "name": "Marcel Heupermann",
+      "birth_date": "1994-10-28",
+      "death_date": null,
+      "country": "Alemanha",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "7d6ad6a0-dfd2-42eb-b0cc-a522e793e7ed",
+      "slug": "margaret-qualley",
+      "legacy_id": null,
+      "name": "Margaret Qualley",
+      "birth_date": "1994-10-23",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "d6c760bc-936b-4bf7-8293-697eafb70cc8",
+      "slug": "margaretha-krook",
+      "legacy_id": null,
+      "name": "Margaretha Krook",
+      "birth_date": "1925-10-15",
+      "death_date": "2001-05-07",
+      "country": "Suécia",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "8f7fc538-8315-413b-b100-f8f6a29117a9",
+      "slug": "marisa-tomei",
+      "legacy_id": null,
+      "name": "Marisa Tomei",
+      "birth_date": "1964-12-04",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "cf95890a-645a-452d-b6f2-7bd9ea86e4c6",
+      "slug": "mark-ruffalo",
+      "legacy_id": null,
+      "name": "Mark Ruffalo",
+      "birth_date": "1967-11-22",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "80b57d5f-e25f-4c0a-b040-1f32da9903c8",
+      "slug": "mateo-ray-garcia",
+      "legacy_id": null,
+      "name": "Mateo Ray Garcia",
+      "birth_date": "2012-11-17",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "2311dbc4-3632-4c4c-b8d3-458f0a946c5e",
+      "slug": "matt-damon",
+      "legacy_id": null,
+      "name": "Matt Damon",
+      "birth_date": "1970-10-08",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "596075dc-44eb-4be1-8539-179be30eb09d",
+      "slug": "matthias-brandt",
+      "legacy_id": null,
+      "name": "Matthias Brandt",
+      "birth_date": "1961-10-07",
+      "death_date": null,
+      "country": "Alemanha",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "389b2501-553b-49ec-84d8-cc48f44cdd2d",
+      "slug": "maya-hawke",
+      "legacy_id": null,
+      "name": "Maya Hawke",
+      "birth_date": "1998-07-08",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "b0607712-f39b-4372-9a1a-247440ec6fc9",
+      "slug": "megan-lawless",
+      "legacy_id": null,
+      "name": "Megan Lawless",
+      "birth_date": "2000-04-11",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "5eead754-f5f5-43ad-9f13-38c1cba4861a",
+      "slug": "mia-goth",
+      "legacy_id": null,
+      "name": "Mia Goth",
+      "birth_date": "1993-10-25",
+      "death_date": null,
+      "country": "Inglaterra",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "13166ba9-325f-43b1-b5a3-811f812c2c71",
+      "slug": "michael-johnston",
+      "legacy_id": null,
+      "name": "Michael Johnston",
+      "birth_date": "1996-02-22",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "b4ce5184-36e0-4c56-a927-d3bed1f70611",
+      "slug": "michael-mando",
+      "legacy_id": null,
+      "name": "Michael Mando",
+      "birth_date": "1981-07-13",
+      "death_date": null,
+      "country": "Canadá",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "66f47901-f35a-4840-9c25-06ba3c620c85",
+      "slug": "molly-ringwald",
+      "legacy_id": null,
+      "name": "Molly Ringwald",
+      "birth_date": "1968-02-18",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "7a7b726b-1acd-4779-aee0-e8ab2109ec67",
+      "slug": "monica-barbaro",
+      "legacy_id": null,
+      "name": "Monica Barbaro",
+      "birth_date": "1990-06-17",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "40a84d21-67c2-4fc0-8d29-f987becc2868",
+      "slug": "nicholas-hammond",
+      "legacy_id": null,
+      "name": "Nicholas Hammond",
+      "birth_date": "1950-05-15",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "6f1d6606-43e2-4019-8279-896445903b83",
+      "slug": "okieriete-onaodowan",
+      "legacy_id": null,
+      "name": "Okieriete Onaodowan",
+      "birth_date": "1987-08-16",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "ccc57074-ba99-4381-b065-87756d0d59e1",
+      "slug": "olivia-wilde",
+      "legacy_id": null,
+      "name": "Olivia Wilde",
+      "birth_date": "1984-03-10",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "3162c028-966b-4873-8a27-0ca395bf2bb5",
+      "slug": "paula-beer",
+      "legacy_id": null,
+      "name": "Paula Beer",
+      "birth_date": "1995-02-01",
+      "death_date": null,
+      "country": "Alemanha",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "7f4eea0f-324e-4835-a602-d028a526ea6e",
+      "slug": "penelope-cruz",
+      "legacy_id": null,
+      "name": "Penélope Cruz",
+      "birth_date": "1974-04-28",
+      "death_date": null,
+      "country": "Espanha",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "e5cf5974-e36d-45ca-945d-39f231da10b0",
+      "slug": "philip-froissant",
+      "legacy_id": null,
+      "name": "Philip Froissant",
+      "birth_date": "1994-01-01",
+      "death_date": null,
+      "country": "Alemanha",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "fd64b8c9-be8a-49d3-b9d7-6247f7c6508f",
+      "slug": "quintessa-swindell",
+      "legacy_id": null,
+      "name": "Quintessa Swindell",
+      "birth_date": "1997-02-08",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "23791fcf-1a50-4951-9cc1-bb80c0a0b535",
+      "slug": "ridley-scott",
+      "legacy_id": null,
+      "name": "Ridley Scott",
+      "birth_date": "1937-11-30",
+      "death_date": null,
+      "country": "Inglaterra",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "88f76b62-20cd-42c1-a9f0-06d39e60b928",
+      "slug": "robert-pattinson",
+      "legacy_id": null,
+      "name": "Robert Pattinson",
+      "birth_date": "1983-05-13",
+      "death_date": null,
+      "country": "Inglaterra",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "dc64983d-0471-4fad-987d-d691e7d4c380",
+      "slug": "robert-wise",
+      "legacy_id": null,
+      "name": "Robert Wise",
+      "birth_date": "1914-09-10",
+      "death_date": "2005-09-14",
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "7fb505f9-3d1e-43a7-8842-31a301fb3e9f",
+      "slug": "rosemarie-dewitt",
+      "legacy_id": null,
+      "name": "Rosemarie DeWitt",
+      "birth_date": "1971-10-26",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "9f2e6d45-3069-45bc-969d-114f13ca8669",
+      "slug": "ryan-gosling",
+      "legacy_id": null,
+      "name": "Ryan Gosling",
+      "birth_date": "1980-11-12",
+      "death_date": null,
+      "country": "Canadá",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "eb2a8b34-4fd3-4f15-81a9-7568c3ab9605",
+      "slug": "sadie-sink",
+      "legacy_id": null,
+      "name": "Sadie Sink",
+      "birth_date": "2002-04-16",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "08bd243f-29d7-4d50-932c-4468baa7b7be",
+      "slug": "seth-rogan",
+      "legacy_id": null,
+      "name": "Seth Rogan",
+      "birth_date": "1982-04-15",
+      "death_date": null,
+      "country": "Canadá",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "5f34c43b-2701-415b-b85a-32e9e4f98ae6",
+      "slug": "tom-holland",
+      "legacy_id": null,
+      "name": "Tom Holland",
+      "birth_date": "1996-06-01",
+      "death_date": null,
+      "country": "Inglaterra",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "75715ec7-0fb5-4bdd-acb7-10f47b8565a0",
+      "slug": "tramell-tillman",
+      "legacy_id": null,
+      "name": "Tramell Tillman",
+      "birth_date": "1985-06-17",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "f8562d0a-9f8a-403c-939d-1df5018aebf8",
+      "slug": "travis-scott",
+      "legacy_id": null,
+      "name": "Travis Scott",
+      "birth_date": "1991-04-30",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "dbdbbe67-e8ba-4891-996c-ce38011e1a69",
+      "slug": "victoire-laly",
+      "legacy_id": null,
+      "name": "Victoire Laly",
+      "birth_date": "1991-05-05",
+      "death_date": null,
+      "country": "Alemanha",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "44bab1d8-90eb-4913-8894-9301f7ead4ad",
+      "slug": "will-gluck",
+      "legacy_id": null,
+      "name": "Will Gluck",
+      "birth_date": "1978-11-07",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    },
+    {
+      "id": "4c9577d1-dfb4-411b-9307-c78d7c16bed0",
+      "slug": "zendaya",
+      "legacy_id": null,
+      "name": "Zendaya",
+      "birth_date": "1996-09-01",
+      "death_date": null,
+      "country": "Estados Unidos",
+      "tmdb_id": null,
+      "tmdb_synced_at": null
+    }
+  ],
+  "relations": {
+    "film_credits": [
+      {
+        "id": "5b3ca581-bf6d-44e8-b0b4-1459e882e862",
+        "film_id": "0248e063-5c69-4527-9813-6a374b216825",
+        "person_id": "0e132240-b399-438b-8d50-00e369d5aa50",
+        "fallback_person_name": null,
+        "department": "Direção",
+        "role": "Diretor",
+        "character_name": null,
+        "order_index": 0,
+        "created_at": "2026-08-21T16:09:44.053944+00:00"
+      },
+      {
+        "id": "182be7c3-c8ae-4272-ae21-26b322b451bc",
+        "film_id": "0248e063-5c69-4527-9813-6a374b216825",
+        "person_id": "13166ba9-325f-43b1-b5a3-811f812c2c71",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Bear",
+        "order_index": 1,
+        "created_at": "2026-08-21T16:09:44.053944+00:00"
+      },
+      {
+        "id": "93f36c01-4d86-4ba8-bf39-1ed319acdd19",
+        "film_id": "0248e063-5c69-4527-9813-6a374b216825",
+        "person_id": "f40cbc88-7813-4104-8c25-12a09adb0adb",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Nikki",
+        "order_index": 2,
+        "created_at": "2026-08-21T16:09:44.053944+00:00"
+      },
+      {
+        "id": "f94bbe7e-a444-4b6b-b4b6-95e4ee7bbf28",
+        "film_id": "0248e063-5c69-4527-9813-6a374b216825",
+        "person_id": "0062e3da-5591-49a9-9f1b-c2e0e757b72f",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Ian",
+        "order_index": 3,
+        "created_at": "2026-08-21T16:09:44.053944+00:00"
+      },
+      {
+        "id": "3f780112-cec0-4e09-8a73-d9977f75106c",
+        "film_id": "0248e063-5c69-4527-9813-6a374b216825",
+        "person_id": "b0607712-f39b-4372-9a1a-247440ec6fc9",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Sarah",
+        "order_index": 4,
+        "created_at": "2026-08-21T16:09:44.053944+00:00"
+      },
+      {
+        "id": "4e3e736f-0a8e-4ca0-91ad-6d6096273543",
+        "film_id": "0248e063-5c69-4527-9813-6a374b216825",
+        "person_id": "65c8e5bd-f9ac-4fc5-85fc-09631299788f",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Carter",
+        "order_index": 5,
+        "created_at": "2026-08-21T16:09:44.053944+00:00"
+      },
+      {
+        "id": "07278013-9ea8-4fe4-ab1f-2bb4116f9dd4",
+        "film_id": "04ae3ecd-10ca-4b8b-835b-05820bc045c0",
+        "person_id": "23791fcf-1a50-4951-9cc1-bb80c0a0b535",
+        "fallback_person_name": null,
+        "department": "Direção",
+        "role": "Diretor",
+        "character_name": null,
+        "order_index": 0,
+        "created_at": "2026-08-26T23:48:39.655529+00:00"
+      },
+      {
+        "id": "a5d04ee7-121f-40f7-be60-f0d9e7b7fe96",
+        "film_id": "04ae3ecd-10ca-4b8b-835b-05820bc045c0",
+        "person_id": "6f714726-a5e7-41f6-890d-dda513794dff",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Hig",
+        "order_index": 1,
+        "created_at": "2026-08-26T23:48:39.655529+00:00"
+      },
+      {
+        "id": "c54a6c26-c5bf-4eb1-bd4d-61f350b8ee2d",
+        "film_id": "04ae3ecd-10ca-4b8b-835b-05820bc045c0",
+        "person_id": "7d6ad6a0-dfd2-42eb-b0cc-a522e793e7ed",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Cima",
+        "order_index": 2,
+        "created_at": "2026-08-26T23:48:39.655529+00:00"
+      },
+      {
+        "id": "d60b603a-ebf4-49ea-8a44-523da832609a",
+        "film_id": "04ae3ecd-10ca-4b8b-835b-05820bc045c0",
+        "person_id": "992d33fc-0bcf-40db-a0d9-673f7f53281a",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Bangley",
+        "order_index": 3,
+        "created_at": "2026-08-26T23:48:39.655529+00:00"
+      },
+      {
+        "id": "654ea369-b1c6-4cb1-9c6a-7230a4f05f35",
+        "film_id": "04ae3ecd-10ca-4b8b-835b-05820bc045c0",
+        "person_id": "2f1096f4-a03d-4b11-8149-4a5f243f2452",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Pops",
+        "order_index": 4,
+        "created_at": "2026-08-26T23:48:39.655529+00:00"
+      },
+      {
+        "id": "9944a972-e1ca-47fe-99cf-8572b8b81ca8",
+        "film_id": "04ae3ecd-10ca-4b8b-835b-05820bc045c0",
+        "person_id": "0f05fd0b-6c69-4b54-a256-b652d9c8478d",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Darlene",
+        "order_index": 5,
+        "created_at": "2026-08-26T23:48:39.655529+00:00"
+      },
+      {
+        "id": "c9319db8-8b33-41de-9eff-305231c0033c",
+        "film_id": "04ae3ecd-10ca-4b8b-835b-05820bc045c0",
+        "person_id": "5f0eb385-46d7-4ebd-b4bf-10221574fb73",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Aaron",
+        "order_index": 6,
+        "created_at": "2026-08-26T23:48:39.655529+00:00"
+      },
+      {
+        "id": "ce340b64-3223-4a5c-9b43-18aa87a5c2af",
+        "film_id": "04ae3ecd-10ca-4b8b-835b-05820bc045c0",
+        "person_id": "ea2cc2a2-05ca-42b6-a9d2-e9a6e54815b2",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Crossbow Hunter",
+        "order_index": 7,
+        "created_at": "2026-08-26T23:48:39.655529+00:00"
+      },
+      {
+        "id": "7cf398b8-dca1-4ce5-8f7e-26f5c20919b8",
+        "film_id": "1b32374e-d28c-41ac-bcd1-4cb8792c2764",
+        "person_id": "79f25338-c604-4a3b-9818-9b5cc21aec95",
+        "fallback_person_name": null,
+        "department": "Direção",
+        "role": "Diretor",
+        "character_name": null,
+        "order_index": 0,
+        "created_at": "2026-08-16T19:06:21.442325+00:00"
+      },
+      {
+        "id": "c161be5a-c533-4d17-88dd-10bc57cd8f76",
+        "film_id": "1b32374e-d28c-41ac-bcd1-4cb8792c2764",
+        "person_id": "2311dbc4-3632-4c4c-b8d3-458f0a946c5e",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Odisseu",
+        "order_index": 1,
+        "created_at": "2026-08-16T19:06:21.442325+00:00"
+      },
+      {
+        "id": "16ca8f27-6408-47c6-a4d0-75f74c046aa2",
+        "film_id": "1b32374e-d28c-41ac-bcd1-4cb8792c2764",
+        "person_id": "ac8ef972-c882-4613-b089-5a8ea321bd04",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Penélope",
+        "order_index": 2,
+        "created_at": "2026-08-16T19:06:21.442325+00:00"
+      },
+      {
+        "id": "da200c01-b6cf-4264-9e8b-36272b07b81b",
+        "film_id": "1b32374e-d28c-41ac-bcd1-4cb8792c2764",
+        "person_id": "5f34c43b-2701-415b-b85a-32e9e4f98ae6",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Telêmaco",
+        "order_index": 3,
+        "created_at": "2026-08-16T19:06:21.442325+00:00"
+      },
+      {
+        "id": "9c3dffd6-5804-4a2f-a95a-3893548a3c91",
+        "film_id": "1b32374e-d28c-41ac-bcd1-4cb8792c2764",
+        "person_id": "88f76b62-20cd-42c1-a9f0-06d39e60b928",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Antinous",
+        "order_index": 4,
+        "created_at": "2026-08-16T19:06:21.442325+00:00"
+      },
+      {
+        "id": "5f4c0100-219a-4142-b202-bc249cd3ef85",
+        "film_id": "1b32374e-d28c-41ac-bcd1-4cb8792c2764",
+        "person_id": "3ace0c06-1f6e-4730-b3a0-4eafe05acb30",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Euríloco",
+        "order_index": 5,
+        "created_at": "2026-08-16T19:06:21.442325+00:00"
+      },
+      {
+        "id": "f9435e72-608b-4445-9400-a93b5f2c73be",
+        "film_id": "1b32374e-d28c-41ac-bcd1-4cb8792c2764",
+        "person_id": "eccd9eec-399b-480f-982f-85915e90d8dc",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Eumeu",
+        "order_index": 6,
+        "created_at": "2026-08-16T19:06:21.442325+00:00"
+      },
+      {
+        "id": "a18e0093-fd7b-4c89-9dc8-8e63e1752e60",
+        "film_id": "1b32374e-d28c-41ac-bcd1-4cb8792c2764",
+        "person_id": "4c9577d1-dfb4-411b-9307-c78d7c16bed0",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Athena",
+        "order_index": 7,
+        "created_at": "2026-08-16T19:06:21.442325+00:00"
+      },
+      {
+        "id": "1b13e4ec-4f89-4740-8b7b-822fd281cdcf",
+        "film_id": "1b32374e-d28c-41ac-bcd1-4cb8792c2764",
+        "person_id": "f8562d0a-9f8a-403c-939d-1df5018aebf8",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Bard",
+        "order_index": 8,
+        "created_at": "2026-08-16T19:06:21.442325+00:00"
+      },
+      {
+        "id": "a6b59c2d-b625-4cb7-9c6c-266c3647b278",
+        "film_id": "1b32374e-d28c-41ac-bcd1-4cb8792c2764",
+        "person_id": "72988817-eea2-4188-b243-c04ca2ddb10e",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Sinon",
+        "order_index": 9,
+        "created_at": "2026-08-16T19:06:21.442325+00:00"
+      },
+      {
+        "id": "d595dc81-6bee-4d5f-bdc9-29f198949839",
+        "film_id": "1b32374e-d28c-41ac-bcd1-4cb8792c2764",
+        "person_id": "6687f7fb-1788-4478-83b6-176eefef5f61",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Calypso",
+        "order_index": 10,
+        "created_at": "2026-08-16T19:06:21.442325+00:00"
+      },
+      {
+        "id": "0fed2390-c9d8-4b1c-85e7-d55e23fcae7f",
+        "film_id": "1b32374e-d28c-41ac-bcd1-4cb8792c2764",
+        "person_id": "ffdb6782-633e-4161-8ac5-7531e9ff2d22",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Menelau",
+        "order_index": 11,
+        "created_at": "2026-08-16T19:06:21.442325+00:00"
+      },
+      {
+        "id": "cd5833b6-a601-49af-b24a-c5da55829d32",
+        "film_id": "1b32374e-d28c-41ac-bcd1-4cb8792c2764",
+        "person_id": "5eead754-f5f5-43ad-9f13-38c1cba4861a",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Mélantho",
+        "order_index": 12,
+        "created_at": "2026-08-16T19:06:21.442325+00:00"
+      },
+      {
+        "id": "7daff635-3e0d-411a-b6c7-87e75d2386cf",
+        "film_id": "1b32374e-d28c-41ac-bcd1-4cb8792c2764",
+        "person_id": "ad418be7-54c2-4066-92cd-d5a5895a57fb",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Helena, Clytemnestra",
+        "order_index": 13,
+        "created_at": "2026-08-16T19:06:21.442325+00:00"
+      },
+      {
+        "id": "064021b6-f6e7-491c-8b75-449243fc1650",
+        "film_id": "1b32374e-d28c-41ac-bcd1-4cb8792c2764",
+        "person_id": "ddc40c16-3066-4164-a295-964e39ef982e",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Agamemnon",
+        "order_index": 14,
+        "created_at": "2026-08-16T19:06:21.442325+00:00"
+      },
+      {
+        "id": "5300a2ac-5120-47ff-9ef9-f8c5a7aecaa3",
+        "film_id": "1b32374e-d28c-41ac-bcd1-4cb8792c2764",
+        "person_id": "79f25338-c604-4a3b-9818-9b5cc21aec95",
+        "fallback_person_name": null,
+        "department": "Roteiro",
+        "role": "Roteirista",
+        "character_name": null,
+        "order_index": 15,
+        "created_at": "2026-08-16T19:06:21.442325+00:00"
+      },
+      {
+        "id": "b6bf22b9-46cb-470d-b1ba-6dc340d43063",
+        "film_id": "3ecb01f8-41d3-45ae-b0cd-be7c25d1048a",
+        "person_id": "69b7be65-79ba-4297-bb48-08b7102ebf16",
+        "fallback_person_name": null,
+        "department": "Direção",
+        "role": "Diretor",
+        "character_name": null,
+        "order_index": 0,
+        "created_at": "2026-08-23T18:33:33.239442+00:00"
+      },
+      {
+        "id": "87e227a6-b252-4b67-8ce1-66307ce1a55c",
+        "film_id": "3ecb01f8-41d3-45ae-b0cd-be7c25d1048a",
+        "person_id": "f0658346-c89a-4fcc-8539-91f377453b77",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Elisabet Vogler",
+        "order_index": 1,
+        "created_at": "2026-08-23T18:33:33.239442+00:00"
+      },
+      {
+        "id": "b0c63d6a-9a59-41ad-8f62-480f4e9d6cad",
+        "film_id": "3ecb01f8-41d3-45ae-b0cd-be7c25d1048a",
+        "person_id": "8536a8e7-7fa0-43cf-b9f2-feedeb9ad649",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Alma",
+        "order_index": 2,
+        "created_at": "2026-08-23T18:33:33.239442+00:00"
+      },
+      {
+        "id": "e25405e8-99e9-487c-a0b2-a39cec424e02",
+        "film_id": "3ecb01f8-41d3-45ae-b0cd-be7c25d1048a",
+        "person_id": "d6c760bc-936b-4bf7-8293-697eafb70cc8",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Médica",
+        "order_index": 3,
+        "created_at": "2026-08-23T18:33:33.239442+00:00"
+      },
+      {
+        "id": "bdc6df35-00e1-458b-816c-d725206430b1",
+        "film_id": "3ecb01f8-41d3-45ae-b0cd-be7c25d1048a",
+        "person_id": "2ef39893-120a-42cb-a9c2-3d461dd47598",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Sr. Vogler",
+        "order_index": 4,
+        "created_at": "2026-08-23T18:33:33.239442+00:00"
+      },
+      {
+        "id": "2d80ec86-63ca-4b41-b52a-19ca9754e31a",
+        "film_id": "3ecb01f8-41d3-45ae-b0cd-be7c25d1048a",
+        "person_id": "15f584ea-16d8-4f35-a6ee-9fc10481a33f",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Menino",
+        "order_index": 5,
+        "created_at": "2026-08-23T18:33:33.239442+00:00"
+      },
+      {
+        "id": "234f272b-e587-4575-8cc1-16d3337dad9a",
+        "film_id": "449a8c24-1901-4df1-a3fa-6de1f2edf934",
+        "person_id": "dc64983d-0471-4fad-987d-d691e7d4c380",
+        "fallback_person_name": null,
+        "department": "Direção",
+        "role": "Diretor",
+        "character_name": null,
+        "order_index": 0,
+        "created_at": "2026-09-09T19:28:35.119636+00:00"
+      },
+      {
+        "id": "9c2a36e0-29a8-4e84-a2fd-1da840cb3f99",
+        "film_id": "449a8c24-1901-4df1-a3fa-6de1f2edf934",
+        "person_id": "1bbeb4d3-29d2-4012-a003-163fc6ab7e0e",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Maria",
+        "order_index": 1,
+        "created_at": "2026-09-09T19:28:35.119636+00:00"
+      },
+      {
+        "id": "40a5465d-13b5-4bb7-9a27-914bb256b6fd",
+        "film_id": "449a8c24-1901-4df1-a3fa-6de1f2edf934",
+        "person_id": "8a6768f7-7ff9-4730-b0dc-3da7157f500b",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Capitão Georg",
+        "order_index": 2,
+        "created_at": "2026-09-09T19:28:35.119636+00:00"
+      },
+      {
+        "id": "adab39a9-26b7-4458-8f79-7dab6f181d44",
+        "film_id": "449a8c24-1901-4df1-a3fa-6de1f2edf934",
+        "person_id": "325aece6-8c12-4e0a-9d07-20e047d3554a",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Baronesa",
+        "order_index": 3,
+        "created_at": "2026-09-09T19:28:35.119636+00:00"
+      },
+      {
+        "id": "fef0f2a9-e297-44d1-916c-f47810c845d1",
+        "film_id": "449a8c24-1901-4df1-a3fa-6de1f2edf934",
+        "person_id": "4c73ef52-1481-4d11-b727-5af80360b7a9",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Liesl",
+        "order_index": 4,
+        "created_at": "2026-09-09T19:28:35.119636+00:00"
+      },
+      {
+        "id": "d2f001ef-1c79-499b-b415-85e4f1555b6c",
+        "film_id": "449a8c24-1901-4df1-a3fa-6de1f2edf934",
+        "person_id": "40a84d21-67c2-4fc0-8d29-f987becc2868",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Friedrich",
+        "order_index": 5,
+        "created_at": "2026-09-09T19:28:35.119636+00:00"
+      },
+      {
+        "id": "72add8b1-99fb-48b7-ac05-f99a96da94eb",
+        "film_id": "449a8c24-1901-4df1-a3fa-6de1f2edf934",
+        "person_id": "3ff0cbdc-a69a-4693-90fe-fd8551aed4f8",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Louisa",
+        "order_index": 6,
+        "created_at": "2026-09-09T19:28:35.119636+00:00"
+      },
+      {
+        "id": "95a24056-650a-4599-b695-f653767aefbe",
+        "film_id": "449a8c24-1901-4df1-a3fa-6de1f2edf934",
+        "person_id": "daebdb82-1854-440e-9203-18533fca72d1",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Brigitta",
+        "order_index": 7,
+        "created_at": "2026-09-09T19:28:35.119636+00:00"
+      },
+      {
+        "id": "11a4ea8d-8a2d-486e-9e67-79f6f1e892b8",
+        "film_id": "449a8c24-1901-4df1-a3fa-6de1f2edf934",
+        "person_id": "7e0901df-773d-4ced-8cdd-cf6d61ced6dd",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Marta",
+        "order_index": 8,
+        "created_at": "2026-09-09T19:28:35.119636+00:00"
+      },
+      {
+        "id": "badc765b-e705-4792-92be-80d3d9ad05c9",
+        "film_id": "449a8c24-1901-4df1-a3fa-6de1f2edf934",
+        "person_id": "62479ced-a10d-421c-8e8a-4c9650f8d943",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Gretl",
+        "order_index": 9,
+        "created_at": "2026-09-09T19:28:35.119636+00:00"
+      },
+      {
+        "id": "adb87544-9999-4ac1-a0cd-ab68339bfc79",
+        "film_id": "449a8c24-1901-4df1-a3fa-6de1f2edf934",
+        "person_id": "489f0aba-3f4d-494c-b958-9156643e856c",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Kurt",
+        "order_index": 10,
+        "created_at": "2026-09-09T19:28:35.119636+00:00"
+      },
+      {
+        "id": "b4aeef95-3eec-43ba-a867-180facbd208a",
+        "film_id": "971fea96-855e-45f2-a962-0e98cd00d4de",
+        "person_id": "81d93a67-6dc8-46b4-bde9-f05a27b18367",
+        "fallback_person_name": null,
+        "department": "Direção",
+        "role": "Diretor",
+        "character_name": null,
+        "order_index": 0,
+        "created_at": "2026-08-26T23:09:04.639634+00:00"
+      },
+      {
+        "id": "8a1fac47-bfe2-4c8e-81fc-120c82936b06",
+        "film_id": "971fea96-855e-45f2-a962-0e98cd00d4de",
+        "person_id": "9f2e6d45-3069-45bc-969d-114f13ca8669",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Sebastian",
+        "order_index": 1,
+        "created_at": "2026-08-26T23:09:04.639634+00:00"
+      },
+      {
+        "id": "67cd6860-aafa-4760-b9fd-050095a14bd5",
+        "film_id": "971fea96-855e-45f2-a962-0e98cd00d4de",
+        "person_id": "c30fbfdf-5fe6-4202-a1a1-f5cb5a6140ee",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Mia",
+        "order_index": 2,
+        "created_at": "2026-08-26T23:09:04.639634+00:00"
+      },
+      {
+        "id": "fb77c8d4-3d65-441b-8181-74ff8364d61f",
+        "film_id": "971fea96-855e-45f2-a962-0e98cd00d4de",
+        "person_id": "08640665-6ec4-4a36-828e-d3cc4830644a",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Keith",
+        "order_index": 3,
+        "created_at": "2026-08-26T23:09:04.639634+00:00"
+      },
+      {
+        "id": "c95c7c6d-5221-4b6c-8e5f-9aa1dd3fcbc2",
+        "film_id": "971fea96-855e-45f2-a962-0e98cd00d4de",
+        "person_id": "7fb505f9-3d1e-43a7-8842-31a301fb3e9f",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Laura",
+        "order_index": 4,
+        "created_at": "2026-08-26T23:09:04.639634+00:00"
+      },
+      {
+        "id": "746626d6-dfe0-422d-82d1-33ff1f8cadff",
+        "film_id": "971fea96-855e-45f2-a962-0e98cd00d4de",
+        "person_id": "aae27e8f-0aed-4f16-9205-4f8a0a611edf",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Bill",
+        "order_index": 5,
+        "created_at": "2026-08-26T23:09:04.639634+00:00"
+      },
+      {
+        "id": "17d28d01-729d-4c05-a6ff-acb89f9be5ca",
+        "film_id": "b5091b5f-a2e4-4a5a-9794-b9b253f28745",
+        "person_id": "44bab1d8-90eb-4913-8894-9301f7ead4ad",
+        "fallback_person_name": null,
+        "department": "Direção",
+        "role": "Diretor",
+        "character_name": null,
+        "order_index": 0,
+        "created_at": "2026-08-26T21:03:59.969806+00:00"
+      },
+      {
+        "id": "50af7554-6d80-4db0-b2a1-1584449b53e1",
+        "film_id": "b5091b5f-a2e4-4a5a-9794-b9b253f28745",
+        "person_id": "7a7b726b-1acd-4779-aee0-e8ab2109ec67",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Allie",
+        "order_index": 1,
+        "created_at": "2026-08-26T21:03:59.969806+00:00"
+      },
+      {
+        "id": "e0d8bf7d-e296-40ed-a73d-926cda7ee914",
+        "film_id": "b5091b5f-a2e4-4a5a-9794-b9b253f28745",
+        "person_id": "97744d7a-1414-4b4d-96d7-9c46a6b51094",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Owen",
+        "order_index": 2,
+        "created_at": "2026-08-26T21:03:59.969806+00:00"
+      },
+      {
+        "id": "9207674e-836b-42b4-99f5-0e7db6fb75d2",
+        "film_id": "b5091b5f-a2e4-4a5a-9794-b9b253f28745",
+        "person_id": "389b2501-553b-49ec-84d8-cc48f44cdd2d",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Malika",
+        "order_index": 3,
+        "created_at": "2026-08-26T21:03:59.969806+00:00"
+      },
+      {
+        "id": "744c0f9a-01bd-4db6-9fde-a3fb9aea7231",
+        "film_id": "b5091b5f-a2e4-4a5a-9794-b9b253f28745",
+        "person_id": "0a8daa6d-dec9-445c-a82e-759338949f47",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Jacinta",
+        "order_index": 4,
+        "created_at": "2026-08-26T21:03:59.969806+00:00"
+      },
+      {
+        "id": "6a9f7c1b-3d87-4d06-9843-3dcf23143df4",
+        "film_id": "b5091b5f-a2e4-4a5a-9794-b9b253f28745",
+        "person_id": "66f47901-f35a-4840-9c25-06ba3c620c85",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Linda",
+        "order_index": 5,
+        "created_at": "2026-08-26T21:03:59.969806+00:00"
+      },
+      {
+        "id": "998feee2-dcb8-475b-8a0b-1e7d6f0fd8e9",
+        "film_id": "b5091b5f-a2e4-4a5a-9794-b9b253f28745",
+        "person_id": "3f11fef3-b318-4220-bb24-ad2b717add6f",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Rick",
+        "order_index": 6,
+        "created_at": "2026-08-26T21:03:59.969806+00:00"
+      },
+      {
+        "id": "5d31e706-b9cf-4b82-b948-e251b2858385",
+        "film_id": "b5091b5f-a2e4-4a5a-9794-b9b253f28745",
+        "person_id": "1738cb74-8171-47d4-9244-c0666d3d3d8a",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Ezra Stone",
+        "order_index": 7,
+        "created_at": "2026-08-26T21:03:59.969806+00:00"
+      },
+      {
+        "id": "c8b988ad-91e2-4d7f-bad2-c32e948ddf97",
+        "film_id": "b5091b5f-a2e4-4a5a-9794-b9b253f28745",
+        "person_id": "fd64b8c9-be8a-49d3-b9d7-6247f7c6508f",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Arya",
+        "order_index": 8,
+        "created_at": "2026-08-26T21:03:59.969806+00:00"
+      },
+      {
+        "id": "b9ddea6e-e9cb-4642-ac04-6d4dab9d904f",
+        "film_id": "b5091b5f-a2e4-4a5a-9794-b9b253f28745",
+        "person_id": "80b57d5f-e25f-4c0a-b040-1f32da9903c8",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Troy",
+        "order_index": 9,
+        "created_at": "2026-08-26T21:03:59.969806+00:00"
+      },
+      {
+        "id": "836ea02c-bd1c-4f31-a967-4d8875f7595f",
+        "film_id": "b5091b5f-a2e4-4a5a-9794-b9b253f28745",
+        "person_id": "6f1d6606-43e2-4019-8279-896445903b83",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Tejan",
+        "order_index": 10,
+        "created_at": "2026-08-26T21:03:59.969806+00:00"
+      },
+      {
+        "id": "15470865-cc1d-4ff6-9ca9-befd9eeb4d85",
+        "film_id": "b518c724-96cb-4862-9662-cc66d2fa19d9",
+        "person_id": "ac8ef972-c882-4613-b089-5a8ea321bd04",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Denise Platt",
+        "order_index": 0,
+        "created_at": "2026-08-16T17:29:56.506922+00:00"
+      },
+      {
+        "id": "fcbf9c44-4705-4ee6-a285-c5668e09ca80",
+        "film_id": "b518c724-96cb-4862-9662-cc66d2fa19d9",
+        "person_id": "e37d6726-a256-47dc-8dce-0740bcb75de2",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Greg Platt",
+        "order_index": 1,
+        "created_at": "2026-08-16T17:29:56.506922+00:00"
+      },
+      {
+        "id": "11e88bb7-16b1-4856-988b-72af8fabafad",
+        "film_id": "b518c724-96cb-4862-9662-cc66d2fa19d9",
+        "person_id": "8dabc131-aa2c-4317-b74e-6578561b2f4b",
+        "fallback_person_name": null,
+        "department": "Direção",
+        "role": "Diretor",
+        "character_name": null,
+        "order_index": 2,
+        "created_at": "2026-08-16T17:29:56.506922+00:00"
+      },
+      {
+        "id": "b6b66aaa-cf32-40f3-b62b-c74c5f15b19c",
+        "film_id": "c224f859-7888-4424-9566-be58a9619cae",
+        "person_id": "0c27c8d1-e668-48fb-94bd-1ed42f7b0d64",
+        "fallback_person_name": null,
+        "department": "Direção",
+        "role": "Diretor",
+        "character_name": null,
+        "order_index": 0,
+        "created_at": "2026-08-26T23:29:37.844638+00:00"
+      },
+      {
+        "id": "9e777b2c-b68e-4151-b0fa-7db3f9bb67c2",
+        "film_id": "c224f859-7888-4424-9566-be58a9619cae",
+        "person_id": "3162c028-966b-4873-8a27-0ca395bf2bb5",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Laura",
+        "order_index": 1,
+        "created_at": "2026-08-26T23:29:37.844638+00:00"
+      },
+      {
+        "id": "5ca51f98-1e0c-4f68-9720-c90ac7d5cda2",
+        "film_id": "c224f859-7888-4424-9566-be58a9619cae",
+        "person_id": "0eda86a0-0d81-4489-8959-d76b1d7108f4",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Betty",
+        "order_index": 2,
+        "created_at": "2026-08-26T23:29:37.844638+00:00"
+      },
+      {
+        "id": "3051b551-9dd7-4061-b8b1-1545ce0882f7",
+        "film_id": "c224f859-7888-4424-9566-be58a9619cae",
+        "person_id": "596075dc-44eb-4be1-8539-179be30eb09d",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Richard",
+        "order_index": 3,
+        "created_at": "2026-08-26T23:29:37.844638+00:00"
+      },
+      {
+        "id": "c8ec2bd2-731e-42a2-ab18-1f6f941b56ea",
+        "film_id": "c224f859-7888-4424-9566-be58a9619cae",
+        "person_id": "54ffba65-0b9c-4ac2-8e13-684cd144e4d4",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Max",
+        "order_index": 4,
+        "created_at": "2026-08-26T23:29:37.844638+00:00"
+      },
+      {
+        "id": "5e23d93a-bb7b-4539-9b74-36e260950c5b",
+        "film_id": "c224f859-7888-4424-9566-be58a9619cae",
+        "person_id": "e5cf5974-e36d-45ca-945d-39f231da10b0",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Jakob",
+        "order_index": 5,
+        "created_at": "2026-08-26T23:29:37.844638+00:00"
+      },
+      {
+        "id": "5aa10fe8-bea3-4c5e-981a-1442b1d131e2",
+        "film_id": "c224f859-7888-4424-9566-be58a9619cae",
+        "person_id": "dbdbbe67-e8ba-4891-996c-ce38011e1a69",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Debbi",
+        "order_index": 6,
+        "created_at": "2026-08-26T23:29:37.844638+00:00"
+      },
+      {
+        "id": "a4923e8f-c3f7-4ee4-84a9-675953d6f88d",
+        "film_id": "c224f859-7888-4424-9566-be58a9619cae",
+        "person_id": "daba70dd-c2b1-49d6-af9c-b3bb7cfa74b3",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Roger",
+        "order_index": 7,
+        "created_at": "2026-08-26T23:29:37.844638+00:00"
+      },
+      {
+        "id": "90ff48b1-f94e-4a7c-93b5-b3dfd051cdec",
+        "film_id": "c39a1a2d-b86f-403e-a4d6-95c6c1f330c5",
+        "person_id": "ccc57074-ba99-4381-b065-87756d0d59e1",
+        "fallback_person_name": null,
+        "department": "Direção",
+        "role": "Diretor",
+        "character_name": null,
+        "order_index": 0,
+        "created_at": "2026-08-23T19:30:53.397685+00:00"
+      },
+      {
+        "id": "d6d4ad34-1c5c-44bd-b1bd-634893168cd8",
+        "film_id": "c39a1a2d-b86f-403e-a4d6-95c6c1f330c5",
+        "person_id": "ccc57074-ba99-4381-b065-87756d0d59e1",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Angela",
+        "order_index": 1,
+        "created_at": "2026-08-23T19:30:53.397685+00:00"
+      },
+      {
+        "id": "aeeeb65e-fed0-4156-a0e0-1461fdf00d21",
+        "film_id": "c39a1a2d-b86f-403e-a4d6-95c6c1f330c5",
+        "person_id": "08bd243f-29d7-4d50-932c-4468baa7b7be",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Joe",
+        "order_index": 2,
+        "created_at": "2026-08-23T19:30:53.397685+00:00"
+      },
+      {
+        "id": "f9e1efeb-da40-4ac8-9fd9-2f62ca1d6017",
+        "film_id": "c39a1a2d-b86f-403e-a4d6-95c6c1f330c5",
+        "person_id": "7f4eea0f-324e-4835-a602-d028a526ea6e",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Piña",
+        "order_index": 3,
+        "created_at": "2026-08-23T19:30:53.397685+00:00"
+      },
+      {
+        "id": "e483d4e4-d29c-4bbf-a385-a839c19f4c49",
+        "film_id": "c39a1a2d-b86f-403e-a4d6-95c6c1f330c5",
+        "person_id": "e74bd4b0-6c90-4f91-8dba-0ccf72fb753c",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Hawk",
+        "order_index": 4,
+        "created_at": "2026-08-23T19:30:53.397685+00:00"
+      },
+      {
+        "id": "fe081319-1a18-413c-bae0-17d27d4f3e02",
+        "film_id": "fffa6c06-dd44-46c0-bfcd-875dd2e10f06",
+        "person_id": "2ed62b99-99e9-4c85-bb45-b7325a48b214",
+        "fallback_person_name": null,
+        "department": "Direção",
+        "role": "Diretor",
+        "character_name": null,
+        "order_index": 0,
+        "created_at": "2026-08-24T15:35:45.766162+00:00"
+      },
+      {
+        "id": "b691c839-4808-49a8-9219-5be0fea2ea77",
+        "film_id": "fffa6c06-dd44-46c0-bfcd-875dd2e10f06",
+        "person_id": "5f34c43b-2701-415b-b85a-32e9e4f98ae6",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Peter Parker, Homem-Aranha",
+        "order_index": 1,
+        "created_at": "2026-08-24T15:35:45.766162+00:00"
+      },
+      {
+        "id": "eecb454d-05d9-47ac-a7c2-7ff780d13ef2",
+        "film_id": "fffa6c06-dd44-46c0-bfcd-875dd2e10f06",
+        "person_id": "4c9577d1-dfb4-411b-9307-c78d7c16bed0",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "MJ",
+        "order_index": 2,
+        "created_at": "2026-08-24T15:35:45.766162+00:00"
+      },
+      {
+        "id": "5f98a3db-388e-4943-87d2-951ebf703b09",
+        "film_id": "fffa6c06-dd44-46c0-bfcd-875dd2e10f06",
+        "person_id": "5ad7868c-ae34-4ccd-a5f9-69826b99d56e",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Ned",
+        "order_index": 3,
+        "created_at": "2026-08-24T15:35:45.766162+00:00"
+      },
+      {
+        "id": "a981d65b-0426-4fdb-ae78-2aea8309ac15",
+        "film_id": "fffa6c06-dd44-46c0-bfcd-875dd2e10f06",
+        "person_id": "ffdb6782-633e-4161-8ac5-7531e9ff2d22",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Frank, Justiceiro",
+        "order_index": 4,
+        "created_at": "2026-08-24T15:35:45.766162+00:00"
+      },
+      {
+        "id": "4accddd3-b0d1-4ec3-9037-578ad751c583",
+        "film_id": "fffa6c06-dd44-46c0-bfcd-875dd2e10f06",
+        "person_id": "75715ec7-0fb5-4bdd-acb7-10f47b8565a0",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Bill Metzger",
+        "order_index": 5,
+        "created_at": "2026-08-24T15:35:45.766162+00:00"
+      },
+      {
+        "id": "7c0fee4e-fef7-42dd-ae44-e9e4e793d8e6",
+        "film_id": "fffa6c06-dd44-46c0-bfcd-875dd2e10f06",
+        "person_id": "eb2a8b34-4fd3-4f15-81a9-7568c3ab9605",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Jean Grey",
+        "order_index": 6,
+        "created_at": "2026-08-24T15:35:45.766162+00:00"
+      },
+      {
+        "id": "67897927-866b-4c79-a33b-a2fefafc5d3f",
+        "film_id": "fffa6c06-dd44-46c0-bfcd-875dd2e10f06",
+        "person_id": "b4ce5184-36e0-4c56-a927-d3bed1f70611",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Mac Gargan, Escorpião",
+        "order_index": 7,
+        "created_at": "2026-08-24T15:35:45.766162+00:00"
+      },
+      {
+        "id": "fa6fbc67-7d86-4f96-be4f-09ccaa67ee20",
+        "film_id": "fffa6c06-dd44-46c0-bfcd-875dd2e10f06",
+        "person_id": "cf95890a-645a-452d-b6f2-7bd9ea86e4c6",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Bruce Banner, Hulk",
+        "order_index": 8,
+        "created_at": "2026-08-24T15:35:45.766162+00:00"
+      },
+      {
+        "id": "02c04329-c3a4-4ea0-b7e4-9928f74a6bd0",
+        "film_id": "fffa6c06-dd44-46c0-bfcd-875dd2e10f06",
+        "person_id": "7cb2d680-21a1-4cb8-9c43-4d848647409b",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Jean DeWolff",
+        "order_index": 9,
+        "created_at": "2026-08-24T15:35:45.766162+00:00"
+      },
+      {
+        "id": "f78b1f96-4afb-4c8e-8b21-939ee872c02d",
+        "film_id": "fffa6c06-dd44-46c0-bfcd-875dd2e10f06",
+        "person_id": "23c977f6-3977-4933-bcd8-48eab578ad50",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "Yelena, Viúva Negra",
+        "order_index": 10,
+        "created_at": "2026-08-24T15:35:45.766162+00:00"
+      },
+      {
+        "id": "39956e75-fa5a-4fc4-9bca-7c4c6cc6e0df",
+        "film_id": "fffa6c06-dd44-46c0-bfcd-875dd2e10f06",
+        "person_id": "8f7fc538-8315-413b-b100-f8f6a29117a9",
+        "fallback_person_name": null,
+        "department": "Elenco",
+        "role": "Ator",
+        "character_name": "May Parker",
+        "order_index": 11,
+        "created_at": "2026-08-24T15:35:45.766162+00:00"
+      }
+    ],
+    "filme_generos": [
+      {
+        "filme_id": "b518c724-96cb-4862-9662-cc66d2fa19d9",
+        "genero_id": "926e5a24-98b4-4dd6-84d7-6fafb2c09bde"
+      },
+      {
+        "filme_id": "b518c724-96cb-4862-9662-cc66d2fa19d9",
+        "genero_id": "8cf03008-8aa7-4c02-af52-673cd502952f"
+      },
+      {
+        "filme_id": "1b32374e-d28c-41ac-bcd1-4cb8792c2764",
+        "genero_id": "10f22aef-04ba-4efb-bbc8-a861ead910a5"
+      },
+      {
+        "filme_id": "1b32374e-d28c-41ac-bcd1-4cb8792c2764",
+        "genero_id": "8cf03008-8aa7-4c02-af52-673cd502952f"
+      },
+      {
+        "filme_id": "1b32374e-d28c-41ac-bcd1-4cb8792c2764",
+        "genero_id": "6ea504d4-eebe-4434-941b-50c7abb142c3"
+      },
+      {
+        "filme_id": "1b32374e-d28c-41ac-bcd1-4cb8792c2764",
+        "genero_id": "4033af59-9f6a-4f75-92a4-671883243586"
+      },
+      {
+        "filme_id": "0248e063-5c69-4527-9813-6a374b216825",
+        "genero_id": "5cb18e3e-9ca1-4cf4-8aca-ea7fdbf69020"
+      },
+      {
+        "filme_id": "0248e063-5c69-4527-9813-6a374b216825",
+        "genero_id": "c344c636-9e5b-4221-9ca0-5d2bff013330"
+      },
+      {
+        "filme_id": "0248e063-5c69-4527-9813-6a374b216825",
+        "genero_id": "a5f2a899-6b97-4ef7-a951-0da83a8fec8c"
+      },
+      {
+        "filme_id": "3ecb01f8-41d3-45ae-b0cd-be7c25d1048a",
+        "genero_id": "231bcd92-d56d-43ab-8883-bc5ed9f87a12"
+      },
+      {
+        "filme_id": "c39a1a2d-b86f-403e-a4d6-95c6c1f330c5",
+        "genero_id": "231bcd92-d56d-43ab-8883-bc5ed9f87a12"
+      },
+      {
+        "filme_id": "c39a1a2d-b86f-403e-a4d6-95c6c1f330c5",
+        "genero_id": "d6b774bd-e887-4712-b128-94ecc18a734e"
+      },
+      {
+        "filme_id": "c39a1a2d-b86f-403e-a4d6-95c6c1f330c5",
+        "genero_id": "059d8b28-2c03-4e05-afa0-8f900f4a6969"
+      },
+      {
+        "filme_id": "fffa6c06-dd44-46c0-bfcd-875dd2e10f06",
+        "genero_id": "231bcd92-d56d-43ab-8883-bc5ed9f87a12"
+      },
+      {
+        "filme_id": "fffa6c06-dd44-46c0-bfcd-875dd2e10f06",
+        "genero_id": "10f22aef-04ba-4efb-bbc8-a861ead910a5"
+      },
+      {
+        "filme_id": "fffa6c06-dd44-46c0-bfcd-875dd2e10f06",
+        "genero_id": "8cf03008-8aa7-4c02-af52-673cd502952f"
+      },
+      {
+        "filme_id": "b5091b5f-a2e4-4a5a-9794-b9b253f28745",
+        "genero_id": "231bcd92-d56d-43ab-8883-bc5ed9f87a12"
+      },
+      {
+        "filme_id": "b5091b5f-a2e4-4a5a-9794-b9b253f28745",
+        "genero_id": "d6b774bd-e887-4712-b128-94ecc18a734e"
+      },
+      {
+        "filme_id": "971fea96-855e-45f2-a962-0e98cd00d4de",
+        "genero_id": "231bcd92-d56d-43ab-8883-bc5ed9f87a12"
+      },
+      {
+        "filme_id": "971fea96-855e-45f2-a962-0e98cd00d4de",
+        "genero_id": "d6b774bd-e887-4712-b128-94ecc18a734e"
+      },
+      {
+        "filme_id": "971fea96-855e-45f2-a962-0e98cd00d4de",
+        "genero_id": "059d8b28-2c03-4e05-afa0-8f900f4a6969"
+      },
+      {
+        "filme_id": "c224f859-7888-4424-9566-be58a9619cae",
+        "genero_id": "231bcd92-d56d-43ab-8883-bc5ed9f87a12"
+      },
+      {
+        "filme_id": "04ae3ecd-10ca-4b8b-835b-05820bc045c0",
+        "genero_id": "926e5a24-98b4-4dd6-84d7-6fafb2c09bde"
+      },
+      {
+        "filme_id": "04ae3ecd-10ca-4b8b-835b-05820bc045c0",
+        "genero_id": "8cf03008-8aa7-4c02-af52-673cd502952f"
+      },
+      {
+        "filme_id": "449a8c24-1901-4df1-a3fa-6de1f2edf934",
+        "genero_id": "dd8ac526-eec6-4b2c-b7c1-9c1a55775aca"
+      },
+      {
+        "filme_id": "449a8c24-1901-4df1-a3fa-6de1f2edf934",
+        "genero_id": "059d8b28-2c03-4e05-afa0-8f900f4a6969"
+      }
+    ],
+    "filme_countries": [
+      {
+        "filme_id": "b518c724-96cb-4862-9662-cc66d2fa19d9",
+        "country_id": "5feadeb5-1af9-471e-9757-6f88e757a58a",
+        "order_index": 0
+      },
+      {
+        "filme_id": "1b32374e-d28c-41ac-bcd1-4cb8792c2764",
+        "country_id": "5feadeb5-1af9-471e-9757-6f88e757a58a",
+        "order_index": 0
+      },
+      {
+        "filme_id": "0248e063-5c69-4527-9813-6a374b216825",
+        "country_id": "5feadeb5-1af9-471e-9757-6f88e757a58a",
+        "order_index": 0
+      },
+      {
+        "filme_id": "3ecb01f8-41d3-45ae-b0cd-be7c25d1048a",
+        "country_id": "4856498a-8618-492c-a8b3-c3f29383cf23",
+        "order_index": 0
+      },
+      {
+        "filme_id": "c39a1a2d-b86f-403e-a4d6-95c6c1f330c5",
+        "country_id": "5feadeb5-1af9-471e-9757-6f88e757a58a",
+        "order_index": 0
+      },
+      {
+        "filme_id": "fffa6c06-dd44-46c0-bfcd-875dd2e10f06",
+        "country_id": "5feadeb5-1af9-471e-9757-6f88e757a58a",
+        "order_index": 0
+      },
+      {
+        "filme_id": "b5091b5f-a2e4-4a5a-9794-b9b253f28745",
+        "country_id": "5feadeb5-1af9-471e-9757-6f88e757a58a",
+        "order_index": 0
+      },
+      {
+        "filme_id": "971fea96-855e-45f2-a962-0e98cd00d4de",
+        "country_id": "5feadeb5-1af9-471e-9757-6f88e757a58a",
+        "order_index": 0
+      },
+      {
+        "filme_id": "c224f859-7888-4424-9566-be58a9619cae",
+        "country_id": "b7d42b5d-09b3-4da0-8e80-f9b16f0ab4c6",
+        "order_index": 0
+      },
+      {
+        "filme_id": "04ae3ecd-10ca-4b8b-835b-05820bc045c0",
+        "country_id": "5feadeb5-1af9-471e-9757-6f88e757a58a",
+        "order_index": 0
+      },
+      {
+        "filme_id": "449a8c24-1901-4df1-a3fa-6de1f2edf934",
+        "country_id": "5feadeb5-1af9-471e-9757-6f88e757a58a",
+        "order_index": 0
+      }
+    ],
+    "criticas": [
+      {
+        "id": "cf8ee38b-bae1-4d98-8552-ffb13af23291",
+        "film_id": "3ecb01f8-41d3-45ae-b0cd-be7c25d1048a",
+        "slug": "persona-critica",
+        "editorial_title": "Uma Jornada Pelo Intrínseco",
+        "legacy_id": null
+      },
+      {
+        "id": "3f51b63d-6d84-433a-b150-67e88e8888f4",
+        "film_id": "1b32374e-d28c-41ac-bcd1-4cb8792c2764",
+        "slug": "a-odisseia-critica",
+        "editorial_title": "A Grandeza Como Hábito",
+        "legacy_id": null
+      },
+      {
+        "id": "c53937c2-4f4c-4392-8925-9bf78b23690b",
+        "film_id": "0248e063-5c69-4527-9813-6a374b216825",
+        "slug": "obsessao-critica",
+        "editorial_title": "A Onda do Sofrimento Através do Fetiche Estético",
+        "legacy_id": null
+      },
+      {
+        "id": "2f5cad86-e74e-46ee-a338-a8b1127d7e6e",
+        "film_id": "fffa6c06-dd44-46c0-bfcd-875dd2e10f06",
+        "slug": "homem-aranha-um-novo-dia-critica",
+        "editorial_title": "A Maturidade Chega ao Mundo de Peter",
+        "legacy_id": null
+      },
+      {
+        "id": "f8828f5c-1c1d-46fa-befa-d5afda5de382",
+        "film_id": "c224f859-7888-4424-9566-be58a9619cae",
+        "slug": "miroirs-no-3-critica",
+        "editorial_title": "A Estranheza dos Silêncios",
+        "legacy_id": null
+      },
+      {
+        "id": "8ad2576b-9392-4223-8837-ed28f34d3646",
+        "film_id": "c39a1a2d-b86f-403e-a4d6-95c6c1f330c5",
+        "slug": "o-convite-critica",
+        "editorial_title": "A Indevida Confiança ao Artifício",
+        "legacy_id": null
+      },
+      {
+        "id": "7f490997-1c6d-4851-8574-b3a2bf82ca84",
+        "film_id": "449a8c24-1901-4df1-a3fa-6de1f2edf934",
+        "slug": "a-novica-rebelde-critica",
+        "editorial_title": "A Magia Musical de Wise",
+        "legacy_id": null
+      },
+      {
+        "id": "ed1dbdfb-d174-41f2-bd9d-3f4bb3dce60d",
+        "film_id": "04ae3ecd-10ca-4b8b-835b-05820bc045c0",
+        "slug": "ponto-sem-retorno-critica",
+        "editorial_title": "O Cinema Perdido de Scott",
+        "legacy_id": null
+      }
+    ],
+    "estreias": [
+      {
+        "id": "5e3a71c2-bd8b-472c-b0e1-a483a0464a96",
+        "film_id": "c39a1a2d-b86f-403e-a4d6-95c6c1f330c5",
+        "country": "Brasil",
+        "release_date": "2026-07-09",
+        "release_type": "Cinema"
+      },
+      {
+        "id": "945f8675-87b6-4a9b-9d82-fefbdcb65006",
+        "film_id": "b5091b5f-a2e4-4a5a-9794-b9b253f28745",
+        "country": "Brasil",
+        "release_date": "2026-08-20",
+        "release_type": "Cinema"
+      },
+      {
+        "id": "8a463f00-0807-4fb8-a4bf-489f9b81f5b3",
+        "film_id": "971fea96-855e-45f2-a962-0e98cd00d4de",
+        "country": "Brasil",
+        "release_date": "2026-08-20",
+        "release_type": "Relançamento"
+      },
+      {
+        "id": "1b202b00-4128-4d2a-b972-4697ee9d4585",
+        "film_id": "c224f859-7888-4424-9566-be58a9619cae",
+        "country": "Brasil",
+        "release_date": "2026-08-20",
+        "release_type": "Cinema"
+      },
+      {
+        "id": "39385081-fa0e-4174-b272-63634f1ee956",
+        "film_id": "04ae3ecd-10ca-4b8b-835b-05820bc045c0",
+        "country": "Brasil",
+        "release_date": "2026-08-27",
+        "release_type": "Cinema"
+      }
+    ],
+    "uma_imagem": [],
+    "listas": [
+      {
+        "id": "b0afe410-c46a-4a82-bb7a-2aebd274ecc2",
+        "slug": "meusfilmes-briandepalma",
+        "title": "Meus Filmes de Brian De Palma"
+      }
+    ],
+    "lista_items": [
+      {
+        "id": "f1c917e2-4ab1-4dcd-9c89-cc735f49e242",
+        "lista_id": "b0afe410-c46a-4a82-bb7a-2aebd274ecc2",
+        "film_id": null,
+        "rank": 1,
+        "order_index": 0,
+        "note": "Se eu tivesse de escolher apenas um filme para explicar por que considero Brian De Palma um dos grandes cineastas americanos, seria este. Um Tiro na Noite reúne praticamente tudo: voyeurismo, tecnologia, conspiração, manipulação, imagem, som e a obsessão por descobrir uma verdade escondida dentro de um registro. Só que toda essa engenharia formal desemboca numa tragédia devastadora. O homem que vive construindo sons para imagens finalmente consegue o som perfeito, mas aquilo que para o cinema é material tecnicamente ideal nasceu do pior momento de sua vida. É uma conclusão cruel sobre a relação entre arte e realidade e, para mim, o momento em que todo o virtuosismo de De Palma deixa definitivamente de ser uma questão de estilo para se tornar uma visão de mundo."
+      },
+      {
+        "id": "32eeae65-ad9a-40ff-a63e-8617210988c4",
+        "lista_id": "b0afe410-c46a-4a82-bb7a-2aebd274ecc2",
+        "film_id": null,
+        "rank": 2,
+        "order_index": 1,
+        "note": "É fácil lembrar de Carrie pelo sangue, pela telecinese e pelo horror, mas o filme sempre me pareceu muito mais triste do que assustador. De Palma dedica tempo suficiente à solidão e à humilhação de Carrie para que o baile não seja apenas preparação para uma sequência famosa. Por alguns instantes, existe a possibilidade sincera de que aquela garota seja aceita. É justamente por permitir essa esperança que sua destruição se torna tão cruel. O virtuosismo da sequência do baile é extraordinário, mas funciona porque a forma chega depois de o filme já ter nos feito compreender emocionalmente quem está sendo destruído."
+      },
+      {
+        "id": "1e180242-b690-429b-8403-a39191b94b49",
+        "lista_id": "b0afe410-c46a-4a82-bb7a-2aebd274ecc2",
+        "film_id": null,
+        "rank": 3,
+        "order_index": 2,
+        "note": "De todos os diálogos de De Palma com Hitchcock, este está entre os que mais me interessam porque Um Corpo que Cai é menos uma referência do que uma espécie de fantasma que assombra o filme inteiro. A obsessão nasce justamente da tentativa impossível de recuperar aquilo que foi perdido, substituindo uma pessoa por uma imagem e o presente por uma reconstrução do passado. Há algo de profundamente romântico e profundamente doentio nessa ideia. De Palma entende que uma obsessão amorosa pode ser mais interessante quando já não sabemos exatamente onde termina o amor e começa a necessidade de preservar uma fantasia."
+      },
+      {
+        "id": "c0d40a50-59b5-496f-a615-3551677f921f",
+        "lista_id": "b0afe410-c46a-4a82-bb7a-2aebd274ecc2",
+        "film_id": null,
+        "rank": 4,
+        "order_index": 3,
+        "note": "Talvez um dos filmes que melhor demonstrem como o virtuosismo de De Palma pode servir a algo profundamente melancólico. Carlito acredita que é possível abandonar uma vida depois de já ter sido moldado por ela, e o filme inteiro parece observar essa esperança sabendo de alguma coisa que ele ainda se recusa a aceitar. Há crime e suspense, evidentemente, mas o que permanece comigo é a tristeza. A extraordinária sequência final não funciona apenas pela precisão técnica: funciona porque toda aquela movimentação existe em torno de um homem tentando alcançar uma saída que parece estar sempre alguns metros à sua frente."
+      },
+      {
+        "id": "e708647f-e63a-4f14-98ac-13f39a459355",
+        "lista_id": "b0afe410-c46a-4a82-bb7a-2aebd274ecc2",
+        "film_id": null,
+        "rank": 5,
+        "order_index": 4,
+        "note": "Um dos De Palma mais descaradamente de Palma. Aqui estão Hitchcock, voyeurismo, erotismo, cinema dentro do cinema, falsificação, duplos e um protagonista cuja posição como espectador se torna parte do problema. Gosto especialmente de como o filme transforma sua própria artificialidade em matéria: estamos num mundo de cenários, performances, corpos substituíveis e imagens cuja veracidade nunca deveria ser aceita sem desconfiança. É provocador, por vezes ridículo deliberadamente, e completamente comprometido com sua perversidade cinematográfica."
+      },
+      {
+        "id": "53ed5047-f45b-4232-804b-ec796ffc2ada",
+        "lista_id": "b0afe410-c46a-4a82-bb7a-2aebd274ecc2",
+        "film_id": null,
+        "rank": 6,
+        "order_index": 5,
+        "note": "Existe um excesso quase operístico em Scarface, e seria difícil imaginar essa história funcionando da mesma maneira se alguém tentasse torná-la mais discreta. Tony Montana quer tudo, portanto o próprio filme parece querer tudo também: dinheiro, violência, mansões, cocaína, poder, vulgaridade e tragédia. De Palma encontra a forma adequada para um personagem incapaz de reconhecer qualquer limite. O resultado não é apenas a ascensão e queda de um criminoso, mas um filme sobre uma ambição tão desmedida que acaba contaminando a própria escala da obra."
+      },
+      {
+        "id": "073f501d-bfd9-421a-bf2b-564750a56bfa",
+        "lista_id": "b0afe410-c46a-4a82-bb7a-2aebd274ecc2",
+        "film_id": null,
+        "rank": 7,
+        "order_index": 6,
+        "note": "Provavelmente um dos casos em que a comparação com Hitchcock é mais inevitável e, ao mesmo tempo, menos suficiente. Vestida para Matar parte abertamente de Psicose, mas passa por uma imaginação visual tão particular que rapidamente se torna outra coisa. Espelhos, duplicações, voyeurismo, desejo e ameaça convivem numa obra em que praticamente todo enquadramento parece esconder uma segunda possibilidade. Há sequências inteiras sustentadas pelo olhar e pela movimentação dos corpos no espaço, sem necessidade de diálogo, e poucas coisas representam melhor o prazer que encontro no cinema de De Palma do que vê-lo construir suspense simplesmente decidindo quem olha para quem."
+      },
+      {
+        "id": "4433cb0e-3a23-4340-a048-eb642d48b945",
+        "lista_id": "b0afe410-c46a-4a82-bb7a-2aebd274ecc2",
+        "film_id": null,
+        "rank": 8,
+        "order_index": 7,
+        "note": "É De Palma abraçando sem qualquer constrangimento algumas de suas obsessões mais antigas quando já não precisava provar absolutamente nada. Voyeurismo, duplicidade, desejo, acaso, identidade, imagem e ilusão aparecem dentro de uma narrativa que parece constantemente brincar com a possibilidade de nos enganar. É justamente essa artificialidade que me interessa. Femme Fatale não tenta esconder sua condição de construção cinematográfica; transforma essa condição no próprio prazer do filme."
+      },
+      {
+        "id": "68c5cce7-2582-4abc-bed9-f6208ff50fc2",
+        "lista_id": "b0afe410-c46a-4a82-bb7a-2aebd274ecc2",
+        "film_id": null,
+        "rank": 9,
+        "order_index": 8,
+        "note": "A abertura já justificaria boa parte do meu apreço pelo filme. De Palma transforma uma arena lotada num espaço que precisamos aprender a observar, conduzindo-nos por corredores, bastidores e arquibancadas enquanto aparentemente tudo acontece diante dos nossos olhos. Depois passa a retornar aos mesmos acontecimentos por perspectivas diferentes e revela que olhar nunca significou necessariamente compreender. É uma obsessão central de seu cinema condensada num thriller: havia uma verdade diante de nós desde o começo, mas estávamos olhando para o lugar errado."
+      },
+      {
+        "id": "d0c04fbf-7cb7-4acc-a2c6-9683078aeb9d",
+        "lista_id": "b0afe410-c46a-4a82-bb7a-2aebd274ecc2",
+        "film_id": null,
+        "rank": 10,
+        "order_index": 9,
+        "note": "Talvez seja um dos exemplos mais claros de como De Palma consegue trabalhar dentro de uma produção clássica de Hollywood sem desaparecer atrás dela. Os Intocáveis tem algo de aventura, filme de gângster e grande entretenimento popular, mas basta chegar à estação ferroviária para reconhecer quem está comandando tudo: espaço, expectativa, montagem e duração são reorganizados até uma escadaria e um carrinho de bebê se transformarem numa enorme máquina de suspense. A referência a Eisenstein é explícita, mas novamente interessa menos de onde De Palma retirou a ideia do que aquilo que consegue fazer com ela."
+      }
+    ],
+    "especiais": [],
+    "especial_items": [],
+    "ensaios": [
+      {
+        "id": "e3d94382-a8f7-4627-ac5f-8bab333b72e0",
+        "slug": "as-mascaras-de-um-genio-atormentado",
+        "title": "As Máscaras de um Gênio Atormentado"
+      },
+      {
+        "id": "b2344fe7-12a9-454d-a669-8aadfbd4d26e",
+        "slug": "o-filme-precisa-concordar-comigo",
+        "title": "O Filme Precisa Concordar Comigo?"
+      }
+    ]
+  }
+}

@@ -94,8 +94,18 @@ CREATE TABLE IF NOT EXISTS public.generos (
 );
 
 -- ==============================================================================
--- 4. MÍDIAS & ARQUIVOS (Metadados do Supabase Storage)
+-- 4. MÍDIAS & PAÍSES (Metadados do Supabase Storage e Catálogos Globais)
 -- ==============================================================================
+
+-- PAÍSES (Catálogo reutilizável para Pessoas e Filmes com bandeiras no Storage)
+CREATE TABLE IF NOT EXISTS public.countries (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  name TEXT NOT NULL,
+  slug TEXT NOT NULL UNIQUE,
+  flag_url TEXT,
+  created_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL,
+  updated_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
+);
 
 CREATE TABLE IF NOT EXISTS public.media_items (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -124,7 +134,8 @@ CREATE TABLE IF NOT EXISTS public.pessoas (
   photo_url TEXT,
   birth_date DATE,
   death_date DATE,
-  country TEXT,
+  country_id UUID REFERENCES public.countries(id) ON DELETE SET NULL,
+  country TEXT, -- Mantido temporariamente para compatibilidade com registros legados
   bio TEXT,
   is_editorial_profile BOOLEAN DEFAULT false NOT NULL,
   editorial_profile TEXT,
@@ -133,6 +144,9 @@ CREATE TABLE IF NOT EXISTS public.pessoas (
   status content_status DEFAULT 'published' NOT NULL,
   published_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()),
   scheduled_at TIMESTAMPTZ,
+  tmdb_id INTEGER,
+  tmdb_synced_at TIMESTAMPTZ,
+  imdb_id TEXT,
   created_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL,
   updated_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
 );
@@ -158,6 +172,10 @@ CREATE TABLE IF NOT EXISTS public.filmes (
   status content_status DEFAULT 'published' NOT NULL,
   published_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()),
   scheduled_at TIMESTAMPTZ,
+  tmdb_id INTEGER,
+  tmdb_synced_at TIMESTAMPTZ,
+  original_language TEXT,
+  imdb_id TEXT,
   created_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL,
   updated_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL,
   -- Campo opcional transitório de fallback para dados antigos durante a migração
@@ -419,6 +437,20 @@ CREATE TABLE IF NOT EXISTS public.site_settings (
   updated_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
+-- AUDITORIA E LOGS DE INTEGRAÇÃO EXTERNA (TMDB Sync Logs)
+CREATE TABLE IF NOT EXISTS public.tmdb_sync_logs (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  entity_type TEXT NOT NULL CHECK (entity_type IN ('filme', 'pessoa')),
+  internal_id UUID NOT NULL,
+  tmdb_id INTEGER,
+  operation TEXT NOT NULL,
+  source TEXT NOT NULL DEFAULT 'admin',
+  status TEXT NOT NULL CHECK (status IN ('success', 'warning', 'error', 'skipped')),
+  details JSONB DEFAULT '{}'::jsonb NOT NULL,
+  error_message TEXT,
+  created_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
 -- ==============================================================================
 -- 9. ÍNDICES DE ALTA PERFORMANCE (Slugs, Chaves Estrangeiras, Agendamentos)
 -- ==============================================================================
@@ -435,9 +467,17 @@ CREATE INDEX IF NOT EXISTS idx_criticas_scheduled ON public.criticas(scheduled_a
 
 CREATE INDEX IF NOT EXISTS idx_filmes_slug ON public.filmes(slug);
 CREATE INDEX IF NOT EXISTS idx_filmes_year ON public.filmes(year);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_filmes_tmdb_id ON public.filmes(tmdb_id) WHERE tmdb_id IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_filmes_imdb_id ON public.filmes(imdb_id) WHERE imdb_id IS NOT NULL;
+
+CREATE INDEX IF NOT EXISTS idx_countries_name ON public.countries(name);
+CREATE INDEX IF NOT EXISTS idx_countries_slug ON public.countries(slug);
 
 CREATE INDEX IF NOT EXISTS idx_pessoas_slug ON public.pessoas(slug);
+CREATE INDEX IF NOT EXISTS idx_pessoas_country_id ON public.pessoas(country_id);
 CREATE INDEX IF NOT EXISTS idx_pessoas_editorial ON public.pessoas(is_editorial_profile) WHERE is_editorial_profile = true;
+CREATE UNIQUE INDEX IF NOT EXISTS idx_pessoas_tmdb_id ON public.pessoas(tmdb_id) WHERE tmdb_id IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_pessoas_imdb_id ON public.pessoas(imdb_id) WHERE imdb_id IS NOT NULL;
 
 CREATE INDEX IF NOT EXISTS idx_film_credits_film ON public.film_credits(film_id);
 CREATE INDEX IF NOT EXISTS idx_film_credits_person ON public.film_credits(person_id);
@@ -452,6 +492,10 @@ CREATE UNIQUE INDEX IF NOT EXISTS uq_lista_film ON public.lista_items(lista_id, 
 CREATE INDEX IF NOT EXISTS idx_manifestos_slug ON public.manifestos(slug);
 CREATE INDEX IF NOT EXISTS idx_manifestos_status_pub ON public.manifestos(status, published_at DESC);
 CREATE INDEX IF NOT EXISTS idx_manifestos_scheduled ON public.manifestos(scheduled_at) WHERE status = 'scheduled';
+
+CREATE INDEX IF NOT EXISTS idx_tmdb_sync_logs_entity ON public.tmdb_sync_logs(entity_type, internal_id);
+CREATE INDEX IF NOT EXISTS idx_tmdb_sync_logs_tmdb_id ON public.tmdb_sync_logs(tmdb_id) WHERE tmdb_id IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_tmdb_sync_logs_created_at ON public.tmdb_sync_logs(created_at DESC);
 
 -- ==============================================================================
 -- 10. POLÍTICAS DE SEGURANÇA ROW LEVEL SECURITY (RLS)
@@ -481,6 +525,7 @@ ALTER TABLE public.pessoa_tags ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.lista_tags ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.uma_imagem_tags ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.site_settings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.tmdb_sync_logs ENABLE ROW LEVEL SECURITY;
 
 -- ------------------------------------------------------------------------------
 -- A. Políticas de Leitura Pública
@@ -594,9 +639,10 @@ CREATE POLICY "Admin read all estreias" ON public.estreias
   FOR SELECT TO authenticated
   USING (public.is_admin());
 
--- TAXONOMIAS (Tags e Gêneros para filtros e navegação)
+-- TAXONOMIAS & PAÍSES (Tags, Gêneros e Países para filtros e navegação)
 CREATE POLICY "Public read tags" ON public.tags FOR SELECT TO anon, authenticated USING (true);
 CREATE POLICY "Public read generos" ON public.generos FOR SELECT TO anon, authenticated USING (true);
+CREATE POLICY "Public read countries" ON public.countries FOR SELECT TO anon, authenticated USING (true);
 
 -- MÍDIAS (Apenas mídias públicas)
 CREATE POLICY "Public read published media_items" ON public.media_items
@@ -806,6 +852,7 @@ CREATE POLICY "Admin read all uma_imagem_tags" ON public.uma_imagem_tags
 CREATE POLICY "Admin only access user_roles" ON public.user_roles FOR ALL USING (public.is_admin()) WITH CHECK (public.is_admin());
 CREATE POLICY "Admin only write tags" ON public.tags FOR ALL USING (public.is_admin()) WITH CHECK (public.is_admin());
 CREATE POLICY "Admin only write generos" ON public.generos FOR ALL USING (public.is_admin()) WITH CHECK (public.is_admin());
+CREATE POLICY "Admin only write countries" ON public.countries FOR ALL USING (public.is_admin()) WITH CHECK (public.is_admin());
 CREATE POLICY "Admin only write media_items" ON public.media_items FOR ALL USING (public.is_admin()) WITH CHECK (public.is_admin());
 CREATE POLICY "Admin only write pessoas" ON public.pessoas FOR ALL USING (public.is_admin()) WITH CHECK (public.is_admin());
 CREATE POLICY "Admin only write filmes" ON public.filmes FOR ALL USING (public.is_admin()) WITH CHECK (public.is_admin());
@@ -827,6 +874,8 @@ CREATE POLICY "Admin only write pessoa_tags" ON public.pessoa_tags FOR ALL USING
 CREATE POLICY "Admin only write lista_tags" ON public.lista_tags FOR ALL USING (public.is_admin()) WITH CHECK (public.is_admin());
 CREATE POLICY "Admin only write uma_imagem_tags" ON public.uma_imagem_tags FOR ALL USING (public.is_admin()) WITH CHECK (public.is_admin());
 CREATE POLICY "Admin only write site_settings" ON public.site_settings FOR ALL USING (public.is_admin()) WITH CHECK (public.is_admin());
+CREATE POLICY "Admin read tmdb_sync_logs" ON public.tmdb_sync_logs FOR SELECT TO authenticated USING (public.is_admin());
+CREATE POLICY "Admin insert tmdb_sync_logs" ON public.tmdb_sync_logs FOR INSERT TO authenticated WITH CHECK (public.is_admin());
 
 -- ==============================================================================
 -- 11. CONCESSÃO DE PRIVILÉGIOS (GRANTS MÍNIMOS E EXPLÍCITOS)
@@ -837,6 +886,7 @@ GRANT USAGE ON SCHEMA public TO anon, authenticated;
 -- Privilégios para 'anon' (Somente leitura pública em tabelas de conteúdo)
 GRANT SELECT ON TABLE public.tags TO anon;
 GRANT SELECT ON TABLE public.generos TO anon;
+GRANT SELECT ON TABLE public.countries TO anon;
 GRANT SELECT ON TABLE public.media_items TO anon;
 GRANT SELECT ON TABLE public.pessoas TO anon;
 GRANT SELECT ON TABLE public.filmes TO anon;
@@ -858,12 +908,13 @@ GRANT SELECT ON TABLE public.pessoa_tags TO anon;
 GRANT SELECT ON TABLE public.lista_tags TO anon;
 GRANT SELECT ON TABLE public.uma_imagem_tags TO anon;
 GRANT SELECT ON TABLE public.site_settings TO anon;
--- Nota: 'anon' NÃO possui permissão na tabela 'user_roles'
+-- Nota: 'anon' NÃO possui permissão na tabela 'user_roles' nem 'tmdb_sync_logs'
 
 -- Privilégios para 'authenticated' (Operações de CMS geridas por RLS)
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.user_roles TO authenticated;
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.tags TO authenticated;
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.generos TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.countries TO authenticated;
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.media_items TO authenticated;
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.pessoas TO authenticated;
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.filmes TO authenticated;
@@ -885,4 +936,5 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.pessoa_tags TO authenticate
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.lista_tags TO authenticated;
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.uma_imagem_tags TO authenticated;
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.site_settings TO authenticated;
+GRANT SELECT, INSERT ON TABLE public.tmdb_sync_logs TO authenticated;
 

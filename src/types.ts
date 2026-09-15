@@ -40,6 +40,9 @@ export interface Pessoa {
   tags?: string[];
   status?: ContentStatus;
   highlightHome?: boolean;
+  tmdbId?: number | null;
+  tmdbSyncedAt?: string | null;
+  imdbId?: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -61,6 +64,10 @@ export interface Filme {
   status?: ContentStatus;
   scheduledAt?: string;
   publishedAt?: string;
+  tmdbId?: number | null;
+  tmdbSyncedAt?: string | null;
+  originalLanguage?: string | null;
+  imdbId?: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -409,4 +416,25 @@ export interface EditorialAuthorCredit {
   createdAt?: string;
   member?: TeamMember;
 }
+
+// ---------------------------------------------------------------------------
+// Domínio TMDB e Auditoria de Integração (Fase 9)
+// ---------------------------------------------------------------------------
+
+export type TmdbSyncEntityType = 'filme' | 'pessoa';
+export type TmdbSyncStatus = 'success' | 'warning' | 'error' | 'skipped';
+
+export interface TmdbSyncLog {
+  id: string;
+  entityType: TmdbSyncEntityType;
+  internalId: string;
+  tmdbId?: number | null;
+  operation: string;
+  source: string;
+  status: TmdbSyncStatus;
+  details?: Record<string, any>;
+  errorMessage?: string | null;
+  createdAt: string;
+}
+
 
