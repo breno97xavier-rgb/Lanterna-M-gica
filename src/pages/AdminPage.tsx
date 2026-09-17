@@ -409,15 +409,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate, onGoBack }) =>
             </span>
           </div>
 
-          <div className="flex items-center gap-3 text-xs font-mono text-[#F5F2ED]/70">
-            <button
-              onClick={() => onNavigate?.('/admin/tmdb-diagnostic')}
-              className="px-3 py-1.5 bg-[#D4AF37]/15 hover:bg-[#D4AF37] text-[#D4AF37] hover:text-black border border-[#D4AF37]/40 text-xs font-sans uppercase font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
-              title="Abrir ferramenta de homologação temporária da F10.2E"
-            >
-              <Sparkles size={12} />
-              <span>Diagnóstico TMDB</span>
-            </button>
+          <div className="flex items-center gap-4 text-xs font-mono text-[#F5F2ED]/70">
             <span className="hidden sm:inline">
               Conectado como <strong>{currentUserEmail || 'Administrador'}</strong>
             </span>

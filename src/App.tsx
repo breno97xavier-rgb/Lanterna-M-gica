@@ -22,7 +22,6 @@ import { SobrePage } from './pages/SobrePage';
 import { TeamMemberDetailPage } from './pages/TeamMemberDetailPage';
 import { ManifestoPage } from './pages/ManifestoPage';
 import { AdminPage } from './pages/AdminPage';
-import { TmdbDiagnosticPage } from './pages/TmdbDiagnosticPage';
 import { UmaImagemDetailPage } from './pages/UmaImagemDetailPage';
 import { UmaImagemPage } from './pages/UmaImagemPage';
 import { ListasPage } from './pages/ListasPage';
@@ -91,11 +90,6 @@ export default function App() {
 
   // Route Parser
   const renderCurrentPage = () => {
-    // Admin TMDB Diagnostic (Temporary F10.2E)
-    if (currentPath === '/admin/tmdb-diagnostic') {
-      return <TmdbDiagnosticPage onNavigate={navigate} onGoBack={goBack} />;
-    }
-
     // Admin
     if (currentPath === '/admin') {
       return <AdminPage onNavigate={navigate} onGoBack={goBack} />;

@@ -5,7 +5,7 @@
 // ==============================================================================
 
 import { requireAdmin } from './authMiddleware.js';
-import { sendApiError, AppError } from './errors.js';
+import { sendApiError, sendJsonResponse, AppError } from './errors.js';
 import {
   searchMovies,
   getMovieDetails,
@@ -14,12 +14,14 @@ import {
   getPersonDetails,
   getPersonCredits,
 } from './tmdbClient.js';
+import { importTmdbMovieServerSide } from './movieImporter.js';
 
 export interface StandardRequest {
   url?: string;
   method?: string;
   headers?: Record<string, string | string[] | undefined>;
   query?: Record<string, any>;
+  body?: any;
   params?: Record<string, any>;
 }
 
@@ -31,12 +33,44 @@ export interface StandardResponse {
 }
 
 /**
+ * Helper para extrair body JSON de requisições POST
+ */
+async function parseJsonBody(req: any): Promise<any> {
+  if (req.body && typeof req.body === 'object') {
+    return req.body;
+  }
+  if (typeof req.body === 'string') {
+    try {
+      return JSON.parse(req.body);
+    } catch {
+      return {};
+    }
+  }
+  return new Promise((resolve) => {
+    let data = '';
+    req.on('data', (chunk: any) => {
+      data += chunk;
+    });
+    req.on('end', () => {
+      try {
+        resolve(data ? JSON.parse(data) : {});
+      } catch {
+        resolve({});
+      }
+    });
+    req.on('error', () => {
+      resolve({});
+    });
+  });
+}
+
+/**
  * Handler central para despachar requisições /api/tmdb/*
  */
 export async function handleTmdbApiRequest(req: any, res: any): Promise<void> {
-  // 1. Validar método HTTP (Apenas GET é suportado nesta fase)
+  // 1. Validar método HTTP
   const method = (req.method || 'GET').toUpperCase();
-  if (method !== 'GET') {
+  if (method !== 'GET' && method !== 'POST') {
     sendApiError(res, 405, 'METHOD_NOT_ALLOWED', `Método HTTP "${method}" não permitido.`);
     return;
   }
@@ -57,6 +91,29 @@ export async function handleTmdbApiRequest(req: any, res: any): Promise<void> {
   const mergedQuery = { ...queryParams, ...(req.query || {}) };
 
   try {
+    // --------------------------------------------------------------------------
+    // ROTA POST: POST /api/tmdb/movies/import (F10.3)
+    // --------------------------------------------------------------------------
+    if (pathname === '/api/tmdb/movies/import' && method === 'POST') {
+      const body = await parseJsonBody(req);
+      const rawTmdbId = body?.tmdb_id ?? body?.tmdbId ?? mergedQuery?.tmdb_id ?? mergedQuery?.tmdbId;
+      const tmdbId = parseInt(String(rawTmdbId), 10);
+
+      if (isNaN(tmdbId) || tmdbId <= 0) {
+        throw new AppError(400, 'INVALID_PARAMS', 'Identificador tmdb_id / tmdbId obrigatório e deve ser um inteiro positivo.');
+      }
+
+      const result = await importTmdbMovieServerSide(tmdbId, req);
+      sendJsonResponse(res, result.alreadyExists ? 200 : 201, result);
+      return;
+    }
+
+    // Se for POST em rota diferente de import
+    if (method === 'POST') {
+      sendApiError(res, 404, 'NOT_FOUND', `Endpoint POST não encontrado: "${pathname}".`);
+      return;
+    }
+
     // --------------------------------------------------------------------------
     // ROTA 1: GET /api/tmdb/movies/search
     // --------------------------------------------------------------------------
@@ -84,7 +141,7 @@ export async function handleTmdbApiRequest(req: any, res: any): Promise<void> {
       }
 
       const result = await searchMovies(query, year, page);
-      res.status(200).json(result);
+      sendJsonResponse(res, 200, result);
       return;
     }
 
@@ -100,7 +157,7 @@ export async function handleTmdbApiRequest(req: any, res: any): Promise<void> {
       }
 
       const result = await getMovieCredits(id);
-      res.status(200).json(result);
+      sendJsonResponse(res, 200, result);
       return;
     }
 
@@ -116,7 +173,7 @@ export async function handleTmdbApiRequest(req: any, res: any): Promise<void> {
       }
 
       const result = await getMovieDetails(id);
-      res.status(200).json(result);
+      sendJsonResponse(res, 200, result);
       return;
     }
 
@@ -138,7 +195,7 @@ export async function handleTmdbApiRequest(req: any, res: any): Promise<void> {
       }
 
       const result = await searchPeople(query, page);
-      res.status(200).json(result);
+      sendJsonResponse(res, 200, result);
       return;
     }
 
@@ -154,7 +211,7 @@ export async function handleTmdbApiRequest(req: any, res: any): Promise<void> {
       }
 
       const result = await getPersonCredits(id);
-      res.status(200).json(result);
+      sendJsonResponse(res, 200, result);
       return;
     }
 
@@ -170,7 +227,7 @@ export async function handleTmdbApiRequest(req: any, res: any): Promise<void> {
       }
 
       const result = await getPersonDetails(id);
-      res.status(200).json(result);
+      sendJsonResponse(res, 200, result);
       return;
     }
 

@@ -166,3 +166,24 @@ export interface TmdbPersonCredits {
   cast: TmdbPersonCastCredit[];
   crew: TmdbPersonCrewCredit[];
 }
+
+// ------------------------------------------------------------------------------
+// DTOs para Importação Controlada (F10.3)
+// ------------------------------------------------------------------------------
+
+export interface TmdbMovieImportRequest {
+  tmdbId: number;
+}
+
+export interface TmdbMovieImportResult {
+  success: boolean;
+  filmId: string;
+  slug: string;
+  title: string;
+  originalTitle?: string | null;
+  year: number;
+  tmdbId: number;
+  status: string;
+  alreadyExists?: boolean;
+  message?: string;
+}

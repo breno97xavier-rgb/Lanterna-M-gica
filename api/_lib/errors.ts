@@ -31,6 +31,18 @@ export function createErrorPayload(code: ApiErrorCode, message: string): ApiErro
 }
 
 /**
+ * Envia resposta JSON formatada para um response HTTP padrão Node/Vercel/Express
+ */
+export function sendJsonResponse(res: any, statusCode: number, data: any): void {
+  if (typeof res.status === 'function' && typeof res.json === 'function') {
+    res.status(statusCode).json(data);
+  } else if (typeof res.writeHead === 'function' && typeof res.end === 'function') {
+    res.writeHead(statusCode, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(data));
+  }
+}
+
+/**
  * Envia resposta de erro formatada para um response HTTP padrão Node/Vercel
  */
 export function sendApiError(
@@ -40,10 +52,5 @@ export function sendApiError(
   message: string
 ): void {
   const payload = createErrorPayload(code, message);
-  if (typeof res.status === 'function' && typeof res.json === 'function') {
-    res.status(statusCode).json(payload);
-  } else if (typeof res.writeHead === 'function' && typeof res.end === 'function') {
-    res.writeHead(statusCode, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify(payload));
-  }
+  sendJsonResponse(res, statusCode, payload);
 }

@@ -24,6 +24,8 @@ import type {
   TmdbPersonCredits,
   TmdbPersonCastCredit,
   TmdbPersonCrewCredit,
+  TmdbMovieImportRequest,
+  TmdbMovieImportResult,
 } from '../../api/_lib/types.js';
 
 // Re-exportar tipos para uso no frontend
@@ -41,6 +43,8 @@ export type {
   TmdbPersonCredits,
   TmdbPersonCastCredit,
   TmdbPersonCrewCredit,
+  TmdbMovieImportRequest,
+  TmdbMovieImportResult,
 };
 
 export class TmdbApiError extends Error {
@@ -75,8 +79,17 @@ async function getAuthToken(): Promise<string | null> {
 /**
  * Executa requisição autenticada contra os endpoints /api/tmdb/*
  */
-async function tmdbFetch<T>(endpoint: string, queryParams: Record<string, string | number | undefined> = {}): Promise<T> {
+async function tmdbFetch<T>(
+  endpoint: string,
+  options: {
+    method?: 'GET' | 'POST';
+    queryParams?: Record<string, string | number | undefined>;
+    body?: any;
+  } = {}
+): Promise<T> {
   const token = await getAuthToken();
+  const method = options.method || 'GET';
+  const queryParams = options.queryParams || {};
 
   const url = new URL(endpoint.startsWith('/') ? endpoint : `/${endpoint}`, window.location.origin);
   for (const [key, value] of Object.entries(queryParams)) {
@@ -89,6 +102,10 @@ async function tmdbFetch<T>(endpoint: string, queryParams: Record<string, string
     Accept: 'application/json',
   };
 
+  if (options.body && method === 'POST') {
+    headers['Content-Type'] = 'application/json';
+  }
+
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
   }
@@ -96,8 +113,9 @@ async function tmdbFetch<T>(endpoint: string, queryParams: Record<string, string
   let response: Response;
   try {
     response = await fetch(url.toString(), {
-      method: 'GET',
+      method,
       headers,
+      body: options.body && method === 'POST' ? JSON.stringify(options.body) : undefined,
     });
   } catch (netErr: any) {
     throw new TmdbApiError(0, 'NETWORK_ERROR', 'Falha de conexão com o servidor local.');
@@ -132,9 +150,12 @@ export async function searchTmdbMovies(params: {
   page?: number;
 }): Promise<TmdbMovieSearchResult> {
   return tmdbFetch<TmdbMovieSearchResult>('/api/tmdb/movies/search', {
-    query: params.query,
-    year: params.year,
-    page: params.page,
+    method: 'GET',
+    queryParams: {
+      query: params.query,
+      year: params.year,
+      page: params.page,
+    },
   });
 }
 
@@ -142,14 +163,24 @@ export async function searchTmdbMovies(params: {
  * Obtém detalhes completos de um filme no TMDB por ID
  */
 export async function getTmdbMovieDetails(tmdbId: number): Promise<TmdbMovieDetails> {
-  return tmdbFetch<TmdbMovieDetails>(`/api/tmdb/movies/${tmdbId}`);
+  return tmdbFetch<TmdbMovieDetails>(`/api/tmdb/movies/${tmdbId}`, { method: 'GET' });
 }
 
 /**
  * Obtém os créditos (elenco e equipe) de um filme no TMDB por ID
  */
 export async function getTmdbMovieCredits(tmdbId: number): Promise<TmdbMovieCredits> {
-  return tmdbFetch<TmdbMovieCredits>(`/api/tmdb/movies/${tmdbId}/credits`);
+  return tmdbFetch<TmdbMovieCredits>(`/api/tmdb/movies/${tmdbId}/credits`, { method: 'GET' });
+}
+
+/**
+ * Importa de forma segura e atômica um filme do TMDB para o acervo local (F10.3)
+ */
+export async function importTmdbMovie(tmdbId: number): Promise<TmdbMovieImportResult> {
+  return tmdbFetch<TmdbMovieImportResult>('/api/tmdb/movies/import', {
+    method: 'POST',
+    body: { tmdbId },
+  });
 }
 
 // ------------------------------------------------------------------------------
@@ -164,8 +195,11 @@ export async function searchTmdbPeople(params: {
   page?: number;
 }): Promise<TmdbPersonSearchResult> {
   return tmdbFetch<TmdbPersonSearchResult>('/api/tmdb/people/search', {
-    query: params.query,
-    page: params.page,
+    method: 'GET',
+    queryParams: {
+      query: params.query,
+      page: params.page,
+    },
   });
 }
 

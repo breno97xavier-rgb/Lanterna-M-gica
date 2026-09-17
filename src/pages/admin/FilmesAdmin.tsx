@@ -51,6 +51,7 @@ import {
 } from '../../services/repositories/pessoasRepository';
 import { ImageUploader } from '../../components/admin/ImageUploader';
 import { ConfirmModal } from '../../components/admin/ConfirmModal';
+import { TmdbMovieImportModal } from '../../components/admin/TmdbMovieImportModal';
 import { ContentStatus } from '../../types';
 import { getEffectiveEditorialStatus } from '../../utils/statusUtils';
 
@@ -88,6 +89,10 @@ interface FormState {
   status: ContentStatus;
   published_at: string;
   scheduled_at: string;
+  tmdb_id?: number | null;
+  tmdb_synced_at?: string | null;
+  original_language?: string | null;
+  imdb_id?: string | null;
   selectedGeneroIds: string[];
   selectedCountryIds: string[];
   credits: {
@@ -117,6 +122,7 @@ export const FilmesAdmin: React.FC<FilmesAdminProps> = ({ onNotify, autoCreate =
   const [statusFilter, setStatusFilter] = useState<'all' | ContentStatus>('all');
   const [editing, setEditing] = useState<FormState | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<{ id: string; title: string } | null>(null);
+  const [showTmdbModal, setShowTmdbModal] = useState(false);
 
   // New genre inline creation
   const [isAddingGenero, setIsAddingGenero] = useState(false);
@@ -191,6 +197,10 @@ export const FilmesAdmin: React.FC<FilmesAdminProps> = ({ onNotify, autoCreate =
       status: 'published',
       published_at: new Date().toISOString().slice(0, 16),
       scheduled_at: '',
+      tmdb_id: null,
+      tmdb_synced_at: null,
+      original_language: null,
+      imdb_id: null,
       selectedGeneroIds: dramaGen ? [dramaGen.id] : [],
       selectedCountryIds: [],
       credits: [],
@@ -218,6 +228,10 @@ export const FilmesAdmin: React.FC<FilmesAdminProps> = ({ onNotify, autoCreate =
       status: film.status,
       published_at: film.published_at ? new Date(film.published_at).toISOString().slice(0, 16) : '',
       scheduled_at: film.scheduled_at ? new Date(film.scheduled_at).toISOString().slice(0, 16) : '',
+      tmdb_id: film.tmdb_id ?? null,
+      tmdb_synced_at: film.tmdb_synced_at ?? null,
+      original_language: film.original_language ?? null,
+      imdb_id: film.imdb_id ?? null,
       selectedGeneroIds: film.generos?.map((g) => g.id) || [],
       selectedCountryIds: film.countries?.map((c) => c.id) || [],
       credits: (film.credits || []).map((c) => ({
@@ -237,6 +251,14 @@ export const FilmesAdmin: React.FC<FilmesAdminProps> = ({ onNotify, autoCreate =
     setCreditDept('Direção');
     setCreditRole('Diretor');
     setCreditCharacter('');
+  };
+
+  const handleImportSuccess = async (importedFilmId: string) => {
+    await loadAllData();
+    const { data: film } = await fetchFilmeById(importedFilmId);
+    if (film) {
+      handleEditFilm(film);
+    }
   };
 
   // Genre helpers
@@ -632,9 +654,34 @@ export const FilmesAdmin: React.FC<FilmesAdminProps> = ({ onNotify, autoCreate =
         <form onSubmit={handleSubmitFilm} className="space-y-8">
           {/* Main Info Box */}
           <div className="bg-white border border-[#1A1A1A]/15 p-6 space-y-6">
-            <h3 className="font-sans text-xs font-bold uppercase tracking-[0.2em] text-[#D4AF37] border-b border-[#1A1A1A]/10 pb-2 flex items-center gap-2">
-              <Film size={14} /> 1. Identificação Principal
-            </h3>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#1A1A1A]/10 pb-2">
+              <h3 className="font-sans text-xs font-bold uppercase tracking-[0.2em] text-[#D4AF37] flex items-center gap-2">
+                <Film size={14} /> 1. Identificação Principal
+              </h3>
+              {editing.tmdb_id && (
+                <div className="flex items-center gap-2 text-xs">
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-[#1A1A1A] text-[#D4AF37] border border-[#D4AF37]/40 text-[10px] font-mono uppercase font-bold tracking-wider">
+                    <Sparkles size={11} className="text-[#D4AF37]" /> TMDB #{editing.tmdb_id}
+                  </span>
+                  {editing.imdb_id && (
+                    <a
+                      href={`https://www.imdb.com/title/${editing.imdb_id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 px-2 py-0.5 bg-[#F5F2ED] text-[#1A1A1A]/80 border border-[#1A1A1A]/15 text-[10px] font-mono hover:text-[#D4AF37] hover:border-[#D4AF37] transition-colors"
+                      title="Ver ficha no IMDb"
+                    >
+                      IMDb <ExternalLink size={10} />
+                    </a>
+                  )}
+                  {editing.original_language && (
+                    <span className="px-2 py-0.5 bg-[#F5F2ED] text-[#1A1A1A]/70 border border-[#1A1A1A]/15 text-[10px] font-mono uppercase">
+                      Lang: {editing.original_language}
+                    </span>
+                  )}
+                </div>
+              )}
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
               {/* Title */}
@@ -1374,10 +1421,16 @@ export const FilmesAdmin: React.FC<FilmesAdminProps> = ({ onNotify, autoCreate =
         </div>
         <div className="flex items-center gap-2">
           <button
-            onClick={handleCreateNew}
+            onClick={() => setShowTmdbModal(true)}
             className="px-4 py-2 bg-[#1A1A1A] text-[#F5F2ED] font-sans text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 hover:bg-[#D4AF37] hover:text-[#1A1A1A] transition-colors shadow-xs"
           >
-            <Plus size={14} /> Novo Filme
+            <Sparkles size={14} className="text-[#D4AF37]" /> Adicionar via TMDB
+          </button>
+          <button
+            onClick={handleCreateNew}
+            className="px-3 py-2 bg-white text-[#1A1A1A] border border-[#1A1A1A]/20 font-sans text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 hover:bg-[#1A1A1A]/5 transition-colors"
+          >
+            <Plus size={14} /> Novo Manual
           </button>
         </div>
       </div>
@@ -1494,7 +1547,14 @@ export const FilmesAdmin: React.FC<FilmesAdminProps> = ({ onNotify, autoCreate =
                           </div>
                         )}
                         <div>
-                          <div className="font-serif-display text-sm font-semibold">{f.title}</div>
+                          <div className="font-serif-display text-sm font-semibold flex items-center gap-1.5 flex-wrap">
+                            <span>{f.title}</span>
+                            {f.tmdb_id && (
+                              <span className="inline-block px-1.5 py-0.2 bg-[#1A1A1A] text-[#D4AF37] text-[8px] font-mono uppercase font-bold tracking-wider">
+                                TMDB #{f.tmdb_id}
+                              </span>
+                            )}
+                          </div>
                           {f.original_title && f.original_title !== f.title && (
                             <div className="text-[10px] italic text-[#1A1A1A]/60 font-serif-body">
                               {f.original_title}
@@ -1617,6 +1677,17 @@ export const FilmesAdmin: React.FC<FilmesAdminProps> = ({ onNotify, autoCreate =
           onClose={() => setDeleteTarget(null)}
         />
       )}
+
+      {/* TMDB Movie Search, Preview & Import Modal (F10.3) */}
+      <TmdbMovieImportModal
+        isOpen={showTmdbModal}
+        onClose={() => setShowTmdbModal(false)}
+        existingFilmes={filmes}
+        onImportSuccess={handleImportSuccess}
+        onOpenExistingFilm={(f) => handleEditFilm(f)}
+        onManualCreate={handleCreateNew}
+        onNotify={onNotify}
+      />
     </div>
   );
 };
