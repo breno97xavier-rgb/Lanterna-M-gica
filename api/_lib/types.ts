@@ -9,6 +9,7 @@ export type ApiErrorCode =
   | 'UNAUTHORIZED'
   | 'FORBIDDEN'
   | 'NOT_FOUND'
+  | 'CONFLICT'
   | 'METHOD_NOT_ALLOWED'
   | 'RATE_LIMITED'
   | 'UPSTREAM_ERROR'
@@ -168,7 +169,7 @@ export interface TmdbPersonCredits {
 }
 
 // ------------------------------------------------------------------------------
-// DTOs para Importação Controlada (F10.3)
+// DTOs para Importação Controlada e Reconciliação (F10.3 / F10.3H)
 // ------------------------------------------------------------------------------
 
 export interface TmdbMovieImportRequest {
@@ -187,3 +188,16 @@ export interface TmdbMovieImportResult {
   alreadyExists?: boolean;
   message?: string;
 }
+
+export interface TmdbMovieLinkRequest {
+  internalFilmId: string;
+  tmdbId: number;
+}
+
+export interface TmdbMovieLinkResult {
+  success: boolean;
+  filmId: string;
+  tmdbId: number;
+  message?: string;
+}
+

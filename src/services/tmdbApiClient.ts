@@ -26,6 +26,8 @@ import type {
   TmdbPersonCrewCredit,
   TmdbMovieImportRequest,
   TmdbMovieImportResult,
+  TmdbMovieLinkRequest,
+  TmdbMovieLinkResult,
 } from '../../api/_lib/types.js';
 
 // Re-exportar tipos para uso no frontend
@@ -45,6 +47,8 @@ export type {
   TmdbPersonCrewCredit,
   TmdbMovieImportRequest,
   TmdbMovieImportResult,
+  TmdbMovieLinkRequest,
+  TmdbMovieLinkResult,
 };
 
 export class TmdbApiError extends Error {
@@ -180,6 +184,16 @@ export async function importTmdbMovie(tmdbId: number): Promise<TmdbMovieImportRe
   return tmdbFetch<TmdbMovieImportResult>('/api/tmdb/movies/import', {
     method: 'POST',
     body: { tmdbId },
+  });
+}
+
+/**
+ * Vincula de forma segura um registro local existente (sem tmdb_id) ao TMDB (F10.3H)
+ */
+export async function linkTmdbMovie(internalFilmId: string, tmdbId: number): Promise<TmdbMovieLinkResult> {
+  return tmdbFetch<TmdbMovieLinkResult>('/api/tmdb/movies/link', {
+    method: 'POST',
+    body: { internalFilmId, tmdbId },
   });
 }
 

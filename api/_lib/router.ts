@@ -14,7 +14,7 @@ import {
   getPersonDetails,
   getPersonCredits,
 } from './tmdbClient.js';
-import { importTmdbMovieServerSide } from './movieImporter.js';
+import { importTmdbMovieServerSide, linkTmdbMovieServerSide } from './movieImporter.js';
 
 export interface StandardRequest {
   url?: string;
@@ -108,7 +108,36 @@ export async function handleTmdbApiRequest(req: any, res: any): Promise<void> {
       return;
     }
 
-    // Se for POST em rota diferente de import
+    // --------------------------------------------------------------------------
+    // ROTA POST: POST /api/tmdb/movies/link (F10.3H - Reconciliação Segura)
+    // --------------------------------------------------------------------------
+    if (pathname === '/api/tmdb/movies/link' && method === 'POST') {
+      const body = await parseJsonBody(req);
+      const rawTmdbId = body?.tmdb_id ?? body?.tmdbId ?? mergedQuery?.tmdb_id ?? mergedQuery?.tmdbId;
+      const tmdbId = parseInt(String(rawTmdbId), 10);
+
+      const rawInternalId =
+        body?.internalFilmId ??
+        body?.internal_id ??
+        body?.filmId ??
+        mergedQuery?.internalFilmId ??
+        mergedQuery?.internal_id;
+      const internalFilmId = typeof rawInternalId === 'string' ? rawInternalId.trim() : '';
+
+      if (!internalFilmId) {
+        throw new AppError(400, 'INVALID_PARAMS', 'Identificador internalFilmId é obrigatório para vinculação.');
+      }
+
+      if (isNaN(tmdbId) || tmdbId <= 0) {
+        throw new AppError(400, 'INVALID_PARAMS', 'Identificador tmdb_id / tmdbId obrigatório e deve ser um inteiro positivo.');
+      }
+
+      const result = await linkTmdbMovieServerSide(internalFilmId, tmdbId, req);
+      sendJsonResponse(res, 200, result);
+      return;
+    }
+
+    // Se for POST em rota não mapeada
     if (method === 'POST') {
       sendApiError(res, 404, 'NOT_FOUND', `Endpoint POST não encontrado: "${pathname}".`);
       return;

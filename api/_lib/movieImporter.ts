@@ -445,3 +445,141 @@ export async function importTmdbMovieServerSide(
     throw err instanceof AppError ? err : new AppError(500, 'INTERNAL_ERROR', err.message || 'Erro inesperado na importação.');
   }
 }
+
+/**
+ * Executa a reconciliação / vinculação segura de um filme local existente ao TMDB (F10.3H)
+ * PRESERVAÇÃO ABSOLUTA: Modifica SOMENTE o campo tmdb_id. tmdb_synced_at permanece NULL.
+ */
+export async function linkTmdbMovieServerSide(
+  internalFilmId: string,
+  tmdbId: number,
+  req: any
+): Promise<{ success: boolean; filmId: string; tmdbId: number; message: string }> {
+  if (!internalFilmId || typeof internalFilmId !== 'string' || !internalFilmId.trim()) {
+    throw new AppError(400, 'INVALID_PARAMS', 'Identificador internalFilmId obrigatório.');
+  }
+
+  if (!tmdbId || isNaN(tmdbId) || tmdbId <= 0) {
+    throw new AppError(400, 'INVALID_PARAMS', 'Identificador tmdbId inválido para vinculação.');
+  }
+
+  const supabase = getServerSupabaseClient(req);
+
+  // 1. Validar que o filme do TMDB existe no catálogo upstream (Anti-Forgery)
+  const tmdbDetails = await getMovieDetails(tmdbId);
+  if (!tmdbDetails) {
+    throw new AppError(404, 'NOT_FOUND', `Filme ID ${tmdbId} não encontrado no catálogo do TMDB.`);
+  }
+
+  // 2. Bloqueio e verificação do filme local
+  const { data: localFilm, error: localErr } = await supabase
+    .from('filmes')
+    .select('id, title, original_title, year, slug, tmdb_id')
+    .eq('id', internalFilmId.trim())
+    .maybeSingle();
+
+  if (localErr || !localFilm) {
+    throw new AppError(404, 'NOT_FOUND', `Filme local (UUID ${internalFilmId}) não encontrado no acervo.`);
+  }
+
+  // 3. Confirmar que o filme local possui tmdb_id IS NULL
+  if (localFilm.tmdb_id !== null) {
+    if (localFilm.tmdb_id === tmdbId) {
+      return {
+        success: true,
+        filmId: localFilm.id,
+        tmdbId: localFilm.tmdb_id,
+        message: 'Filme já está vinculado a este TMDB ID.',
+      };
+    }
+    throw new AppError(
+      409,
+      'CONFLICT',
+      `O filme "${localFilm.title}" já está vinculado ao TMDB ID ${localFilm.tmdb_id}. Não é permitida a alteração de vínculo existente.`
+    );
+  }
+
+  // 4. Confirmar que nenhum outro filme já possui esse tmdb_id
+  const { data: conflictFilm } = await supabase
+    .from('filmes')
+    .select('id, title')
+    .eq('tmdb_id', tmdbId)
+    .neq('id', internalFilmId)
+    .maybeSingle();
+
+  if (conflictFilm) {
+    throw new AppError(
+      409,
+      'CONFLICT',
+      `O TMDB ID ${tmdbId} já está vinculado ao filme "${conflictFilm.title}" (UUID ${conflictFilm.id}). Vínculo duplicado impedido.`
+    );
+  }
+
+  const syncDetailsPayload = {
+    local_title: localFilm.title,
+    local_original_title: localFilm.original_title,
+    local_year: localFilm.year,
+    tmdb_title: tmdbDetails.title,
+    tmdb_original_title: tmdbDetails.originalTitle,
+    tmdb_year: tmdbDetails.year,
+    phase: 'F10.3H_LINK',
+    note: 'Reconciliação manual de filme existente confirmada pelo editor via CMS',
+  };
+
+  // 5. Tentar execução via RPC PostgreSQL
+  const { data: rpcResult, error: rpcError } = await supabase.rpc('link_tmdb_movie_existing', {
+    p_internal_film_id: internalFilmId,
+    p_tmdb_id: tmdbId,
+    p_sync_details: syncDetailsPayload,
+  });
+
+  if (!rpcError && rpcResult) {
+    return {
+      success: true,
+      filmId: rpcResult.filmId || internalFilmId,
+      tmdbId: rpcResult.tmdbId || tmdbId,
+      message: rpcResult.message || 'Filme vinculado com sucesso ao TMDB!',
+    };
+  }
+
+  // Se erro de negócio da RPC
+  if (rpcError && !rpcError.message?.includes('link_tmdb_movie_existing') && !rpcError.message?.includes('does not exist')) {
+    throw new AppError(500, 'INTERNAL_ERROR', `Erro na execução da RPC de vínculo: ${rpcError.message}`);
+  }
+
+  // 6. Fallback Server-Side Seguro
+  console.warn('[movieImporter] RPC link_tmdb_movie_existing não encontrada no banco. Utilizando fallback server-side controlado.');
+
+  const { error: updateErr } = await supabase
+    .from('filmes')
+    .update({
+      tmdb_id: tmdbId,
+      // tmdb_synced_at permanece NULL conforme especificação da Fase 9/F10.3H
+    })
+    .eq('id', internalFilmId)
+    .is('tmdb_id', null);
+
+  if (updateErr) {
+    throw new AppError(500, 'INTERNAL_ERROR', `Falha ao atualizar tmdb_id do filme local: ${updateErr.message}`);
+  }
+
+  // Inserir log de auditoria
+  await supabase.from('tmdb_sync_logs').insert({
+    entity_type: 'filme',
+    internal_id: internalFilmId,
+    tmdb_id: tmdbId,
+    operation: 'LINK',
+    source: 'admin',
+    status: 'success',
+    details: syncDetailsPayload,
+    error_message: null,
+  });
+
+  return {
+    success: true,
+    filmId: internalFilmId,
+    tmdbId,
+    message: 'Filme vinculado com sucesso ao TMDB!',
+  };
+}
+

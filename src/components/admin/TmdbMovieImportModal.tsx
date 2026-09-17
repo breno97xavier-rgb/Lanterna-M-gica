@@ -28,11 +28,88 @@ import {
   searchTmdbMovies,
   getTmdbMovieDetails,
   importTmdbMovie,
+  linkTmdbMovie,
   TmdbMovieSummary,
   TmdbMovieDetails,
   TmdbMovieImportResult,
+  TmdbMovieLinkResult,
 } from '../../services/tmdbApiClient';
 import { SupabaseFilme } from '../../services/repositories/filmesRepository';
+import { Link as LinkIcon, HelpCircle, ShieldCheck } from 'lucide-react';
+
+function normalizeText(text?: string | null): string {
+  if (!text) return '';
+  return text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/**
+ * Localiza possível correspondência entre filmes locais sem TMDB ID e o resultado da busca
+ * Ordem de Prioridade Segura (F10.3H):
+ * A. original_title normalizado + ano
+ * B. title normalizado + ano
+ * C. Cruzamento seguro com ano: TMDB original_title <-> local title / TMDB title <-> local original_title
+ */
+export function findLocalCandidateMatch(
+  tmdbItem: TmdbMovieSummary,
+  existingFilmes: SupabaseFilme[]
+): SupabaseFilme | null {
+  if (!existingFilmes || existingFilmes.length === 0) return null;
+
+  // Filtrar estritamente filmes locais SEM tmdb_id
+  const candidates = existingFilmes.filter((f) => !f.tmdb_id);
+  if (candidates.length === 0) return null;
+
+  const tmdbTitleNorm = normalizeText(tmdbItem.title);
+  const tmdbOrigTitleNorm = normalizeText(tmdbItem.originalTitle);
+  const tmdbYear = tmdbItem.year;
+
+  // Prioridade A: original_title normalizado + year
+  if (tmdbOrigTitleNorm && tmdbYear) {
+    const matchA = candidates.find((f) => {
+      const localOrigNorm = normalizeText(f.original_title);
+      return localOrigNorm && localOrigNorm === tmdbOrigTitleNorm && f.year === tmdbYear;
+    });
+    if (matchA) return matchA;
+  }
+
+  // Prioridade B: title normalizado + year
+  if (tmdbTitleNorm && tmdbYear) {
+    const matchB = candidates.find((f) => {
+      const localTitleNorm = normalizeText(f.title);
+      return localTitleNorm && localTitleNorm === tmdbTitleNorm && f.year === tmdbYear;
+    });
+    if (matchB) return matchB;
+  }
+
+  // Prioridade C: Cruzamentos seguros com year
+  if (tmdbYear) {
+    // TMDB original_title <-> Local title
+    if (tmdbOrigTitleNorm) {
+      const matchC1 = candidates.find((f) => {
+        const localTitleNorm = normalizeText(f.title);
+        return localTitleNorm && localTitleNorm === tmdbOrigTitleNorm && f.year === tmdbYear;
+      });
+      if (matchC1) return matchC1;
+    }
+
+    // TMDB title <-> Local original_title
+    if (tmdbTitleNorm) {
+      const matchC2 = candidates.find((f) => {
+        const localOrigNorm = normalizeText(f.original_title);
+        return localOrigNorm && localOrigNorm === tmdbTitleNorm && f.year === tmdbYear;
+      });
+      if (matchC2) return matchC2;
+    }
+  }
+
+  return null;
+}
 
 interface TmdbMovieImportModalProps {
   isOpen: boolean;
@@ -71,6 +148,15 @@ export const TmdbMovieImportModal: React.FC<TmdbMovieImportModalProps> = ({
   const [importing, setImporting] = useState(false);
   const [importError, setImportError] = useState<string | null>(null);
 
+  // Reconciliação / Vínculo de candidatos locais sem TMDB ID (F10.3H)
+  const [dismissedCandidateTmdbIds, setDismissedCandidateTmdbIds] = useState<Set<number>>(new Set());
+  const [linkingCandidate, setLinkingCandidate] = useState<{
+    tmdbItem: TmdbMovieSummary;
+    localFilm: SupabaseFilme;
+  } | null>(null);
+  const [linkingInProgress, setLinkingInProgress] = useState(false);
+  const [linkError, setLinkError] = useState<string | null>(null);
+
   const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Focus search input on open
@@ -93,6 +179,10 @@ export const TmdbMovieImportModal: React.FC<TmdbMovieImportModalProps> = ({
       setPreviewError(null);
       setImporting(false);
       setImportError(null);
+      setDismissedCandidateTmdbIds(new Set());
+      setLinkingCandidate(null);
+      setLinkingInProgress(false);
+      setLinkError(null);
     }
   }, [isOpen]);
 
@@ -209,6 +299,57 @@ export const TmdbMovieImportModal: React.FC<TmdbMovieImportModalProps> = ({
       setImportError(err.message || 'Erro inesperado durante a importação.');
     } finally {
       setImporting(false);
+    }
+  };
+
+  // Dismiss candidate for current search (F10.3H)
+  const handleDismissCandidate = (tmdbId: number) => {
+    setDismissedCandidateTmdbIds((prev) => {
+      const next = new Set(prev);
+      next.add(tmdbId);
+      return next;
+    });
+  };
+
+  // Open confirmation for linking (F10.3H)
+  const handleInitiateLink = (tmdbItem: TmdbMovieSummary, localFilm: SupabaseFilme) => {
+    setLinkingCandidate({ tmdbItem, localFilm });
+    setLinkError(null);
+  };
+
+  // Cancel linking confirmation
+  const handleCancelLink = () => {
+    setLinkingCandidate(null);
+    setLinkError(null);
+    setLinkingInProgress(false);
+  };
+
+  // Execute Link confirmed (F10.3H)
+  const handleConfirmLink = async () => {
+    if (!linkingCandidate) return;
+
+    setLinkingInProgress(true);
+    setLinkError(null);
+
+    try {
+      const result: TmdbMovieLinkResult = await linkTmdbMovie(
+        linkingCandidate.localFilm.id,
+        linkingCandidate.tmdbItem.tmdbId
+      );
+
+      if (result.success) {
+        onNotify(`Filme "${linkingCandidate.localFilm.title}" vinculado com sucesso ao TMDB ID ${linkingCandidate.tmdbItem.tmdbId}!`);
+        setLinkingCandidate(null);
+        onClose();
+        onImportSuccess(linkingCandidate.localFilm.id);
+      } else {
+        setLinkError(result.message || 'Falha ao vincular o filme.');
+      }
+    } catch (err: any) {
+      console.error('[TmdbMovieImportModal] Falha na vinculação:', err);
+      setLinkError(err.message || 'Erro inesperado ao vincular o filme.');
+    } finally {
+      setLinkingInProgress(false);
     }
   };
 
@@ -359,19 +500,193 @@ export const TmdbMovieImportModal: React.FC<TmdbMovieImportModalProps> = ({
               {searchResults.map((item) => {
                 const existing = getExistingFilm(item.tmdbId);
                 const isAlreadyInAcervo = !!existing;
+                const isCandidateDismissed = dismissedCandidateTmdbIds.has(item.tmdbId);
+                const candidateMatch = !isAlreadyInAcervo && !isCandidateDismissed
+                  ? findLocalCandidateMatch(item, existingFilmes)
+                  : null;
 
+                // CASO 1: Já no Acervo com este TMDB ID
+                if (isAlreadyInAcervo) {
+                  return (
+                    <div
+                      key={item.tmdbId}
+                      className="border p-4 transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-[#F5F2ED]/60 border-[#1A1A1A]/20"
+                    >
+                      {/* Movie Info & Poster */}
+                      <div className="flex items-start gap-3.5 flex-1 min-w-0">
+                        <div className="w-14 h-20 shrink-0 bg-[#1A1A1A]/5 border border-[#1A1A1A]/15 overflow-hidden flex items-center justify-center">
+                          {item.posterUrl ? (
+                            <img
+                              src={item.posterUrl}
+                              alt={item.title}
+                              className="w-full h-full object-cover"
+                              loading="lazy"
+                            />
+                          ) : (
+                            <Film size={20} className="text-[#1A1A1A]/30" />
+                          )}
+                        </div>
+
+                        <div className="space-y-1 min-w-0 flex-1">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <h3 className="font-serif-display text-base font-bold text-[#1A1A1A] truncate">
+                              {item.title}
+                            </h3>
+                            {item.year && (
+                              <span className="text-xs font-mono px-1.5 py-0.5 bg-[#1A1A1A]/5 border border-[#1A1A1A]/10 text-[#1A1A1A]/80">
+                                {item.year}
+                              </span>
+                            )}
+                            <span className="text-[10px] font-mono text-[#1A1A1A]/50">
+                              TMDB #{item.tmdbId}
+                            </span>
+                          </div>
+
+                          {item.originalTitle && item.originalTitle !== item.title && (
+                            <p className="text-xs font-serif-body italic text-[#1A1A1A]/70 truncate">
+                              {item.originalTitle}
+                            </p>
+                          )}
+
+                          {item.overview && (
+                            <p className="text-xs font-serif-body text-[#1A1A1A]/80 line-clamp-2 leading-relaxed">
+                              {item.overview}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="shrink-0 flex items-center gap-2 self-end sm:self-center">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-50 text-emerald-800 border border-emerald-300 text-[11px] font-sans font-bold uppercase tracking-wider">
+                          <Check size={12} className="text-emerald-700" /> Já no Acervo
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            onClose();
+                            onOpenExistingFilm(existing);
+                          }}
+                          className="px-3 py-1.5 bg-[#1A1A1A] text-[#F5F2ED] text-xs font-sans font-bold uppercase tracking-wider hover:bg-[#D4AF37] hover:text-[#1A1A1A] transition-colors flex items-center gap-1"
+                        >
+                          Abrir Ficha <ArrowRight size={12} />
+                        </button>
+                      </div>
+                    </div>
+                  );
+                }
+
+                // CASO 2: Possível Correspondência com Filme Local sem TMDB ID (F10.3H)
+                if (candidateMatch) {
+                  return (
+                    <div
+                      key={item.tmdbId}
+                      className="border-2 border-[#D4AF37] bg-[#FFFDF5] p-4.5 space-y-4 shadow-sm transition-all"
+                    >
+                      {/* Cabeçalho de Alerta de Correspondência */}
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#D4AF37]/30 pb-3">
+                        <div className="flex items-center gap-2">
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#D4AF37]/20 border border-[#D4AF37]/60 text-[#1A1A1A] text-[11px] font-sans font-bold uppercase tracking-wider">
+                            <ShieldCheck size={13} className="text-[#997A15]" />
+                            Possível Correspondência no Acervo
+                          </span>
+                        </div>
+                        <p className="text-xs font-serif-body text-[#1A1A1A]/80 italic">
+                          Detectamos um filme no acervo sem TMDB ID com título e ano correspondentes.
+                        </p>
+                      </div>
+
+                      {/* Grade Comparativa: TMDB vs Acervo Local */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white border border-[#1A1A1A]/10 p-3.5">
+                        {/* Coluna 1: Dados TMDB */}
+                        <div className="flex items-start gap-3 border-b md:border-b-0 md:border-r border-[#1A1A1A]/10 pb-3 md:pb-0 md:pr-3">
+                          <div className="w-12 h-16 shrink-0 bg-[#1A1A1A]/5 border border-[#1A1A1A]/15 overflow-hidden flex items-center justify-center">
+                            {item.posterUrl ? (
+                              <img src={item.posterUrl} alt={item.title} className="w-full h-full object-cover" />
+                            ) : (
+                              <Film size={18} className="text-[#1A1A1A]/30" />
+                            )}
+                          </div>
+                          <div className="min-w-0 flex-1 space-y-0.5">
+                            <span className="text-[10px] font-mono uppercase tracking-wider text-[#D4AF37] font-bold">
+                              Resultado no TMDB
+                            </span>
+                            <h4 className="font-serif-display text-sm font-bold text-[#1A1A1A] truncate">
+                              {item.title}
+                            </h4>
+                            {item.originalTitle && item.originalTitle !== item.title && (
+                              <p className="text-[11px] font-serif-body italic text-[#1A1A1A]/70 truncate">
+                                {item.originalTitle}
+                              </p>
+                            )}
+                            <div className="flex items-center gap-2 text-[10px] font-mono text-[#1A1A1A]/60 pt-0.5">
+                              <span>Ano: {item.year || '—'}</span>
+                              <span>•</span>
+                              <span>TMDB #{item.tmdbId}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Coluna 2: Dados do Candidato Local */}
+                        <div className="flex items-start gap-3">
+                          <div className="w-12 h-16 shrink-0 bg-[#1A1A1A]/5 border border-[#1A1A1A]/15 overflow-hidden flex items-center justify-center">
+                            {candidateMatch.poster_url ? (
+                              <img src={candidateMatch.poster_url} alt={candidateMatch.title} className="w-full h-full object-cover" />
+                            ) : (
+                              <Film size={18} className="text-[#1A1A1A]/30" />
+                            )}
+                          </div>
+                          <div className="min-w-0 flex-1 space-y-0.5">
+                            <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-800 font-bold">
+                              Candidato no Acervo Local
+                            </span>
+                            <h4 className="font-serif-display text-sm font-bold text-[#1A1A1A] truncate">
+                              {candidateMatch.title}
+                            </h4>
+                            {candidateMatch.original_title && (
+                              <p className="text-[11px] font-serif-body italic text-[#1A1A1A]/70 truncate">
+                                {candidateMatch.original_title}
+                              </p>
+                            )}
+                            <div className="flex items-center gap-2 text-[10px] font-mono text-[#1A1A1A]/60 pt-0.5">
+                              <span>Ano: {candidateMatch.year}</span>
+                              <span>•</span>
+                              <span className="truncate max-w-[130px]">UUID: {candidateMatch.id.slice(0, 8)}...</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Ações de Reconciliação */}
+                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-1">
+                        <button
+                          type="button"
+                          onClick={() => handleDismissCandidate(item.tmdbId)}
+                          className="px-3.5 py-2 border border-[#1A1A1A]/20 bg-white text-[#1A1A1A]/80 hover:text-[#1A1A1A] hover:bg-[#1A1A1A]/5 text-xs font-sans font-bold uppercase tracking-wider transition-colors text-center"
+                        >
+                          Não é o mesmo filme
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => handleInitiateLink(item, candidateMatch)}
+                          className="px-5 py-2.5 bg-[#1A1A1A] text-[#F5F2ED] text-xs font-sans font-bold uppercase tracking-wider hover:bg-[#D4AF37] hover:text-[#1A1A1A] transition-colors flex items-center justify-center gap-2 shadow-xs"
+                        >
+                          <LinkIcon size={14} className="text-[#D4AF37]" />
+                          <span>Vincular ao Filme Existente</span>
+                        </button>
+                      </div>
+                    </div>
+                  );
+                }
+
+                // CASO 3: Obra Não Cadastrada (ou candidato dispensado)
                 return (
                   <div
                     key={item.tmdbId}
-                    className={`border p-4 transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${
-                      isAlreadyInAcervo
-                        ? 'bg-[#F5F2ED]/60 border-[#1A1A1A]/20'
-                        : 'bg-white border-[#1A1A1A]/15 hover:border-[#D4AF37] hover:shadow-xs'
-                    }`}
+                    className="border p-4 transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white border-[#1A1A1A]/15 hover:border-[#D4AF37] hover:shadow-xs"
                   >
                     {/* Movie Info & Poster */}
                     <div className="flex items-start gap-3.5 flex-1 min-w-0">
-                      {/* Poster Thumbnail */}
                       <div className="w-14 h-20 shrink-0 bg-[#1A1A1A]/5 border border-[#1A1A1A]/15 overflow-hidden flex items-center justify-center">
                         {item.posterUrl ? (
                           <img
@@ -385,7 +700,6 @@ export const TmdbMovieImportModal: React.FC<TmdbMovieImportModalProps> = ({
                         )}
                       </div>
 
-                      {/* Metadata */}
                       <div className="space-y-1 min-w-0 flex-1">
                         <div className="flex items-center gap-2 flex-wrap">
                           <h3 className="font-serif-display text-base font-bold text-[#1A1A1A] truncate">
@@ -415,34 +729,16 @@ export const TmdbMovieImportModal: React.FC<TmdbMovieImportModalProps> = ({
                       </div>
                     </div>
 
-                    {/* Action / Existence Status */}
+                    {/* Action */}
                     <div className="shrink-0 flex items-center gap-2 self-end sm:self-center">
-                      {isAlreadyInAcervo ? (
-                        <div className="flex items-center gap-2">
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-50 text-emerald-800 border border-emerald-300 text-[11px] font-sans font-bold uppercase tracking-wider">
-                            <Check size={12} className="text-emerald-700" /> Já no Acervo
-                          </span>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              onClose();
-                              onOpenExistingFilm(existing);
-                            }}
-                            className="px-3 py-1.5 bg-[#1A1A1A] text-[#F5F2ED] text-xs font-sans font-bold uppercase tracking-wider hover:bg-[#D4AF37] hover:text-[#1A1A1A] transition-colors flex items-center gap-1"
-                          >
-                            Abrir Ficha <ArrowRight size={12} />
-                          </button>
-                        </div>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={() => handleOpenPreview(item)}
-                          className="px-4 py-2 bg-[#1A1A1A] text-[#F5F2ED] text-xs font-sans font-bold uppercase tracking-wider hover:bg-[#D4AF37] hover:text-[#1A1A1A] transition-colors flex items-center gap-1.5 shadow-xs"
-                        >
-                          <Sparkles size={13} className="text-[#D4AF37]" />
-                          <span>Ver Detalhes e Importar</span>
-                        </button>
-                      )}
+                      <button
+                        type="button"
+                        onClick={() => handleOpenPreview(item)}
+                        className="px-4 py-2 bg-[#1A1A1A] text-[#F5F2ED] text-xs font-sans font-bold uppercase tracking-wider hover:bg-[#D4AF37] hover:text-[#1A1A1A] transition-colors flex items-center gap-1.5 shadow-xs"
+                      >
+                        <Sparkles size={13} className="text-[#D4AF37]" />
+                        <span>Ver Detalhes e Importar</span>
+                      </button>
                     </div>
                   </div>
                 );
@@ -674,6 +970,121 @@ export const TmdbMovieImportModal: React.FC<TmdbMovieImportModalProps> = ({
                   </>
                 )}
               </button>
+            </div>
+          </div>
+        )}
+
+        {/* ==================================================================== */}
+        {/* OVERLAY: CONFIRMAÇÃO EXPLÍCITA DE VINCULAÇÃO DE FILME (F10.3H)        */}
+        {/* ==================================================================== */}
+        {linkingCandidate && (
+          <div className="fixed inset-0 z-60 flex items-center justify-center p-4 bg-[#1A1A1A]/85 backdrop-blur-xs animate-fadeIn">
+            <div
+              className="bg-[#FAF8F5] border border-[#1A1A1A]/30 shadow-2xl max-w-lg w-full p-6 space-y-5 animate-in fade-in zoom-in-95 text-[#1A1A1A]"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Top Header */}
+              <div className="flex items-start justify-between border-b border-[#1A1A1A]/10 pb-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="p-1.5 bg-[#D4AF37]/20 border border-[#D4AF37]/50 text-[#D4AF37]">
+                    <LinkIcon size={18} />
+                  </div>
+                  <div>
+                    <h3 className="font-serif-display text-base font-bold text-[#1A1A1A]">
+                      Confirmar Vinculação ao TMDB
+                    </h3>
+                    <p className="text-[11px] font-mono text-[#1A1A1A]/60">
+                      Reconciliação segura sem criar duplicatas
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleCancelLink}
+                  disabled={linkingInProgress}
+                  className="text-[#1A1A1A]/50 hover:text-[#1A1A1A] transition-colors p-1"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              {/* Notice Box */}
+              <div className="p-3.5 bg-amber-50 border border-amber-300 text-amber-950 text-xs font-serif-body leading-relaxed space-y-1">
+                <strong className="block font-bold">
+                  Esta ação vinculará o registro existente ao TMDB sem criar um novo filme.
+                </strong>
+                <p className="text-[11px] text-amber-900/90">
+                  Todos os metadados editoriais locais (título, críticas, ensaios, notas, slugs, duração e créditos) serão integralmente preservados. Apenas o identificador externo <code className="font-mono font-bold bg-amber-100 px-1 py-0.5">tmdb_id</code> será gravado.
+                </p>
+              </div>
+
+              {/* Comparison Details */}
+              <div className="bg-white border border-[#1A1A1A]/15 p-4 space-y-2.5 text-xs font-mono">
+                <div className="flex items-center justify-between border-b border-[#1A1A1A]/5 pb-2">
+                  <span className="text-[#1A1A1A]/60 font-sans">Filme no Acervo:</span>
+                  <strong className="text-[#1A1A1A] text-right font-serif-display text-sm font-bold">
+                    {linkingCandidate.localFilm.title} ({linkingCandidate.localFilm.year})
+                  </strong>
+                </div>
+
+                <div className="flex items-center justify-between border-b border-[#1A1A1A]/5 pb-2">
+                  <span className="text-[#1A1A1A]/60 font-sans">UUID Interno:</span>
+                  <span className="text-[11px] text-[#1A1A1A]/80 font-mono">
+                    {linkingCandidate.localFilm.id}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between border-b border-[#1A1A1A]/5 pb-2">
+                  <span className="text-[#1A1A1A]/60 font-sans">Obra TMDB:</span>
+                  <strong className="text-[#1A1A1A] text-right font-serif-display text-sm font-bold">
+                    {linkingCandidate.tmdbItem.title} ({linkingCandidate.tmdbItem.year || '—'})
+                  </strong>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span className="text-[#1A1A1A]/60 font-sans">TMDB ID:</span>
+                  <span className="font-bold text-[#D4AF37] text-sm">
+                    #{linkingCandidate.tmdbItem.tmdbId}
+                  </span>
+                </div>
+              </div>
+
+              {linkError && (
+                <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
+                  <AlertCircle size={15} className="shrink-0 text-red-600" />
+                  <span>{linkError}</span>
+                </div>
+              )}
+
+              {/* Action Buttons */}
+              <div className="flex items-center justify-end gap-3 pt-2 border-t border-[#1A1A1A]/10">
+                <button
+                  type="button"
+                  onClick={handleCancelLink}
+                  disabled={linkingInProgress}
+                  className="px-4 py-2 border border-[#1A1A1A]/20 text-xs font-sans font-bold uppercase tracking-wider hover:bg-[#1A1A1A]/5 transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  onClick={handleConfirmLink}
+                  disabled={linkingInProgress}
+                  className="px-5 py-2.5 bg-[#1A1A1A] text-[#F5F2ED] text-xs font-sans font-bold uppercase tracking-wider hover:bg-[#D4AF37] hover:text-[#1A1A1A] transition-colors flex items-center gap-2 shadow-sm disabled:opacity-50"
+                >
+                  {linkingInProgress ? (
+                    <>
+                      <Loader2 size={14} className="animate-spin text-[#D4AF37]" />
+                      <span>Vinculando...</span>
+                    </>
+                  ) : (
+                    <>
+                      <LinkIcon size={14} className="text-[#D4AF37]" />
+                      <span>Confirmar Vinculação</span>
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
           </div>
         )}
