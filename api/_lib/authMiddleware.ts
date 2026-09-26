@@ -141,5 +141,6 @@ export async function requireAdmin(req: any, res: any): Promise<boolean> {
     );
     return false;
   }
+  req.user = auth.user;
   return true;
 }

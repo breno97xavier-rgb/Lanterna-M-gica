@@ -261,11 +261,13 @@ export async function getMovieCredits(id: number): Promise<TmdbMovieCredits> {
 
   const cast: TmdbMovieCastMember[] = Array.isArray(raw.cast)
     ? raw.cast.map((c: any) => ({
+        creditId: c.credit_id || '',
         tmdbPersonId: c.id,
         name: c.name || c.original_name || '',
         originalName: c.original_name || c.name || '',
         character: c.character || '',
         order: typeof c.order === 'number' ? c.order : 999,
+        castId: typeof c.cast_id === 'number' ? c.cast_id : undefined,
         profilePath: c.profile_path || null,
         profileUrl: buildTmdbImageUrl(c.profile_path, 'profile'),
       }))
@@ -273,6 +275,7 @@ export async function getMovieCredits(id: number): Promise<TmdbMovieCredits> {
 
   const crew: TmdbMovieCrewMember[] = Array.isArray(raw.crew)
     ? raw.crew.map((c: any) => ({
+        creditId: c.credit_id || '',
         tmdbPersonId: c.id,
         name: c.name || c.original_name || '',
         originalName: c.original_name || c.name || '',

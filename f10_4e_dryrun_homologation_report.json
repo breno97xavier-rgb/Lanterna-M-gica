@@ -1,0 +1,92 @@
+{
+  "phase": "F10.4E-B",
+  "title": "Homologação de Infraestrutura Server-Side + Reconciliação Dry-Run de Pessoas/Créditos TMDB",
+  "generated_at": "2026-09-21T07:50:00Z",
+  "mode": "READ_ONLY",
+  "zero_writes_verified": true,
+  "database_snapshot": {
+    "total_filmes": 12,
+    "filmes_with_tmdb_id": 12,
+    "filmes_with_tmdb_synced_at": 2,
+    "total_pessoas": 95,
+    "pessoas_with_tmdb_id": 89,
+    "pessoas_without_tmdb_id": 6,
+    "pessoas_with_tmdb_synced_at": 0,
+    "total_film_credits": 98,
+    "tmdb_sync_logs_status": "RLS_PROTECTED_ADMIN_ONLY"
+  },
+  "fixture_le_trou": {
+    "film_id": "34d2715c-bd3f-4737-b109-cce4b6724599",
+    "tmdb_id": 29259,
+    "title": "A Um Passo da Liberdade",
+    "year": 1960,
+    "tmdb_cast_count": 22,
+    "tmdb_crew_count": 31,
+    "tmdb_unique_people_count": 47,
+    "local_credits_count": 6,
+    "classification_summary": {
+      "exact_tmdb_matches": 0,
+      "possible_local_matches": 6,
+      "ambiguous": 0,
+      "new_people": 41,
+      "default_curated_selected": 19,
+      "local_only_preserved": 0
+    },
+    "possible_local_matches_detail": [
+      {
+        "tmdb_person_id": 24495,
+        "tmdb_name": "Michel Constantin",
+        "suggested_local_person_id": "8f277617-e8b9-4873-a3ad-62a975f11b62",
+        "suggested_local_name": "Michel Constantin",
+        "has_local_credit_in_film": true
+      },
+      {
+        "tmdb_person_id": 103397,
+        "tmdb_name": "Jean Keraudy",
+        "suggested_local_person_id": "0469e615-5b64-4d13-992c-b6f005d55683",
+        "suggested_local_name": "Jean Keraudy",
+        "has_local_credit_in_film": true
+      },
+      {
+        "tmdb_person_id": 25333,
+        "tmdb_name": "Philippe Leroy",
+        "suggested_local_person_id": "0e574f0a-5adb-470f-9347-c1e128457dc6",
+        "suggested_local_name": "Philippe Leroy",
+        "has_local_credit_in_film": true
+      },
+      {
+        "tmdb_person_id": 103398,
+        "tmdb_name": "Raymond Meunier",
+        "suggested_local_person_id": "7a53965b-7ec9-436a-9901-f2b09893753a",
+        "suggested_local_name": "Raymond Meunier",
+        "has_local_credit_in_film": true
+      },
+      {
+        "tmdb_person_id": 46936,
+        "tmdb_name": "Marc Michel",
+        "suggested_local_person_id": "181877fa-f094-4c8f-a12d-07c1a6e2d0b5",
+        "suggested_local_name": "Marc Michel",
+        "has_local_credit_in_film": true
+      },
+      {
+        "tmdb_person_id": 103393,
+        "tmdb_name": "Jacques Becker",
+        "suggested_local_person_id": "e807147c-9db1-4ddf-845c-7242c738d5c9",
+        "suggested_local_name": "Jacques Becker",
+        "has_local_credit_in_film": true
+      }
+    ]
+  },
+  "logical_credit_uniqueness_audit": {
+    "expression": "film_id + person_id + department + COALESCE(role, '') + COALESCE(character_name, '')",
+    "total_records_analyzed": 98,
+    "collisions_found": 0,
+    "unique_keys_count": 98,
+    "safe_for_conditional_unique_index": true
+  },
+  "sql_rpc_prepared": {
+    "file": "supabase_migration_fase10_sync_film_credits_rpc.sql",
+    "function_name": "public.sync_film_credits_from_tmdb",
+    "executed": false
+  }
+}

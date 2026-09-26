@@ -15,6 +15,8 @@ import {
   getPersonCredits,
 } from './tmdbClient.js';
 import { importTmdbMovieServerSide, linkTmdbMovieServerSide } from './movieImporter.js';
+import { reconcileFilmCreditsDryRun } from './creditReconciler.js';
+import { executeCreditsSync } from './creditExecutionBuilder.js';
 
 export interface StandardRequest {
   url?: string;
@@ -133,6 +135,39 @@ export async function handleTmdbApiRequest(req: any, res: any): Promise<void> {
       }
 
       const result = await linkTmdbMovieServerSide(internalFilmId, tmdbId, req);
+      sendJsonResponse(res, 200, result);
+      return;
+    }
+
+    // --------------------------------------------------------------------------
+    // ROTA POST: POST /api/tmdb/movies/credits/reconcile (F10.4E - Reconciliação Dry-Run)
+    // --------------------------------------------------------------------------
+    if (pathname === '/api/tmdb/movies/credits/reconcile' && method === 'POST') {
+      const body = await parseJsonBody(req);
+      const rawFilmId =
+        body?.filmId ??
+        body?.film_id ??
+        body?.internalFilmId ??
+        body?.internal_id ??
+        mergedQuery?.filmId ??
+        mergedQuery?.film_id;
+      const filmId = typeof rawFilmId === 'string' ? rawFilmId.trim() : '';
+
+      if (!filmId) {
+        throw new AppError(400, 'INVALID_PARAMS', 'Identificador filmId é obrigatório para reconciliação de créditos.');
+      }
+
+      const result = await reconcileFilmCreditsDryRun(filmId, req);
+      sendJsonResponse(res, 200, result);
+      return;
+    }
+
+    // --------------------------------------------------------------------------
+    // ROTA POST: POST /api/tmdb/movies/credits/sync (F10.4E-D1 - Execução Controlada)
+    // --------------------------------------------------------------------------
+    if (pathname === '/api/tmdb/movies/credits/sync' && method === 'POST') {
+      const body = await parseJsonBody(req);
+      const result = await executeCreditsSync(body, req);
       sendJsonResponse(res, 200, result);
       return;
     }

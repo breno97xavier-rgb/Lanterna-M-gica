@@ -28,6 +28,18 @@ import type {
   TmdbMovieImportResult,
   TmdbMovieLinkRequest,
   TmdbMovieLinkResult,
+  PersonMatchStatus,
+  LocalCreditComparisonStatus,
+  ReconciledPerson,
+  SuggestedPersonCandidate,
+  PersonMatchSignals,
+  ReconciledCreditItem,
+  LocalOnlyCreditItem,
+  CreditsReconcileSummary,
+  CreditsReconcileResponse,
+  PersonSyncDecision,
+  PersonSyncDecisionAction,
+  SelectedCreditDecision,
 } from '../../api/_lib/types.js';
 
 // Re-exportar tipos para uso no frontend
@@ -49,6 +61,18 @@ export type {
   TmdbMovieImportResult,
   TmdbMovieLinkRequest,
   TmdbMovieLinkResult,
+  PersonMatchStatus,
+  LocalCreditComparisonStatus,
+  ReconciledPerson,
+  SuggestedPersonCandidate,
+  PersonMatchSignals,
+  ReconciledCreditItem,
+  LocalOnlyCreditItem,
+  CreditsReconcileSummary,
+  CreditsReconcileResponse,
+  PersonSyncDecision,
+  PersonSyncDecisionAction,
+  SelectedCreditDecision,
 };
 
 export class TmdbApiError extends Error {
@@ -194,6 +218,60 @@ export async function linkTmdbMovie(internalFilmId: string, tmdbId: number): Pro
   return tmdbFetch<TmdbMovieLinkResult>('/api/tmdb/movies/link', {
     method: 'POST',
     body: { internalFilmId, tmdbId },
+  });
+}
+
+/**
+ * Executa reconciliação de elenco e equipe técnica (Read-Only Dry Run) (F10.4E / F10.4E-C2)
+ */
+export async function reconcileTmdbMovieCredits(filmId: string): Promise<CreditsReconcileResponse> {
+  return tmdbFetch<CreditsReconcileResponse>('/api/tmdb/movies/credits/reconcile', {
+    method: 'POST',
+    body: { filmId },
+  });
+}
+
+export interface CreditsSyncExecuteRequest {
+  filmId: string;
+  baseUpdatedAt?: string;
+  selectedCredits: string[];
+  personDecisions: Array<{
+    tmdbPersonId: number;
+    action: 'LINK_EXISTING' | 'CREATE_NEW';
+    localPersonId?: string;
+  }>;
+  dryRun?: boolean;
+  confirmExecution?: boolean;
+}
+
+export interface CreditsSyncExecuteResult {
+  success: boolean;
+  locked?: boolean;
+  dryRun?: boolean;
+  filmId: string;
+  tmdbId: number;
+  createdPeopleCount?: number;
+  linkedPeopleCount?: number;
+  insertedCreditsCount?: number;
+  updatedCreditsCount?: number;
+  unchangedCreditsCount?: number;
+  semanticCreditsReusedCount?: number;
+  storageCreatedCount?: number;
+  storageReusedCount?: number;
+  warnings?: string[];
+  executionStatus?: 'PREVIEW' | 'DRY_RUN' | 'SUCCESS' | 'BLOCKED';
+  payload?: any;
+  summary?: any;
+  message?: string;
+}
+
+/**
+ * Executa a sincronização transacional controlada de créditos e pessoas (F10.4E-D1 / D3)
+ */
+export async function syncTmdbMovieCredits(request: CreditsSyncExecuteRequest): Promise<CreditsSyncExecuteResult> {
+  return tmdbFetch<CreditsSyncExecuteResult>('/api/tmdb/movies/credits/sync', {
+    method: 'POST',
+    body: request,
   });
 }
 

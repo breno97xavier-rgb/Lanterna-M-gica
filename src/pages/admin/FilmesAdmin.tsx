@@ -52,6 +52,7 @@ import {
 import { ImageUploader } from '../../components/admin/ImageUploader';
 import { ConfirmModal } from '../../components/admin/ConfirmModal';
 import { TmdbMovieImportModal } from '../../components/admin/TmdbMovieImportModal';
+import { TmdbCreditsReconcileModal } from '../../components/admin/TmdbCreditsReconcileModal';
 import { ContentStatus } from '../../types';
 import { getEffectiveEditorialStatus } from '../../utils/statusUtils';
 
@@ -123,6 +124,8 @@ export const FilmesAdmin: React.FC<FilmesAdminProps> = ({ onNotify, autoCreate =
   const [editing, setEditing] = useState<FormState | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<{ id: string; title: string } | null>(null);
   const [showTmdbModal, setShowTmdbModal] = useState(false);
+  const [showCreditsReconcileModal, setShowCreditsReconcileModal] = useState(false);
+  const [creditsReconcileFilm, setCreditsReconcileFilm] = useState<{ id: string; title: string; tmdb_id: number } | null>(null);
 
   // New genre inline creation
   const [isAddingGenero, setIsAddingGenero] = useState(false);
@@ -259,6 +262,15 @@ export const FilmesAdmin: React.FC<FilmesAdminProps> = ({ onNotify, autoCreate =
     if (film) {
       handleEditFilm(film);
     }
+  };
+
+  const handleOpenCreditsReconcile = (film: { id: string; title: string; tmdb_id?: number | null }) => {
+    if (!film.tmdb_id) {
+      onNotify('Este filme não possui vínculo com o TMDB.');
+      return;
+    }
+    setCreditsReconcileFilm({ id: film.id, title: film.title, tmdb_id: film.tmdb_id });
+    setShowCreditsReconcileModal(true);
   };
 
   // Genre helpers
@@ -1025,7 +1037,7 @@ export const FilmesAdmin: React.FC<FilmesAdminProps> = ({ onNotify, autoCreate =
 
           {/* CRÉDITOS E EQUIPE (public.pessoas & public.film_credits) */}
           <div className="bg-white border border-[#1A1A1A]/15 p-6 space-y-6">
-            <div className="border-b border-[#1A1A1A]/10 pb-3 flex items-center justify-between">
+            <div className="border-b border-[#1A1A1A]/10 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
                 <h3 className="font-sans text-xs font-bold uppercase tracking-[0.2em] text-[#D4AF37] flex items-center gap-2">
                   <Users size={14} /> 3. Elenco & Equipe Técnica (Créditos Canônicos)
@@ -1034,13 +1046,32 @@ export const FilmesAdmin: React.FC<FilmesAdminProps> = ({ onNotify, autoCreate =
                   Vincule profissionais já cadastrados em <span className="font-mono text-[#1A1A1A]">public.pessoas</span>.
                 </p>
               </div>
-              <button
-                type="button"
-                onClick={() => setShowQuickPersonModal(true)}
-                className="px-3 py-1.5 bg-[#F5F2ED] border border-[#1A1A1A]/20 hover:border-[#1A1A1A] text-xs font-sans font-bold uppercase flex items-center gap-1 text-[#1A1A1A] hover:bg-[#1A1A1A] hover:text-[#F5F2ED] transition-colors"
-              >
-                <UserPlus size={13} /> + Nova Pessoa
-              </button>
+              <div className="flex items-center gap-2 flex-wrap">
+                {editing.id && editing.tmdb_id && (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleOpenCreditsReconcile({
+                        id: editing.id!,
+                        title: editing.title,
+                        tmdb_id: editing.tmdb_id,
+                      })
+                    }
+                    className="px-3 py-1.5 bg-[#1A1A1A] text-[#F5F2ED] hover:bg-[#D4AF37] hover:text-[#1A1A1A] border border-[#1A1A1A] text-xs font-sans font-bold uppercase flex items-center gap-1.5 transition-colors shadow-xs"
+                    title={`Reconciliar elenco e equipe via TMDB (#${editing.tmdb_id})`}
+                  >
+                    <Sparkles size={13} className="text-[#D4AF37]" />
+                    <span>Atualizar Elenco e Equipe via TMDB</span>
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={() => setShowQuickPersonModal(true)}
+                  className="px-3 py-1.5 bg-[#F5F2ED] border border-[#1A1A1A]/20 hover:border-[#1A1A1A] text-xs font-sans font-bold uppercase flex items-center gap-1 text-[#1A1A1A] hover:bg-[#1A1A1A] hover:text-[#F5F2ED] transition-colors"
+                >
+                  <UserPlus size={13} /> + Nova Pessoa
+                </button>
+              </div>
             </div>
 
             {/* Credit Insertion Tool */}
@@ -1399,6 +1430,30 @@ export const FilmesAdmin: React.FC<FilmesAdminProps> = ({ onNotify, autoCreate =
             </div>
           </div>
         )}
+
+        {/* TMDB Credits Reconciliation Modal in Edit View (F10.4E / F10.4E-C2) */}
+        {showCreditsReconcileModal && creditsReconcileFilm && (
+          <TmdbCreditsReconcileModal
+            isOpen={showCreditsReconcileModal}
+            filmId={creditsReconcileFilm.id}
+            filmTitle={creditsReconcileFilm.title}
+            tmdbId={creditsReconcileFilm.tmdb_id}
+            onClose={() => {
+              setShowCreditsReconcileModal(false);
+              setCreditsReconcileFilm(null);
+            }}
+            onNotify={onNotify}
+            onSyncSuccess={async () => {
+              await loadAllData();
+              if (editing?.id) {
+                const { data: updatedFilm } = await fetchFilmeById(editing.id);
+                if (updatedFilm) {
+                  handleEditFilm(updatedFilm);
+                }
+              }
+            }}
+          />
+        )}
       </div>
     );
   }
@@ -1639,6 +1694,16 @@ export const FilmesAdmin: React.FC<FilmesAdminProps> = ({ onNotify, autoCreate =
                     </td>
                     <td className="py-3 px-4 text-right">
                       <div className="flex items-center justify-end gap-1.5">
+                        {f.tmdb_id && (
+                          <button
+                            type="button"
+                            onClick={() => handleOpenCreditsReconcile(f)}
+                            className="p-1.5 hover:bg-[#1A1A1A] hover:text-[#D4AF37] text-[#1A1A1A]/70 transition-colors"
+                            title={`Reconciliar Elenco e Equipe via TMDB (#${f.tmdb_id})`}
+                          >
+                            <Sparkles size={14} className="text-[#D4AF37]" />
+                          </button>
+                        )}
                         <button
                           type="button"
                           onClick={() => handleEditFilm(f)}
@@ -1688,6 +1753,24 @@ export const FilmesAdmin: React.FC<FilmesAdminProps> = ({ onNotify, autoCreate =
         onManualCreate={handleCreateNew}
         onNotify={onNotify}
       />
+
+      {/* TMDB Credits Reconciliation Modal (F10.4E / F10.4E-C2) */}
+      {showCreditsReconcileModal && creditsReconcileFilm && (
+        <TmdbCreditsReconcileModal
+          isOpen={showCreditsReconcileModal}
+          filmId={creditsReconcileFilm.id}
+          filmTitle={creditsReconcileFilm.title}
+          tmdbId={creditsReconcileFilm.tmdb_id}
+          onClose={() => {
+            setShowCreditsReconcileModal(false);
+            setCreditsReconcileFilm(null);
+          }}
+          onNotify={onNotify}
+          onSyncSuccess={() => {
+            loadAllData();
+          }}
+        />
+      )}
     </div>
   );
 };

@@ -29,18 +29,16 @@ export function slugifyText(text: string): string {
 
 function getServerSupabaseClient(req: any): SupabaseClient {
   const url = (process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || '').trim();
-  const anonKey = (
+  const keyToUse = (
     process.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
     process.env.VITE_SUPABASE_ANON_KEY ||
     process.env.SUPABASE_ANON_KEY ||
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
     ''
   ).trim();
-  const serviceKey = (process.env.SUPABASE_SERVICE_ROLE_KEY || '').trim();
 
   const authHeader = (req.headers && (req.headers['authorization'] || req.headers['Authorization'])) || '';
   const token = authHeader.replace(/^Bearer\s+/i, '').trim();
-
-  const keyToUse = serviceKey || anonKey;
 
   if (!url || !keyToUse) {
     throw new AppError(500, 'INTERNAL_ERROR', 'Credenciais do Supabase não configuradas no servidor.');
