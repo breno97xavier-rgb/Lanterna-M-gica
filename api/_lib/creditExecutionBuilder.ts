@@ -22,6 +22,7 @@ import { mapTmdbCastMember, mapTmdbCrewMember } from './creditVocab.js';
 import { matchLocalCreditSemantically } from './creditReconciler.js';
 import { preparePersonProfileImage, compensateStorageUploads, PreparedStorageImage } from './storageImageService.js';
 import { slugifyText } from './movieImporter.js';
+import { mapTmdbDepartmentToPrimaryRoles } from './personImporter.js';
 import { validateAdminAuth } from './authMiddleware.js';
 import { AppError } from './errors.js';
 import type {
@@ -503,7 +504,7 @@ export async function buildCreditsSyncPayload(
       let birthDate: string | null = null;
       let deathDate: string | null = null;
       let imdbId: string | null = null;
-      let knownForDept: string | null = personInfo?.status ? 'Acting' : null;
+      let knownForDept: string | null = null;
 
       // Se for execução real (quando habilitada), preparar imagem de Storage e consultar detalhes adicionais
       if (request.dryRun) {
@@ -516,7 +517,7 @@ export async function buildCreditsSyncPayload(
           birthDate = details.birthday || null;
           deathDate = details.deathday || null;
           imdbId = details.imdbId || null;
-          knownForDept = details.knownForDepartment || 'Acting';
+          knownForDept = details.knownForDepartment || null;
 
           if (details.profileUrl) {
             const prepared = await preparePersonProfileImage(supabase, tmdbPersonId, details.profileUrl);
