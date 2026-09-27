@@ -17,6 +17,7 @@ import {
 import { importTmdbMovieServerSide, linkTmdbMovieServerSide } from './movieImporter.js';
 import { reconcileFilmCreditsDryRun } from './creditReconciler.js';
 import { executeCreditsSync } from './creditExecutionBuilder.js';
+import { importTmdbPersonServerSide } from './personImporter.js';
 
 export interface StandardRequest {
   url?: string;
@@ -169,6 +170,21 @@ export async function handleTmdbApiRequest(req: any, res: any): Promise<void> {
       const body = await parseJsonBody(req);
       const result = await executeCreditsSync(body, req);
       sendJsonResponse(res, 200, result);
+      return;
+    }
+
+    // --------------------------------------------------------------------------
+    // ROTA POST: POST /api/tmdb/people/import (F10.5B)
+    // --------------------------------------------------------------------------
+    if (pathname === '/api/tmdb/people/import' && method === 'POST') {
+      const body = await parseJsonBody(req);
+      const rawTmdbId = body?.tmdb_id ?? body?.tmdbId ?? mergedQuery?.tmdb_id ?? mergedQuery?.tmdbId;
+      const tmdbId = parseInt(String(rawTmdbId), 10);
+      if (isNaN(tmdbId) || tmdbId <= 0) {
+        throw new AppError(400, 'INVALID_PARAMS', 'Identificador tmdb_id / tmdbId obrigatório e deve ser um inteiro positivo.');
+      }
+      const result = await importTmdbPersonServerSide(tmdbId, req);
+      sendJsonResponse(res, result.alreadyExists ? 200 : 201, result);
       return;
     }
 
