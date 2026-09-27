@@ -22,7 +22,6 @@ import { mapTmdbCastMember, mapTmdbCrewMember } from './creditVocab.js';
 import { matchLocalCreditSemantically } from './creditReconciler.js';
 import { preparePersonProfileImage, compensateStorageUploads, PreparedStorageImage } from './storageImageService.js';
 import { slugifyText } from './movieImporter.js';
-import { mapTmdbDepartmentToPrimaryRoles } from './personImporter.js';
 import { validateAdminAuth } from './authMiddleware.js';
 import { AppError } from './errors.js';
 import type {
