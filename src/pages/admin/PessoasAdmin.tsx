@@ -14,6 +14,8 @@ import {
   Globe,
   Calendar,
   Flag,
+  Download,
+  Database,
 } from 'lucide-react';
 import {
   fetchPessoas,
@@ -32,6 +34,11 @@ import {
 import { ImageUploader } from '../../components/admin/ImageUploader';
 import { ConfirmModal } from '../../components/admin/ConfirmModal';
 import { ContentStatus } from '../../types';
+import {
+  searchTmdbPeople,
+  importTmdbPerson,
+  TmdbPersonSummary,
+} from '../../services/tmdbApiClient';
 
 interface PessoasAdminProps {
   onNotify?: (msg: string) => void;
@@ -44,6 +51,14 @@ export const PessoasAdmin: React.FC<PessoasAdminProps> = ({ onNotify, autoCreate
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+
+  // F10.5B — Busca/importação de pessoas via TMDB
+  const [tmdbQuery, setTmdbQuery] = useState('');
+  const [tmdbResults, setTmdbResults] = useState<TmdbPersonSummary[]>([]);
+  const [tmdbSearching, setTmdbSearching] = useState(false);
+  const [tmdbImportingId, setTmdbImportingId] = useState<number | null>(null);
+  const [tmdbError, setTmdbError] = useState<string | null>(null);
+  const [showTmdbImport, setShowTmdbImport] = useState(false);
 
   // Editing / Creating State
   const [isEditing, setIsEditing] = useState(false);
@@ -93,6 +108,43 @@ export const PessoasAdmin: React.FC<PessoasAdminProps> = ({ onNotify, autoCreate
       handleCreateNew();
     }
   }, [autoCreate]);
+
+  const handleTmdbSearch = async (e?: React.FormEvent) => {
+    e?.preventDefault();
+    const query = tmdbQuery.trim();
+    if (!query || tmdbSearching) return;
+    setTmdbSearching(true);
+    setTmdbError(null);
+    try {
+      const result = await searchTmdbPeople({ query, page: 1 });
+      setTmdbResults(result.results || []);
+      if (!result.results?.length) setTmdbError('Nenhuma pessoa encontrada no TMDB para esta busca.');
+    } catch (err: any) {
+      setTmdbError(err?.message || 'Falha ao pesquisar pessoas no TMDB.');
+      setTmdbResults([]);
+    } finally {
+      setTmdbSearching(false);
+    }
+  };
+
+  const handleTmdbImport = async (person: TmdbPersonSummary) => {
+    if (tmdbImportingId !== null) return;
+    setTmdbImportingId(person.tmdbId);
+    setTmdbError(null);
+    try {
+      const result = await importTmdbPerson(person.tmdbId);
+      if (onNotify) {
+        onNotify(result.alreadyExists
+          ? `"${result.name}" já estava no acervo; nenhum duplicado foi criado.`
+          : `"${result.name}" importado do TMDB com sucesso.`);
+      }
+      await loadList();
+    } catch (err: any) {
+      setTmdbError(err?.message || 'Falha ao importar pessoa do TMDB.');
+    } finally {
+      setTmdbImportingId(null);
+    }
+  };
 
   const handleCreateNew = () => {
     setEditingPessoa({
@@ -342,14 +394,85 @@ export const PessoasAdmin: React.FC<PessoasAdminProps> = ({ onNotify, autoCreate
           </button>
 
           <button
+            onClick={() => { setShowTmdbImport((v) => !v); setTmdbError(null); }}
+            className="inline-flex items-center gap-2 px-4 py-2 border border-[#1A1A1A] text-[#1A1A1A] text-xs font-sans font-bold uppercase tracking-wider hover:bg-[#F5F2ED] transition-colors"
+          >
+            <Database size={14} />
+            <span>Importar do TMDB</span>
+          </button>
+
+          <button
             onClick={handleCreateNew}
             className="inline-flex items-center gap-2 px-4 py-2 bg-[#1A1A1A] text-[#F5F2ED] text-xs font-sans font-bold uppercase tracking-wider hover:bg-[#D4AF37] hover:text-[#1A1A1A] transition-colors"
           >
             <Plus size={14} />
-            <span>Nova Pessoa</span>
+            <span>Criar manualmente</span>
           </button>
         </div>
       </div>
+
+      {showTmdbImport && (
+        <div className="bg-white border-2 border-[#1A1A1A] p-5 space-y-4">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <h3 className="font-serif-display font-bold text-lg text-[#1A1A1A]">Importar pessoa do TMDB</h3>
+              <p className="text-[11px] font-mono text-[#1A1A1A]/60 mt-1">
+                Pesquise pelo nome. O servidor consulta novamente o TMDB e impede duplicação por tmdb_id antes de gravar.
+              </p>
+            </div>
+            <button onClick={() => setShowTmdbImport(false)} className="p-1 text-[#1A1A1A]/60 hover:text-[#1A1A1A]"><X size={18} /></button>
+          </div>
+
+          <form onSubmit={handleTmdbSearch} className="flex gap-2">
+            <input
+              type="search"
+              value={tmdbQuery}
+              onChange={(e) => setTmdbQuery(e.target.value)}
+              placeholder="Ex: Sven Nykvist"
+              className="flex-1 bg-white border border-[#1A1A1A]/20 px-3 py-2 text-xs font-sans focus:outline-none focus:border-[#1A1A1A]"
+            />
+            <button type="submit" disabled={!tmdbQuery.trim() || tmdbSearching} className="inline-flex items-center gap-2 px-4 py-2 bg-[#1A1A1A] text-[#F5F2ED] text-xs font-bold uppercase tracking-wider disabled:opacity-50">
+              {tmdbSearching ? <Loader2 size={14} className="animate-spin" /> : <Search size={14} />}
+              Buscar
+            </button>
+          </form>
+
+          {tmdbError && <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs font-mono">{tmdbError}</div>}
+
+          {tmdbResults.length > 0 && (
+            <div className="divide-y divide-[#1A1A1A]/10 border border-[#1A1A1A]/10">
+              {tmdbResults.map((person) => {
+                const local = pessoas.find((p) => p.tmdb_id === person.tmdbId);
+                const importing = tmdbImportingId === person.tmdbId;
+                return (
+                  <div key={person.tmdbId} className="flex items-center gap-3 p-3">
+                    {person.profileUrl ? (
+                      <img src={person.profileUrl} alt="" className="w-12 h-16 object-cover bg-[#F5F2ED]" />
+                    ) : (
+                      <div className="w-12 h-16 bg-[#F5F2ED] flex items-center justify-center"><User size={18} className="opacity-40" /></div>
+                    )}
+                    <div className="min-w-0 flex-1">
+                      <div className="font-sans font-bold text-sm text-[#1A1A1A]">{person.name}</div>
+                      <div className="text-[10px] font-mono text-[#1A1A1A]/55">
+                        TMDB #{person.tmdbId}{person.knownForDepartment ? ` · ${person.knownForDepartment}` : ''}
+                      </div>
+                      {person.knownFor?.length > 0 && <div className="text-[10px] text-[#1A1A1A]/55 mt-1 truncate">{person.knownFor.join(' · ')}</div>}
+                    </div>
+                    {local ? (
+                      <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-green-700"><Check size={13} /> Já no acervo</span>
+                    ) : (
+                      <button type="button" onClick={() => handleTmdbImport(person)} disabled={tmdbImportingId !== null} className="inline-flex items-center gap-1.5 px-3 py-2 border border-[#1A1A1A] text-[10px] font-bold uppercase tracking-wider disabled:opacity-50">
+                        {importing ? <Loader2 size={13} className="animate-spin" /> : <Download size={13} />}
+                        Importar
+                      </button>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Error notification */}
       {error && (
