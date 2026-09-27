@@ -22,6 +22,7 @@ import type {
   TmdbPersonSearchResult,
   TmdbPersonDetails,
   TmdbPersonCredits,
+  TmdbPersonImportResult,
   TmdbPersonCastCredit,
   TmdbPersonCrewCredit,
   TmdbMovieImportRequest,
@@ -292,6 +293,16 @@ export async function searchTmdbPeople(params: {
       query: params.query,
       page: params.page,
     },
+  });
+}
+
+/**
+ * Importa uma pessoa do TMDB para o acervo local de forma idempotente.
+ */
+export async function importTmdbPerson(tmdbId: number): Promise<TmdbPersonImportResult> {
+  return tmdbFetch<TmdbPersonImportResult>('/api/tmdb/people/import', {
+    method: 'POST',
+    body: { tmdbId },
   });
 }
 
