@@ -56,6 +56,7 @@ export type {
   TmdbPersonSearchResult,
   TmdbPersonDetails,
   TmdbPersonCredits,
+  TmdbPersonImportResult,
   TmdbPersonCastCredit,
   TmdbPersonCrewCredit,
   TmdbMovieImportRequest,
