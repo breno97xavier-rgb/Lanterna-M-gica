@@ -196,6 +196,18 @@ export interface TmdbMovieImportResult {
   message?: string;
 }
 
+export interface TmdbPersonImportResult {
+  success: boolean;
+  personId: string;
+  slug: string;
+  name: string;
+  tmdbId: number;
+  tmdbSyncedAt: string | null;
+  alreadyExists?: boolean;
+  biographyImported?: boolean;
+  message?: string;
+}
+
 export interface TmdbMovieLinkRequest {
   internalFilmId: string;
   tmdbId: number;
