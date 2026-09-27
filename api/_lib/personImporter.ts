@@ -107,10 +107,10 @@ export async function importTmdbPersonServerSide(tmdbId: number, req: any): Prom
 
     // Auditoria é complementar: falha do log não desfaz a entidade já criada.
     const { error: logError } = await supabase.from('tmdb_sync_logs').insert({
-      entity_type: 'person',
-      entity_id: created.id,
+      entity_type: 'pessoa',
+      internal_id: created.id,
       tmdb_id: tmdbId,
-      action: 'import_new',
+      operation: 'import_new',
       source: 'admin',
       status: 'success',
       details: { name, imported_at: nowIso, biography_imported: Boolean(details.biography?.trim()), place_of_birth: details.placeOfBirth || null },
