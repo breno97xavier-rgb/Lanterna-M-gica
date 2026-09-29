@@ -164,6 +164,7 @@ export const ListasAdmin: React.FC<ListasAdminProps> = ({ onNotify, autoCreate =
           rank: 1,
           orderIndex: 0,
           filmId: null,
+          isCustomManual: false,
           title: '',
           director: '',
           year: new Date().getFullYear(),
@@ -198,6 +199,7 @@ export const ListasAdmin: React.FC<ListasAdminProps> = ({ onNotify, autoCreate =
       rank: typeof it.rank === 'number' ? it.rank : idx + 1,
       orderIndex: typeof it.orderIndex === 'number' ? it.orderIndex : idx,
       filmId: it.filmId || null,
+      isCustomManual: !it.filmId,
       title: it.title || it.film?.title || '',
       director: it.director || '',
       year: it.year || it.film?.year || new Date().getFullYear(),
@@ -227,6 +229,7 @@ export const ListasAdmin: React.FC<ListasAdminProps> = ({ onNotify, autoCreate =
                 rank: 1,
                 orderIndex: 0,
                 filmId: null,
+                isCustomManual: false,
                 title: '',
                 director: '',
                 year: new Date().getFullYear(),
@@ -249,6 +252,7 @@ export const ListasAdmin: React.FC<ListasAdminProps> = ({ onNotify, autoCreate =
           rank: nextRank,
           orderIndex: editing.items.length,
           filmId: null,
+          isCustomManual: false,
           title: '',
           director: '',
           year: new Date().getFullYear(),
@@ -290,6 +294,23 @@ export const ListasAdmin: React.FC<ListasAdminProps> = ({ onNotify, autoCreate =
     setEditing({ ...editing, items: normalized });
   };
 
+  const handleChooseItemMode = (itemIdx: number, mode: 'acervo' | 'manual') => {
+    if (!editing) return;
+    const newItems = [...editing.items];
+    newItems[itemIdx] = {
+      ...newItems[itemIdx],
+      isCustomManual: mode === 'manual',
+    };
+    setEditing({ ...editing, items: newItems });
+    if (mode === 'acervo') {
+      setActiveFilmSearchItemIdx(itemIdx);
+      setFilmItemSearchTerm('');
+    } else if (activeFilmSearchItemIdx === itemIdx) {
+      setActiveFilmSearchItemIdx(null);
+      setFilmItemSearchTerm('');
+    }
+  };
+
   const handleSelectFilmForIndex = (itemIdx: number, film: SupabaseFilme) => {
     if (!editing) return;
     const newItems = [...editing.items];
@@ -322,8 +343,11 @@ export const ListasAdmin: React.FC<ListasAdminProps> = ({ onNotify, autoCreate =
       ...newItems[itemIdx],
       filmId: null,
       film: null,
+      isCustomManual: false,
     };
     setEditing({ ...editing, items: newItems });
+    setActiveFilmSearchItemIdx(itemIdx);
+    setFilmItemSearchTerm('');
   };
 
   const handleSelectRelatedPerson = (person: SupabasePessoa | null) => {
@@ -892,6 +916,10 @@ export const ListasAdmin: React.FC<ListasAdminProps> = ({ onNotify, autoCreate =
                               Desvincular do Acervo
                             </button>
                           </div>
+                        ) : item.isCustomManual ? (
+                          <div className="w-full text-[11px] font-mono text-[#1A1A1A]/55">
+                            Item manual selecionado. Preencha os dados abaixo.
+                          </div>
                         ) : (
                           <div className="w-full">
                             {!isSearchingFilm ? (
@@ -988,6 +1016,8 @@ export const ListasAdmin: React.FC<ListasAdminProps> = ({ onNotify, autoCreate =
 
                       {/* Campos do Item */}
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs font-sans">
+                        {(item.isCustomManual || hasFilmLink) && (
+                          <>
                         <div>
                           <label className="block text-[10px] uppercase font-bold text-[#1A1A1A]/70 mb-1">
                             Título do Filme *
@@ -1056,6 +1086,9 @@ export const ListasAdmin: React.FC<ListasAdminProps> = ({ onNotify, autoCreate =
                             className="w-full bg-white border border-[#1A1A1A]/15 p-2 text-xs font-mono text-[#1A1A1A] focus:outline-none focus:border-[#1A1A1A]"
                           />
                         </div>
+
+                          </>
+                        )}
 
                         <div className="sm:col-span-3">
                           <label className="block text-[10px] uppercase font-bold text-[#1A1A1A]/70 mb-1">
