@@ -889,6 +889,35 @@ export const ListasAdmin: React.FC<ListasAdminProps> = ({ onNotify, autoCreate =
                         </div>
                       </div>
 
+                      {!hasFilmLink && (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-2">
+                          <button
+                            type="button"
+                            onClick={() => handleChooseItemMode(idx, 'acervo')}
+                            className={`p-3 border text-left transition-colors ${!item.isCustomManual ? 'border-[#1A1A1A] bg-[#1A1A1A] text-[#F5F2ED]' : 'border-[#1A1A1A]/20 bg-white text-[#1A1A1A] hover:border-[#1A1A1A]/50'}`}
+                          >
+                            <span className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider">
+                              <FilmIcon size={14} /> Selecionar do Acervo
+                            </span>
+                            <span className={`block mt-1 text-[10px] font-mono ${!item.isCustomManual ? 'text-[#F5F2ED]/70' : 'text-[#1A1A1A]/55'}`}>
+                              Pesquise um filme já cadastrado no Lanterna.
+                            </span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleChooseItemMode(idx, 'manual')}
+                            className={`p-3 border text-left transition-colors ${item.isCustomManual ? 'border-[#1A1A1A] bg-[#1A1A1A] text-[#F5F2ED]' : 'border-[#1A1A1A]/20 bg-white text-[#1A1A1A] hover:border-[#1A1A1A]/50'}`}
+                          >
+                            <span className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider">
+                              <Plus size={14} /> Adicionar Manualmente
+                            </span>
+                            <span className={`block mt-1 text-[10px] font-mono ${item.isCustomManual ? 'text-[#F5F2ED]/70' : 'text-[#1A1A1A]/55'}`}>
+                              Use quando o filme não estiver no acervo.
+                            </span>
+                          </button>
+                        </div>
+                      )}
+
                       {/* Vínculo / Busca no Acervo */}
                       <div className="flex flex-wrap items-center justify-between gap-2 p-2.5 bg-[#F5F2ED]/60 border border-[#1A1A1A]/10 text-xs">
                         {hasFilmLink ? (
