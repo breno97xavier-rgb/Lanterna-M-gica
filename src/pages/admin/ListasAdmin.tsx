@@ -608,7 +608,7 @@ export const ListasAdmin: React.FC<ListasAdminProps> = ({ onNotify, autoCreate =
                   setEditing({
                     ...editing,
                     title: val,
-                    slug: editing.slug ? editing.slug : slugifyLista(val),
+                    slug: editing.id ? editing.slug : slugifyLista(val),
                   });
                 }}
                 placeholder="Ex: Dez Obras Fundamentais sobre o Silêncio..."
