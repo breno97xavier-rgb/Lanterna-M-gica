@@ -413,7 +413,20 @@ export const ListasAdmin: React.FC<ListasAdminProps> = ({ onNotify, autoCreate =
       }
       scheduledAtIso = parseDateTimeInputToIso(editing.scheduledAt);
     } else if (editing.status === 'published') {
-      publishedAtIso = parseDateInputToIso(editing.date);
+      const todayStr = getTodayLocalDateString();
+      const chosenDateStr = editing.date?.trim() || todayStr;
+
+      if (chosenDateStr > todayStr) {
+        onNotify('Atenção: A data de publicação informada é futura. Para agendar a publicação, selecione o Status "Agendado" e defina a data/hora.');
+        return;
+      }
+
+      // Mesmo comportamento já homologado em Críticas:
+      // publicação com a data de hoje recebe o instante atual e fica visível imediatamente.
+      publishedAtIso =
+        chosenDateStr === todayStr
+          ? new Date().toISOString()
+          : parseDateInputToIso(chosenDateStr);
     }
 
     setSaving(true);
