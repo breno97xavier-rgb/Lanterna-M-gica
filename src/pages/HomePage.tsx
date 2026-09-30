@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { ArrowRight, Sparkles, Film, Loader2 } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Sparkles, Film, Loader2 } from 'lucide-react';
 import { HeroCarousel } from '../components/HeroCarousel';
 import { ArticleCard } from '../components/ArticleCard';
 import { BrandLogo } from '../components/BrandLogo';
@@ -26,6 +26,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const [supabaseEstreias, setSupabaseEstreias] = useState<Estreia[]>([]);
   const [supabasePessoas, setSupabasePessoas] = useState<SupabasePessoa[]>([]);
   const [loadingContent, setLoadingContent] = useState(true);
+  const [releasePage, setReleasePage] = useState(0);
+  const [releasePaused, setReleasePaused] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -72,6 +74,25 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const currentWeekEstreias = useMemo(() => {
     return getCurrentWeekEstreiasFromList(supabaseEstreias, getTodayLocalDateString());
   }, [supabaseEstreias]);
+
+  const releasesPerPage = 4;
+  const releasePageCount = Math.max(1, Math.ceil(currentWeekEstreias.items.length / releasesPerPage));
+  const visibleReleases = currentWeekEstreias.items.slice(
+    releasePage * releasesPerPage,
+    releasePage * releasesPerPage + releasesPerPage
+  );
+
+  useEffect(() => {
+    if (releasePage >= releasePageCount) setReleasePage(0);
+  }, [releasePage, releasePageCount]);
+
+  useEffect(() => {
+    if (releasePaused || releasePageCount <= 1) return;
+    const timer = window.setInterval(() => {
+      setReleasePage((page) => (page + 1) % releasePageCount);
+    }, 5500);
+    return () => window.clearInterval(timer);
+  }, [releasePaused, releasePageCount]);
 
   const ensaios = supabaseEnsaios;
   const umaImagemList = supabaseUmaImagem;
@@ -127,7 +148,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const archiveCriticas = supabaseCriticas.filter((c) => c.year < currentYear && !c.isNewRelease);
 
   const mainEnsaio = ensaios[0];
-  const secondaryEnsaios = ensaios.slice(1, 3);
 
   const mainUmaImagem = umaImagemList[0];
   const mainEspecial = especiais[0];
@@ -206,8 +226,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               </button>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {currentWeekEstreias.items.map((est) => (
+            <div
+              className="space-y-4"
+              onMouseEnter={() => setReleasePaused(true)}
+              onMouseLeave={() => setReleasePaused(false)}
+            >
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {visibleReleases.map((est) => (
                 <div
                   key={est.id}
                   onClick={() => onNavigate(`/filmes/${est.filmSlug}`)}
@@ -250,70 +275,51 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                   </div>
                 </div>
               ))}
+              </div>
+              {releasePageCount > 1 && (
+                <div className="flex items-center justify-between pt-1">
+                  <div className="flex items-center gap-2">
+                    {Array.from({ length: releasePageCount }).map((_, index) => (
+                      <button
+                        key={index}
+                        type="button"
+                        aria-label={`Ir para grupo ${index + 1} de estreias`}
+                        onClick={() => setReleasePage(index)}
+                        className={`h-px transition-all duration-300 ${index === releasePage ? 'w-8 bg-[#1A1A1A]' : 'w-4 bg-[#1A1A1A]/25'}`}
+                      />
+                    ))}
+                  </div>
+                  <div className="flex gap-2">
+                    <button type="button" aria-label="Estreias anteriores" onClick={() => setReleasePage((page) => (page - 1 + releasePageCount) % releasePageCount)} className="p-2 border border-[#1A1A1A]/20 hover:border-[#1A1A1A] transition-colors"><ArrowLeft size={14} /></button>
+                    <button type="button" aria-label="Próximas estreias" onClick={() => setReleasePage((page) => (page + 1) % releasePageCount)} className="p-2 border border-[#1A1A1A]/20 hover:border-[#1A1A1A] transition-colors"><ArrowRight size={14} /></button>
+                  </div>
+                </div>
+              )}
             </div>
           </section>
         )}
 
-        {/* 2. ENSAIOS SECTION (1 Main + 2 Secondary) - Only if Ensaios exist */}
-        {ensaios.length > 0 && (
-          <section className="space-y-8 animate-in fade-in duration-500">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b border-[#1A1A1A]/15 pb-4 gap-4">
-              <div>
-                <span className="text-[10px] font-sans font-bold uppercase tracking-[0.25em] text-[#1A1A1A]/90 block mb-1">
-                  Publicação
-                </span>
-                <h2 className="text-3xl sm:text-4xl font-serif-display font-normal text-[#1A1A1A]">
-                  ENSAIOS
-                </h2>
-                <p className="text-sm font-serif-body text-[#1A1A1A]/70 mt-1 max-w-xl">
-                  Cinema como ponto de partida para pensar aquilo que existe para além da tela.
-                </p>
+        {/* 2. ENSAIOS — destaque editorial em largura ampla */}
+        {mainEnsaio && (
+          <section className="animate-in fade-in duration-500">
+            <div
+              onClick={() => onNavigate(`/ensaios/${mainEnsaio.slug}`)}
+              className="relative min-h-[420px] sm:min-h-[520px] overflow-hidden cursor-pointer group bg-[#121212]"
+            >
+              <img src={mainEnsaio.coverImage} alt={mainEnsaio.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.015] transition-transform duration-1000" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-black/10" />
+              <div className="relative min-h-[420px] sm:min-h-[520px] p-7 sm:p-10 lg:p-14 flex flex-col justify-end text-[#F5F2ED]">
+                <div className="max-w-3xl space-y-3">
+                  <span className="text-[10px] font-sans font-bold uppercase tracking-[0.25em] text-[#D4AF37]">Ensaio · Publicação</span>
+                  <h2 className="text-3xl sm:text-5xl lg:text-6xl font-serif-display font-normal leading-[1.02]">{mainEnsaio.title}</h2>
+                  {mainEnsaio.subtitle && <p className="max-w-2xl text-sm sm:text-base font-serif-body text-[#F5F2ED]/80">{mainEnsaio.subtitle}</p>}
+                  <div className="flex flex-wrap items-center gap-5 pt-2 text-[10px] font-sans uppercase tracking-[0.16em] text-[#F5F2ED]/70">
+                    <span>{mainEnsaio.date}</span>
+                    {mainEnsaio.readTimeMinutes && <span>{mainEnsaio.readTimeMinutes} min de leitura</span>}
+                    <button type="button" onClick={(event) => { event.stopPropagation(); onNavigate('/ensaios'); }} className="ml-auto inline-flex items-center gap-2 text-[#F5F2ED] hover:text-[#D4AF37] transition-colors">Ver todos os ensaios <ArrowRight size={13} /></button>
+                  </div>
+                </div>
               </div>
-              <button
-                onClick={() => onNavigate('/ensaios')}
-                className="inline-flex items-center gap-2 text-xs font-sans font-bold uppercase tracking-[0.2em] text-[#1A1A1A]/80 hover:text-[#1A1A1A] transition-colors group"
-              >
-                <span>Ver todos os ensaios</span>
-                <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-              </button>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-              {/* Main Ensaio (Large) */}
-              {mainEnsaio && (
-                <div className="lg:col-span-7">
-                  <ArticleCard
-                    type="ensaio"
-                    variant="large"
-                    title={mainEnsaio.title}
-                    subtitle={mainEnsaio.subtitle}
-                    image={mainEnsaio.coverImage}
-                    date={mainEnsaio.date}
-                    author={mainEnsaio.author}
-                    readTimeMinutes={mainEnsaio.readTimeMinutes}
-                    onClick={() => onNavigate(`/ensaios/${mainEnsaio.slug}`)}
-                  />
-                </div>
-              )}
-
-              {/* Secondary Ensaios */}
-              {secondaryEnsaios.length > 0 && (
-                <div className="lg:col-span-5 flex flex-col justify-between space-y-6">
-                  {secondaryEnsaios.map((e) => (
-                    <ArticleCard
-                      key={e.id}
-                      type="ensaio"
-                      variant="horizontal"
-                      title={e.title}
-                      subtitle={e.subtitle}
-                      image={e.coverImage}
-                      date={e.date}
-                      readTimeMinutes={e.readTimeMinutes}
-                      onClick={() => onNavigate(`/ensaios/${e.slug}`)}
-                    />
-                  ))}
-                </div>
-              )}
             </div>
           </section>
         )}
@@ -340,7 +346,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {currentYearCriticas.map((c) => (
+              {currentYearCriticas.slice(0, 3).map((c) => (
                 <ArticleCard
                   key={c.id}
                   type="critica"
@@ -433,19 +439,19 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
         {/* 5. DO ARQUIVO (Classic Movies / Previous Years) - Only if items exist */}
         {archiveCriticas.length > 0 && (
-          <section className="space-y-8 animate-in fade-in duration-500">
-            <div className="flex items-center justify-between border-b border-[#1A1A1A]/15 pb-4">
+          <section className="bg-[#121212] text-[#F5F2ED] -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-14 space-y-8 animate-in fade-in duration-500">
+            <div className="flex items-center justify-between border-b border-[#F5F2ED]/20 pb-4">
               <div>
-                <span className="text-[10px] font-sans font-bold uppercase tracking-[0.25em] text-[#1A1A1A]/90 block mb-1">
+                <span className="text-[10px] font-sans font-bold uppercase tracking-[0.25em] text-[#F5F2ED]/70 block mb-1">
                   Memória Cinematográfica
                 </span>
-                <h2 className="text-3xl sm:text-4xl font-serif-display font-normal text-[#1A1A1A]">
+                <h2 className="text-3xl sm:text-4xl font-serif-display font-normal text-[#F5F2ED]">
                   DO ARQUIVO
                 </h2>
               </div>
               <button
                 onClick={() => onNavigate('/arquivo')}
-                className="inline-flex items-center gap-2 text-xs font-sans font-bold uppercase tracking-[0.2em] text-[#1A1A1A]/80 hover:text-[#1A1A1A] transition-colors group"
+                className="inline-flex items-center gap-2 text-xs font-sans font-bold uppercase tracking-[0.2em] text-[#F5F2ED]/80 hover:text-[#D4AF37] transition-colors group"
               >
                 <span>Explorar Arquivo</span>
                 <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
@@ -453,7 +459,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {archiveCriticas.map((c) => (
+              {archiveCriticas.slice(0, 3).map((c) => (
                 <ArticleCard
                   key={c.id}
                   type="critica"
@@ -475,7 +481,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
         {/* 6. ESPECIAIS (Only if Especiais exist) */}
         {mainEspecial && (
-          <section className="relative overflow-hidden bg-[#121212] text-[#F5F2ED] border border-[#1A1A1A] p-8 sm:p-12 animate-in fade-in duration-500">
+          <section className="relative overflow-hidden bg-[#121212] text-[#F5F2ED] -mx-4 sm:-mx-6 lg:-mx-8 px-8 sm:px-12 lg:px-16 py-14 sm:py-16 animate-in fade-in duration-500">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               <div className="lg:col-span-7 space-y-4">
                 <span className="text-[10px] font-sans font-bold uppercase tracking-[0.25em] text-[#F5F2ED]/90">
