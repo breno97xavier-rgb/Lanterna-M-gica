@@ -81,9 +81,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
   const releasesVisible = 4;
   const releaseCount = currentWeekEstreias.items.length;
+  const releaseStripStart =
+    releaseDirection === 'prev' && releaseAnimating
+      ? (releaseStart - 1 + releaseCount) % releaseCount
+      : releaseStart;
+  const releaseStripLength = Math.min(releasesVisible + 1, releaseCount);
   const visibleReleases = Array.from(
-    { length: Math.min(releasesVisible, releaseCount) },
-    (_, offset) => currentWeekEstreias.items[(releaseStart + offset) % releaseCount]
+    { length: releaseStripLength },
+    (_, offset) => currentWeekEstreias.items[(releaseStripStart + offset) % releaseCount]
   );
 
   useEffect(() => {
@@ -94,14 +99,16 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     if (releaseAnimating || releaseCount <= releasesVisible) return;
     setReleaseDirection(direction);
     setReleaseAnimating(true);
-    window.setTimeout(() => {
-      setReleaseStart((start) =>
-        direction === 'next'
-          ? (start + 1) % releaseCount
-          : (start - 1 + releaseCount) % releaseCount
-      );
-      setReleaseAnimating(false);
-    }, 320);
+  };
+
+  const finishReleaseSlide = () => {
+    if (!releaseAnimating) return;
+    setReleaseStart((start) =>
+      releaseDirection === 'next'
+        ? (start + 1) % releaseCount
+        : (start - 1 + releaseCount) % releaseCount
+    );
+    setReleaseAnimating(false);
   };
 
   useEffect(() => {
@@ -266,12 +273,25 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               onMouseLeave={() => setReleasePaused(false)}
             >
               <div className="overflow-hidden">
-              <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 transition-all duration-300 ease-out ${releaseAnimating ? (releaseDirection === 'next' ? '-translate-x-6 opacity-40' : 'translate-x-6 opacity-40') : 'translate-x-0 opacity-100'}`}>
+              <div
+                onTransitionEnd={finishReleaseSlide}
+                className={`flex gap-6 ${releaseAnimating ? 'transition-transform duration-700 ease-in-out' : ''}`}
+                style={{
+                  transform:
+                    releaseAnimating && releaseDirection === 'next'
+                      ? 'translateX(calc(-25% - 18px))'
+                      : releaseAnimating && releaseDirection === 'prev'
+                        ? 'translateX(0)'
+                        : releaseDirection === 'prev'
+                          ? 'translateX(calc(-25% - 18px))'
+                          : 'translateX(0)',
+                }}
+              >
               {visibleReleases.map((est) => (
                 <div
                   key={est.id}
                   onClick={() => onNavigate(`/filmes/${est.filmSlug}`)}
-                  className="bg-white border border-[#1A1A1A]/15 hover:border-[#1A1A1A] transition-all cursor-pointer group flex flex-col overflow-hidden shadow-sm hover:shadow-md"
+                  className="shrink-0 w-[calc(100%-0px)] sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)] bg-white border border-[#1A1A1A]/15 hover:border-[#1A1A1A] transition-all cursor-pointer group flex flex-col overflow-hidden shadow-sm hover:shadow-md"
                 >
                   <div className="aspect-[2/3] w-full overflow-hidden bg-[#1A1A1A]/10 relative">
                     {est.filmPoster ? (
