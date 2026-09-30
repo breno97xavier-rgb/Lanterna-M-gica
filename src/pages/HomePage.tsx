@@ -28,6 +28,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const [loadingContent, setLoadingContent] = useState(true);
   const [releaseStart, setReleaseStart] = useState(0);
   const [releasePaused, setReleasePaused] = useState(false);
+  const [releaseDirection, setReleaseDirection] = useState<'next' | 'prev'>('next');
+  const [releaseAnimating, setReleaseAnimating] = useState(false);
+  const [ensaioIndex, setEnsaioIndex] = useState(0);
+  const [especialIndex, setEspecialIndex] = useState(0);
 
   useEffect(() => {
     let isMounted = true;
@@ -86,13 +90,25 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     if (releaseStart >= Math.max(1, releaseCount)) setReleaseStart(0);
   }, [releaseStart, releaseCount]);
 
+  const stepRelease = (direction: 'next' | 'prev') => {
+    if (releaseAnimating || releaseCount <= releasesVisible) return;
+    setReleaseDirection(direction);
+    setReleaseAnimating(true);
+    window.setTimeout(() => {
+      setReleaseStart((start) =>
+        direction === 'next'
+          ? (start + 1) % releaseCount
+          : (start - 1 + releaseCount) % releaseCount
+      );
+      setReleaseAnimating(false);
+    }, 320);
+  };
+
   useEffect(() => {
-    if (releasePaused || releaseCount <= releasesVisible) return;
-    const timer = window.setInterval(() => {
-      setReleaseStart((start) => (start + 1) % releaseCount);
-    }, 5500);
+    if (releasePaused || releaseAnimating || releaseCount <= releasesVisible) return;
+    const timer = window.setInterval(() => stepRelease('next'), 5500);
     return () => window.clearInterval(timer);
-  }, [releasePaused, releaseCount]);
+  }, [releasePaused, releaseAnimating, releaseCount]);
 
   const ensaios = supabaseEnsaios;
   const umaImagemList = supabaseUmaImagem;
@@ -147,10 +163,28 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const currentYearCriticas = supabaseCriticas.filter((c) => c.year === currentYear || c.isNewRelease);
   const archiveCriticas = supabaseCriticas.filter((c) => c.year < currentYear && !c.isNewRelease);
 
-  const mainEnsaio = ensaios[0];
+  const featuredEnsaios = ensaios.slice(0, 4);
+  const mainEnsaio = featuredEnsaios[ensaioIndex] || featuredEnsaios[0];
 
   const mainUmaImagem = umaImagemList[0];
-  const mainEspecial = especiais[0];
+  const featuredEspeciais = especiais.slice(0, 4);
+  const mainEspecial = featuredEspeciais[especialIndex] || featuredEspeciais[0];
+
+  useEffect(() => {
+    if (featuredEnsaios.length <= 1) return;
+    const timer = window.setInterval(() => {
+      setEnsaioIndex((index) => (index + 1) % featuredEnsaios.length);
+    }, 6500);
+    return () => window.clearInterval(timer);
+  }, [featuredEnsaios.length]);
+
+  useEffect(() => {
+    if (featuredEspeciais.length <= 1) return;
+    const timer = window.setInterval(() => {
+      setEspecialIndex((index) => (index + 1) % featuredEspeciais.length);
+    }, 6500);
+    return () => window.clearInterval(timer);
+  }, [featuredEspeciais.length]);
 
   const isDatabaseEmpty =
     !loadingContent &&
@@ -200,7 +234,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       {/* 1. Dynamic Hero */}
       <HeroCarousel highlights={highlights} onNavigate={onNavigate} />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-24">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-14">
         
         {/* NOS CINEMAS ESTA SEMANA (Releases this week in Brazilian theaters) */}
         {currentWeekEstreias.items.length > 0 && (
@@ -231,7 +265,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               onMouseEnter={() => setReleasePaused(true)}
               onMouseLeave={() => setReleasePaused(false)}
             >
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="overflow-hidden">
+              <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 transition-all duration-300 ease-out ${releaseAnimating ? (releaseDirection === 'next' ? '-translate-x-6 opacity-40' : 'translate-x-6 opacity-40') : 'translate-x-0 opacity-100'}`}>
               {visibleReleases.map((est) => (
                 <div
                   key={est.id}
@@ -276,11 +311,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 </div>
               ))}
               </div>
+              </div>
               {releaseCount > releasesVisible && (
                 <div className="flex items-center justify-end pt-1">
                   <div className="flex gap-2">
-                    <button type="button" aria-label="Filme anterior" onClick={() => setReleaseStart((start) => (start - 1 + releaseCount) % releaseCount)} className="p-2 border border-[#1A1A1A]/20 hover:border-[#1A1A1A] transition-colors"><ArrowLeft size={14} /></button>
-                    <button type="button" aria-label="Próximo filme" onClick={() => setReleaseStart((start) => (start + 1) % releaseCount)} className="p-2 border border-[#1A1A1A]/20 hover:border-[#1A1A1A] transition-colors"><ArrowRight size={14} /></button>
+                    <button type="button" aria-label="Filme anterior" onClick={() => stepRelease('prev')} className="p-2 border border-[#1A1A1A]/20 hover:border-[#1A1A1A] transition-colors"><ArrowLeft size={14} /></button>
+                    <button type="button" aria-label="Próximo filme" onClick={() => stepRelease('next')} className="p-2 border border-[#1A1A1A]/20 hover:border-[#1A1A1A] transition-colors"><ArrowRight size={14} /></button>
                   </div>
                 </div>
               )}
@@ -293,12 +329,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           <section className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen animate-in fade-in duration-500">
             <div
               onClick={() => onNavigate(`/ensaios/${mainEnsaio.slug}`)}
-              className="relative min-h-[420px] sm:min-h-[520px] overflow-hidden cursor-pointer group bg-[#121212]"
+              className="relative min-h-[500px] sm:min-h-[620px] lg:min-h-[680px] overflow-hidden cursor-pointer group bg-[#121212]"
             >
               <img src={mainEnsaio.coverImage} alt={mainEnsaio.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.015] transition-transform duration-1000" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-black/10" />
-              <div className="relative min-h-[420px] sm:min-h-[520px] p-7 sm:p-10 lg:p-14 flex flex-col justify-end text-[#F5F2ED]">
-                <div className="max-w-3xl space-y-3">
+              <div className="relative min-h-[500px] sm:min-h-[620px] lg:min-h-[680px] p-7 sm:p-10 lg:p-16 flex flex-col justify-end text-[#F5F2ED]">
+                <div key={mainEnsaio.id} className="max-w-3xl space-y-3 animate-in fade-in duration-700">
                   <span className="text-[10px] font-sans font-bold uppercase tracking-[0.25em] text-[#D4AF37]">Ensaio · Publicação</span>
                   <h2 className="text-3xl sm:text-5xl lg:text-6xl font-serif-display font-normal leading-[1.02]">{mainEnsaio.title}</h2>
                   {mainEnsaio.subtitle && <p className="max-w-2xl text-sm sm:text-base font-serif-body text-[#F5F2ED]/80">{mainEnsaio.subtitle}</p>}
@@ -472,8 +508,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
         {/* 6. ESPECIAIS (Only if Especiais exist) */}
         {mainEspecial && (
-          <section className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen overflow-hidden bg-[#121212] text-[#F5F2ED] py-14 sm:py-16 animate-in fade-in duration-500">
-            <div className="max-w-7xl mx-auto px-8 sm:px-12 lg:px-16 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <section className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen overflow-hidden bg-[#121212] text-[#F5F2ED] py-20 sm:py-24 lg:py-28 animate-in fade-in duration-500">
+            <div key={mainEspecial.id} className="max-w-7xl mx-auto px-8 sm:px-12 lg:px-16 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center animate-in fade-in duration-700">
               <div className="lg:col-span-7 space-y-4">
                 <span className="text-[10px] font-sans font-bold uppercase tracking-[0.25em] text-[#F5F2ED]/90">
                   PROJETO ESPECIAL EDITORIAL
