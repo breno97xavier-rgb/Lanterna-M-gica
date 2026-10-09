@@ -346,6 +346,19 @@ export async function searchPeople(
   };
 }
 
+/** Seleciona apenas uma grafia latina já documentada no TMDB; não translitera nem traduz. */
+export function choosePersonDisplayName(name: string, aliases: string[] = []): string {
+  const original = (name || '').trim();
+  if (!original) return '';
+  const hasNonLatinLetters = /[^\\p{Script=Latin}\\p{Mark}\\p{Number}\\p{Punctuation}\\p{Separator}]/u.test(original);
+  if (!hasNonLatinLetters) return original;
+  const latinAliases = [...new Set(aliases.map(a => (a || '').trim()).filter(a =>
+    a.length > 1 && /\\p{Script=Latin}/u.test(a) && !/[^\\p{Script=Latin}\\p{Mark}\\p{Number}\\p{Punctuation}\\p{Separator}]/u.test(a)
+  ))];
+  // Múltiplas grafias possíveis exigem escolha editorial; nenhuma é inventada.
+  return latinAliases.length === 1 ? latinAliases[0] : original;
+}
+
 /**
  * Obtém detalhes completos de uma pessoa por tmdb_id
  */
