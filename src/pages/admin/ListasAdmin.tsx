@@ -164,6 +164,7 @@ export const ListasAdmin: React.FC<ListasAdminProps> = ({ onNotify, autoCreate =
           rank: 1,
           orderIndex: 0,
           filmId: null,
+          isCustomManual: false,
           title: '',
           director: '',
           year: new Date().getFullYear(),
@@ -198,6 +199,7 @@ export const ListasAdmin: React.FC<ListasAdminProps> = ({ onNotify, autoCreate =
       rank: typeof it.rank === 'number' ? it.rank : idx + 1,
       orderIndex: typeof it.orderIndex === 'number' ? it.orderIndex : idx,
       filmId: it.filmId || null,
+      isCustomManual: !it.filmId,
       title: it.title || it.film?.title || '',
       director: it.director || '',
       year: it.year || it.film?.year || new Date().getFullYear(),
@@ -227,6 +229,7 @@ export const ListasAdmin: React.FC<ListasAdminProps> = ({ onNotify, autoCreate =
                 rank: 1,
                 orderIndex: 0,
                 filmId: null,
+                isCustomManual: false,
                 title: '',
                 director: '',
                 year: new Date().getFullYear(),
@@ -249,6 +252,7 @@ export const ListasAdmin: React.FC<ListasAdminProps> = ({ onNotify, autoCreate =
           rank: nextRank,
           orderIndex: editing.items.length,
           filmId: null,
+          isCustomManual: false,
           title: '',
           director: '',
           year: new Date().getFullYear(),
@@ -290,6 +294,23 @@ export const ListasAdmin: React.FC<ListasAdminProps> = ({ onNotify, autoCreate =
     setEditing({ ...editing, items: normalized });
   };
 
+  const handleChooseItemMode = (itemIdx: number, mode: 'acervo' | 'manual') => {
+    if (!editing) return;
+    const newItems = [...editing.items];
+    newItems[itemIdx] = {
+      ...newItems[itemIdx],
+      isCustomManual: mode === 'manual',
+    };
+    setEditing({ ...editing, items: newItems });
+    if (mode === 'acervo') {
+      setActiveFilmSearchItemIdx(itemIdx);
+      setFilmItemSearchTerm('');
+    } else if (activeFilmSearchItemIdx === itemIdx) {
+      setActiveFilmSearchItemIdx(null);
+      setFilmItemSearchTerm('');
+    }
+  };
+
   const handleSelectFilmForIndex = (itemIdx: number, film: SupabaseFilme) => {
     if (!editing) return;
     const newItems = [...editing.items];
@@ -322,8 +343,11 @@ export const ListasAdmin: React.FC<ListasAdminProps> = ({ onNotify, autoCreate =
       ...newItems[itemIdx],
       filmId: null,
       film: null,
+      isCustomManual: false,
     };
     setEditing({ ...editing, items: newItems });
+    setActiveFilmSearchItemIdx(itemIdx);
+    setFilmItemSearchTerm('');
   };
 
   const handleSelectRelatedPerson = (person: SupabasePessoa | null) => {
@@ -389,7 +413,20 @@ export const ListasAdmin: React.FC<ListasAdminProps> = ({ onNotify, autoCreate =
       }
       scheduledAtIso = parseDateTimeInputToIso(editing.scheduledAt);
     } else if (editing.status === 'published') {
-      publishedAtIso = parseDateInputToIso(editing.date);
+      const todayStr = getTodayLocalDateString();
+      const chosenDateStr = editing.date?.trim() || todayStr;
+
+      if (chosenDateStr > todayStr) {
+        onNotify('Atenção: A data de publicação informada é futura. Para agendar a publicação, selecione o Status "Agendado" e defina a data/hora.');
+        return;
+      }
+
+      // Mesmo comportamento já homologado em Críticas:
+      // publicação com a data de hoje recebe o instante atual e fica visível imediatamente.
+      publishedAtIso =
+        chosenDateStr === todayStr
+          ? new Date().toISOString()
+          : parseDateInputToIso(chosenDateStr);
     }
 
     setSaving(true);
@@ -584,7 +621,7 @@ export const ListasAdmin: React.FC<ListasAdminProps> = ({ onNotify, autoCreate =
                   setEditing({
                     ...editing,
                     title: val,
-                    slug: editing.slug ? editing.slug : slugifyLista(val),
+                    slug: editing.id ? editing.slug : slugifyLista(val),
                   });
                 }}
                 placeholder="Ex: Dez Obras Fundamentais sobre o Silêncio..."
@@ -865,6 +902,35 @@ export const ListasAdmin: React.FC<ListasAdminProps> = ({ onNotify, autoCreate =
                         </div>
                       </div>
 
+                      {!hasFilmLink && (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-2">
+                          <button
+                            type="button"
+                            onClick={() => handleChooseItemMode(idx, 'acervo')}
+                            className={`p-3 border text-left transition-colors ${!item.isCustomManual ? 'border-[#1A1A1A] bg-[#1A1A1A] text-[#F5F2ED]' : 'border-[#1A1A1A]/20 bg-white text-[#1A1A1A] hover:border-[#1A1A1A]/50'}`}
+                          >
+                            <span className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider">
+                              <FilmIcon size={14} /> Selecionar do Acervo
+                            </span>
+                            <span className={`block mt-1 text-[10px] font-mono ${!item.isCustomManual ? 'text-[#F5F2ED]/70' : 'text-[#1A1A1A]/55'}`}>
+                              Pesquise um filme já cadastrado no Lanterna.
+                            </span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleChooseItemMode(idx, 'manual')}
+                            className={`p-3 border text-left transition-colors ${item.isCustomManual ? 'border-[#1A1A1A] bg-[#1A1A1A] text-[#F5F2ED]' : 'border-[#1A1A1A]/20 bg-white text-[#1A1A1A] hover:border-[#1A1A1A]/50'}`}
+                          >
+                            <span className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider">
+                              <Plus size={14} /> Adicionar Manualmente
+                            </span>
+                            <span className={`block mt-1 text-[10px] font-mono ${item.isCustomManual ? 'text-[#F5F2ED]/70' : 'text-[#1A1A1A]/55'}`}>
+                              Use quando o filme não estiver no acervo.
+                            </span>
+                          </button>
+                        </div>
+                      )}
+
                       {/* Vínculo / Busca no Acervo */}
                       <div className="flex flex-wrap items-center justify-between gap-2 p-2.5 bg-[#F5F2ED]/60 border border-[#1A1A1A]/10 text-xs">
                         {hasFilmLink ? (
@@ -891,6 +957,10 @@ export const ListasAdmin: React.FC<ListasAdminProps> = ({ onNotify, autoCreate =
                             >
                               Desvincular do Acervo
                             </button>
+                          </div>
+                        ) : item.isCustomManual ? (
+                          <div className="w-full text-[11px] font-mono text-[#1A1A1A]/55">
+                            Item manual selecionado. Preencha os dados abaixo.
                           </div>
                         ) : (
                           <div className="w-full">
@@ -988,6 +1058,8 @@ export const ListasAdmin: React.FC<ListasAdminProps> = ({ onNotify, autoCreate =
 
                       {/* Campos do Item */}
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs font-sans">
+                        {(item.isCustomManual || hasFilmLink) && (
+                          <>
                         <div>
                           <label className="block text-[10px] uppercase font-bold text-[#1A1A1A]/70 mb-1">
                             Título do Filme *
@@ -1056,6 +1128,9 @@ export const ListasAdmin: React.FC<ListasAdminProps> = ({ onNotify, autoCreate =
                             className="w-full bg-white border border-[#1A1A1A]/15 p-2 text-xs font-mono text-[#1A1A1A] focus:outline-none focus:border-[#1A1A1A]"
                           />
                         </div>
+
+                          </>
+                        )}
 
                         <div className="sm:col-span-3">
                           <label className="block text-[10px] uppercase font-bold text-[#1A1A1A]/70 mb-1">
