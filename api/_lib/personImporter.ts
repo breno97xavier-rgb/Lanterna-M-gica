@@ -2,7 +2,7 @@
 // LANTERNA MÁGICA — F10.5B: Importação individual de Pessoas via TMDB
 // ==============================================================================
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { getPersonDetails } from './tmdbClient.js';
+import { getPersonDetails, choosePersonDisplayName } from './tmdbClient.js';
 import { AppError } from './errors.js';
 import { slugifyText } from './movieImporter.js';
 import { preparePersonProfileImage, compensateStorageUploads, PreparedStorageImage } from './storageImageService.js';
@@ -67,7 +67,7 @@ export async function importTmdbPersonServerSide(tmdbId: number, req: any): Prom
   }
 
   const details = await getPersonDetails(tmdbId);
-  const name = (details.name || '').trim();
+  const name = choosePersonDisplayName(details.name, details.alsoKnownAs);
   if (!name) throw new AppError(502, 'UPSTREAM_ERROR', 'Dados incompletos retornados pelo TMDB (nome ausente).');
 
   const nowIso = new Date().toISOString();
