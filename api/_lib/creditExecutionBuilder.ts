@@ -16,7 +16,7 @@
 // ==============================================================================
 
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { getMovieCredits, getPersonDetails } from './tmdbClient.js';
+import { getMovieCredits, getPersonDetails, choosePersonDisplayName } from './tmdbClient.js';
 import { classifyTmdbPeople, LocalPersonRecord, LocalCreditRecord, TmdbPersonInput } from './personMatcher.js';
 import { mapTmdbCastMember, mapTmdbCrewMember } from './creditVocab.js';
 import { matchLocalCreditSemantically } from './creditReconciler.js';
@@ -479,7 +479,7 @@ export async function buildCreditsSyncPayload(
     if (clientDecision?.action === 'CREATE_NEW' || (!clientDecision && personInfo?.status === 'NEW_PERSON')) {
       // Buscar detalhes se necessário ou usar dados factuais do crédito
       const creditWithPerson = allReconstructedCredits.find((c) => c.tmdbPersonId === tmdbPersonId);
-      const factualName = personInfo?.name || creditWithPerson?.personName || '';
+      let factualName = personInfo?.name || creditWithPerson?.personName || '';
 
       if (!factualName.trim()) {
         throw new AppError(
@@ -490,7 +490,7 @@ export async function buildCreditsSyncPayload(
       }
 
       // Nomes em alfabetos não latinos são válidos: o TMDB ID fornece uma URL estável.
-      const generatedSlug = slugifyText(factualName) || `pessoa-tmdb-${tmdbPersonId}`;
+      let generatedSlug = slugifyText(factualName) || `pessoa-tmdb-${tmdbPersonId}`;
 
       let photoUrl: string | null = null;
       let bio: string | null = null;
@@ -506,6 +506,8 @@ export async function buildCreditsSyncPayload(
       } else if (EXECUTION_ENABLED) {
         try {
           const details = await getPersonDetails(tmdbPersonId);
+          factualName = choosePersonDisplayName(details.name || factualName, details.alsoKnownAs) || factualName;
+          generatedSlug = slugifyText(factualName) || `pessoa-tmdb-${tmdbPersonId}`;
           bio = details.biography || null;
           birthDate = details.birthday || null;
           deathDate = details.deathday || null;
