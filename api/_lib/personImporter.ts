@@ -43,7 +43,8 @@ export function mapTmdbDepartmentToPrimaryRoles(department?: string | null): str
 }
 
 async function generateUniquePersonSlug(supabase: SupabaseClient, name: string, tmdbId: number): Promise<string> {
-  const base = slugifyText(name) || `pessoa-${tmdbId}`;
+  // Evita rejeitar nomes inteiramente escritos em alfabetos não latinos.
+  const base = slugifyText(name) || `pessoa-tmdb-${tmdbId}`;
   const { data: existing } = await supabase.from('pessoas').select('id').eq('slug', base).maybeSingle();
   if (!existing) return base;
   const withTmdb = `${base}-tmdb-${tmdbId}`;
