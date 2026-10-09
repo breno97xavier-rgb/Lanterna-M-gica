@@ -490,7 +490,8 @@ export async function buildCreditsSyncPayload(
       }
 
       // Nomes em alfabetos não latinos são válidos: o TMDB ID fornece uma URL estável.
-      let generatedSlug = slugifyText(factualName) || `pessoa-tmdb-${tmdbPersonId}`;
+      // O sufixo TMDB impede colisões entre homônimos e entre prévia e execução.
+      const generatedSlug = `${slugifyText(factualName) || 'pessoa'}-tmdb-${tmdbPersonId}`;
 
       let photoUrl: string | null = null;
       let bio: string | null = null;
@@ -506,8 +507,8 @@ export async function buildCreditsSyncPayload(
       } else if (EXECUTION_ENABLED) {
         try {
           const details = await getPersonDetails(tmdbPersonId);
-          factualName = choosePersonDisplayName(details.name || factualName, details.alsoKnownAs) || factualName;
-          generatedSlug = slugifyText(factualName) || `pessoa-tmdb-${tmdbPersonId}`;
+          // A prévia e a execução devem compartilhar o mesmo nome canônico do crédito.
+          // Grafias alternativas ficam disponíveis no importador individual, sem alterar o payload aqui.
           bio = details.biography || null;
           birthDate = details.birthday || null;
           deathDate = details.deathday || null;
