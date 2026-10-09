@@ -489,14 +489,8 @@ export async function buildCreditsSyncPayload(
         );
       }
 
-      const generatedSlug = slugifyText(factualName);
-      if (!generatedSlug) {
-        throw new AppError(
-          400,
-          'INVALID_PARAMS',
-          `Não foi possível gerar slug válido para a pessoa "${factualName}".`
-        );
-      }
+      // Nomes em alfabetos não latinos são válidos: o TMDB ID fornece uma URL estável.
+      const generatedSlug = slugifyText(factualName) || `pessoa-tmdb-${tmdbPersonId}`;
 
       let photoUrl: string | null = null;
       let bio: string | null = null;
