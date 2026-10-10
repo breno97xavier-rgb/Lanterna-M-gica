@@ -428,6 +428,7 @@ export async function buildCreditsSyncPayload(
   const personsToLinkMap = new Map<number, RpcPersonsToLinkItem>();
   const personsToCreateMap = new Map<number, RpcPersonsToCreateItem>();
   const preparedImages: PreparedStorageImage[] = [];
+  const reservedPersonSlugs = new Set(localPeople.map(p => p.slug).filter(Boolean));
 
   for (const tmdbPersonId of requiredTmdbPersonIds) {
     const existingLocalPersonByTmdb = localPeopleByTmdbId.get(tmdbPersonId);
@@ -491,7 +492,13 @@ export async function buildCreditsSyncPayload(
 
       // Nomes em alfabetos não latinos são válidos: o TMDB ID fornece uma URL estável.
       // O sufixo TMDB impede colisões entre homônimos e entre prévia e execução.
-      const generatedSlug = `${slugifyText(factualName) || 'pessoa'}-tmdb-${tmdbPersonId}`;
+      const baseSlug = `${slugifyText(factualName) || 'pessoa'}-tmdb-${tmdbPersonId}`;
+      let generatedSlug = baseSlug;
+      let suffix = 2;
+      while (reservedPersonSlugs.has(generatedSlug)) {
+        generatedSlug = `${baseSlug}-${suffix++}`;
+      }
+      reservedPersonSlugs.add(generatedSlug);
 
       let photoUrl: string | null = null;
       let bio: string | null = null;
