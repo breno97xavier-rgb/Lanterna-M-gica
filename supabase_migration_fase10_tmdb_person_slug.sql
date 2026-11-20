@@ -27,13 +27,23 @@ DECLARE
       ELSE
         v_base_slug := pg_catalog.regexp_replace(v_new_slug, '(-tmdb-' || v_tmdb_person_id::text || ')-[0-9]+$', '\1');
       END IF;$new$;
+  block_start integer;
+  block_end integer;
+  installed_block text;
 BEGIN
-  IF pg_catalog.strpos(definition, replacement_block) > 0 THEN
+  IF pg_catalog.strpos(definition, pg_catalog.ltrim(replacement_block)) > 0 THEN
     RETURN;
   END IF;
-  IF pg_catalog.strpos(definition, previous_block) = 0 THEN
+  block_start := pg_catalog.strpos(definition, '-- Geração do slug canônico via helper determinístico public.transliterate_slug');
+  block_end := pg_catalog.strpos(definition, 'v_new_slug := v_base_slug;');
+  IF block_start = 0 OR block_end <= block_start THEN
     RAISE EXCEPTION 'Installed credit RPC differs from the expected C3B slug block';
   END IF;
-  EXECUTE pg_catalog.replace(definition, previous_block, replacement_block);
+  installed_block := pg_catalog.substr(definition, block_start, block_end - block_start + pg_catalog.length('v_new_slug := v_base_slug;'));
+  IF pg_catalog.regexp_replace(installed_block, '[[:space:]]+', ' ', 'g')
+      <> pg_catalog.regexp_replace(pg_catalog.ltrim(previous_block), '[[:space:]]+', ' ', 'g') THEN
+    RAISE EXCEPTION 'Installed credit RPC differs from the expected C3B slug block';
+  END IF;
+  EXECUTE pg_catalog.replace(definition, installed_block, pg_catalog.ltrim(replacement_block));
 END;
 $migration$;
