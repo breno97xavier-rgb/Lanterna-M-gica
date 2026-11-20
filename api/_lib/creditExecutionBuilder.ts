@@ -16,7 +16,7 @@
 // ==============================================================================
 
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { getMovieCredits, getPersonDetails, choosePersonDisplayName } from './tmdbClient.js';
+import { getMovieCredits, getPersonDetails } from './tmdbClient.js';
 import { classifyTmdbPeople, LocalPersonRecord, LocalCreditRecord, TmdbPersonInput } from './personMatcher.js';
 import { mapTmdbCastMember, mapTmdbCrewMember } from './creditVocab.js';
 import { matchLocalCreditSemantically } from './creditReconciler.js';
