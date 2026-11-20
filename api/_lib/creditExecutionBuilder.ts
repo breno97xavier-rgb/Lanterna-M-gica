@@ -22,6 +22,7 @@ import { mapTmdbCastMember, mapTmdbCrewMember } from './creditVocab.js';
 import { matchLocalCreditSemantically } from './creditReconciler.js';
 import { preparePersonProfileImage, compensateStorageUploads, PreparedStorageImage } from './storageImageService.js';
 import { slugifyText } from './movieImporter.js';
+import { reserveTmdbPersonSlug } from './personSlug.js';
 import { validateAdminAuth } from './authMiddleware.js';
 import { AppError } from './errors.js';
 import type {
@@ -492,13 +493,7 @@ export async function buildCreditsSyncPayload(
 
       // Nomes em alfabetos não latinos são válidos: o TMDB ID fornece uma URL estável.
       // O sufixo TMDB impede colisões entre homônimos e entre prévia e execução.
-      const baseSlug = `${slugifyText(factualName) || 'pessoa'}-tmdb-${tmdbPersonId}`;
-      let generatedSlug = baseSlug;
-      let suffix = 2;
-      while (reservedPersonSlugs.has(generatedSlug)) {
-        generatedSlug = `${baseSlug}-${suffix++}`;
-      }
-      reservedPersonSlugs.add(generatedSlug);
+      const generatedSlug = reserveTmdbPersonSlug(slugifyText(factualName), tmdbPersonId, reservedPersonSlugs);
 
       let photoUrl: string | null = null;
       let bio: string | null = null;
