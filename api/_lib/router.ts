@@ -179,8 +179,8 @@ export async function handleTmdbApiRequest(req: any, res: any): Promise<void> {
     if (pathname === '/api/tmdb/people/import' && method === 'POST') {
       const body = await parseJsonBody(req);
       const rawTmdbId = body?.tmdb_id ?? body?.tmdbId ?? mergedQuery?.tmdb_id ?? mergedQuery?.tmdbId;
-      const tmdbId = parseInt(String(rawTmdbId), 10);
-      if (isNaN(tmdbId) || tmdbId <= 0) {
+      const tmdbId = /^\d+$/.test(String(rawTmdbId)) ? Number(rawTmdbId) : NaN;
+      if (!Number.isSafeInteger(tmdbId) || tmdbId <= 0) {
         throw new AppError(400, 'INVALID_PARAMS', 'Identificador tmdb_id / tmdbId obrigatório e deve ser um inteiro positivo.');
       }
       const result = await importTmdbPersonServerSide(tmdbId, req);

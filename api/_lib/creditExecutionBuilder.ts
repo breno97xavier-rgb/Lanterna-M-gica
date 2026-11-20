@@ -17,7 +17,7 @@
 
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { getMovieCredits, getPersonDetails } from './tmdbClient.js';
-import { classifyTmdbPeople, LocalPersonRecord, LocalCreditRecord, TmdbPersonInput } from './personMatcher.js';
+import { classifyTmdbPeople, loadLocalPeopleForReconciliation, LocalPersonRecord, LocalCreditRecord, TmdbPersonInput } from './personMatcher.js';
 import { mapTmdbCastMember, mapTmdbCrewMember } from './creditVocab.js';
 import { matchLocalCreditSemantically } from './creditReconciler.js';
 import { preparePersonProfileImage, compensateStorageUploads, PreparedStorageImage } from './storageImageService.js';
@@ -169,11 +169,15 @@ export async function buildCreditsSyncPayload(
 
   // 3. Stale Reconciliation Protection via baseUpdatedAt
   if (request.baseUpdatedAt) {
+    const clientTime = Date.parse(request.baseUpdatedAt);
+    if (!Number.isFinite(clientTime)) {
+      throw new AppError(400, 'INVALID_PARAMS', 'O parâmetro "baseUpdatedAt" deve conter uma data válida.');
+    }
+
     const localTimestamp = localFilm.updated_at || localFilm.created_at;
     if (localTimestamp) {
-      const clientTime = new Date(request.baseUpdatedAt).getTime();
       const serverTime = new Date(localTimestamp).getTime();
-      if (!isNaN(clientTime) && !isNaN(serverTime) && clientTime !== serverTime) {
+      if (clientTime !== serverTime) {
         throw new AppError(
           409,
           'STALE_RECONCILIATION',
@@ -189,16 +193,7 @@ export async function buildCreditsSyncPayload(
   const tmdbCrew = tmdbCredits.crew || [];
 
   // 5. Consultar pessoas locais atuais
-  const { data: localPeopleData, error: peopleError } = await supabase
-    .from('pessoas')
-    .select('id, name, slug, photo_url, birth_date, death_date, country, country_id, bio, is_editorial_profile, editorial_profile, primary_roles, status, tmdb_id, tmdb_synced_at, imdb_id');
-
-  if (peopleError) {
-    console.error('[ExecutionBuilder] Erro ao carregar pessoas locais:', peopleError);
-    throw new AppError(500, 'INTERNAL_ERROR', 'Erro ao carregar catálogo de pessoas.');
-  }
-
-  const localPeople: LocalPersonRecord[] = (localPeopleData || []) as LocalPersonRecord[];
+  const localPeople = await loadLocalPeopleForReconciliation(supabase);
   const localPeopleById = new Map<string, LocalPersonRecord>();
   const localPeopleByTmdbId = new Map<number, LocalPersonRecord>();
 
@@ -432,6 +427,10 @@ export async function buildCreditsSyncPayload(
   const reservedPersonSlugs = new Set(localPeople.map(p => p.slug).filter(Boolean));
 
   for (const tmdbPersonId of requiredTmdbPersonIds) {
+    if (!Number.isSafeInteger(tmdbPersonId) || tmdbPersonId <= 0) {
+      throw new AppError(502, 'UPSTREAM_ERROR', 'O TMDB retornou um identificador inválido para um crédito selecionado.');
+    }
+
     const existingLocalPersonByTmdb = localPeopleByTmdbId.get(tmdbPersonId);
 
     // Se a pessoa já tem tmdb_id no banco, está resolvida nativamente
@@ -481,7 +480,7 @@ export async function buildCreditsSyncPayload(
     if (clientDecision?.action === 'CREATE_NEW' || (!clientDecision && personInfo?.status === 'NEW_PERSON')) {
       // Buscar detalhes se necessário ou usar dados factuais do crédito
       const creditWithPerson = allReconstructedCredits.find((c) => c.tmdbPersonId === tmdbPersonId);
-      let factualName = personInfo?.name || creditWithPerson?.personName || '';
+      const factualName = personInfo?.name || creditWithPerson?.personName || '';
 
       if (!factualName.trim()) {
         throw new AppError(
@@ -495,50 +494,16 @@ export async function buildCreditsSyncPayload(
       // O sufixo TMDB impede colisões entre homônimos e entre prévia e execução.
       const generatedSlug = reserveTmdbPersonSlug(slugifyText(factualName), tmdbPersonId, reservedPersonSlugs);
 
-      let photoUrl: string | null = null;
-      let bio: string | null = null;
-      let birthDate: string | null = null;
-      let deathDate: string | null = null;
-      let imdbId: string | null = null;
-      let knownForDept: string | null = null;
-
-      // Se for execução real (quando habilitada), preparar imagem de Storage e consultar detalhes adicionais
-      if (request.dryRun) {
-        // No modo dry-run / preview, mantemos a URL planejada do Storage de forma puramente representativa
-        photoUrl = personInfo?.profilePath ? `https://storage.lanterna.app/media/people/tmdb-${tmdbPersonId}/profile.jpg` : null;
-      } else if (EXECUTION_ENABLED) {
-        try {
-          const details = await getPersonDetails(tmdbPersonId);
-          // A prévia e a execução devem compartilhar o mesmo nome canônico do crédito.
-          // Grafias alternativas ficam disponíveis no importador individual, sem alterar o payload aqui.
-          bio = details.biography || null;
-          birthDate = details.birthday || null;
-          deathDate = details.deathday || null;
-          imdbId = details.imdbId || null;
-          knownForDept = details.knownForDepartment || null;
-
-          if (details.profileUrl) {
-            const prepared = await preparePersonProfileImage(supabase, tmdbPersonId, details.profileUrl);
-            if (prepared) {
-              preparedImages.push(prepared);
-              photoUrl = prepared.publicUrl;
-            }
-          }
-        } catch (err: any) {
-          console.warn(`[ExecutionBuilder] Aviso ao buscar detalhes adicionais de pessoa TMDB #${tmdbPersonId}:`, err?.message || err);
-        }
-      }
-
       personsToCreateMap.set(tmdbPersonId, {
         tmdb_person_id: tmdbPersonId,
         name: factualName,
         slug: generatedSlug,
-        photo_url: photoUrl,
-        birth_date: birthDate,
-        death_date: deathDate,
-        imdb_id: imdbId,
-        bio: bio,
-        known_for_department: knownForDept,
+        photo_url: request.dryRun && personInfo?.profilePath ? personInfo.profileUrl || null : null,
+        birth_date: null,
+        death_date: null,
+        imdb_id: null,
+        bio: null,
+        known_for_department: null,
       });
       continue;
     }
@@ -603,6 +568,30 @@ export async function buildCreditsSyncPayload(
       character_name: finalCharacterName,
       order_index: finalOrderIndex,
     });
+  }
+
+  // Prepare Storage only after all selections and decisions have been validated.
+  if (!request.dryRun && EXECUTION_ENABLED) {
+    for (const [tmdbPersonId, person] of personsToCreateMap) {
+      try {
+        const details = await getPersonDetails(tmdbPersonId);
+        person.bio = details.biography || null;
+        person.birth_date = details.birthday || null;
+        person.death_date = details.deathday || null;
+        person.imdb_id = details.imdbId || null;
+        person.known_for_department = details.knownForDepartment || null;
+
+        if (details.profileUrl) {
+          const prepared = await preparePersonProfileImage(supabase, tmdbPersonId, details.profileUrl);
+          if (prepared) {
+            preparedImages.push(prepared);
+            person.photo_url = prepared.publicUrl;
+          }
+        }
+      } catch (err) {
+        console.warn(`[ExecutionBuilder] Falha ao enriquecer pessoa TMDB #${tmdbPersonId}:`, err);
+      }
+    }
   }
 
   const payload: RpcSyncFilmCreditsPayload = {
@@ -682,7 +671,7 @@ export async function executeCreditsSync(
     };
   }
 
-  // 3. Execução Real Controlada (exclusiva para Le Trou homologado):
+  // 3. Execução real controlada pela RPC transacional.
   let storageCreatedCount = 0;
   let storageReusedCount = 0;
 

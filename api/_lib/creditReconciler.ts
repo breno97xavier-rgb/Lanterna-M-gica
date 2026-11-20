@@ -13,7 +13,7 @@
 
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { getMovieCredits } from './tmdbClient.js';
-import { classifyTmdbPeople, LocalPersonRecord, LocalCreditRecord, TmdbPersonInput } from './personMatcher.js';
+import { classifyTmdbPeople, loadLocalPeopleForReconciliation, LocalPersonRecord, LocalCreditRecord, TmdbPersonInput } from './personMatcher.js';
 import { mapTmdbCastMember, mapTmdbCrewMember, normalizeCharacterNameForMatching } from './creditVocab.js';
 import { AppError } from './errors.js';
 import type {
@@ -255,16 +255,7 @@ export async function reconcileFilmCreditsDryRun(
   const tmdbCrew = tmdbCredits.crew || [];
 
   // 3. Consultar base de pessoas locais
-  const { data: localPeopleData, error: peopleError } = await supabase
-    .from('pessoas')
-    .select('id, name, slug, photo_url, birth_date, death_date, country, country_id, bio, is_editorial_profile, editorial_profile, primary_roles, status, tmdb_id, tmdb_synced_at, imdb_id');
-
-  if (peopleError) {
-    console.error('[CreditReconciler] Erro ao buscar pessoas locais:', peopleError);
-    throw new AppError(500, 'INTERNAL_ERROR', 'Erro ao carregar catálogo de pessoas.');
-  }
-
-  const localPeople: LocalPersonRecord[] = (localPeopleData || []) as LocalPersonRecord[];
+  const localPeople = await loadLocalPeopleForReconciliation(supabase);
 
   // 4. Consultar créditos locais atuais deste filme
   const { data: localCreditsData, error: creditsError } = await supabase

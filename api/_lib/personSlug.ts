@@ -4,7 +4,7 @@ export function reserveTmdbPersonSlug(
   tmdbPersonId: number,
   reserved: Set<string>,
 ): string {
-  if (!Number.isInteger(tmdbPersonId) || tmdbPersonId <= 0) {
+  if (!Number.isSafeInteger(tmdbPersonId) || tmdbPersonId <= 0) {
     throw new Error('Invalid TMDB person identifier');
   }
   const base = `${normalizedName || 'pessoa'}-tmdb-${tmdbPersonId}`;

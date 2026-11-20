@@ -11,6 +11,8 @@
 // 5. NEW_PERSON: nenhum candidato plausível; elegível para futura criação como draft.
 // ==============================================================================
 
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { AppError } from './errors.js';
 import type {
   ReconciledPerson,
   SuggestedPersonCandidate,
@@ -34,6 +36,27 @@ export interface LocalPersonRecord {
   tmdb_id: number | null;
   tmdb_synced_at: string | null;
   imdb_id: string | null;
+}
+
+export async function loadLocalPeopleForReconciliation(supabase: SupabaseClient): Promise<LocalPersonRecord[]> {
+  const people: LocalPersonRecord[] = [];
+  const pageSize = 500;
+  let afterId: string | undefined;
+
+  while (true) {
+    const query = supabase.from('pessoas')
+      .select('id, name, slug, photo_url, birth_date, death_date, country, country_id, bio, is_editorial_profile, editorial_profile, primary_roles, status, tmdb_id, tmdb_synced_at, imdb_id')
+      .order('id')
+      .limit(pageSize);
+    const { data, error } = await (afterId ? query.gt('id', afterId) : query);
+    if (error) {
+      console.error('[PersonMatcher] Erro ao consultar pessoas locais:', error);
+      throw new AppError(500, 'INTERNAL_ERROR', 'Erro ao carregar catálogo de pessoas.');
+    }
+    if (!data?.length) return people;
+    people.push(...data);
+    afterId = data[data.length - 1].id;
+  }
 }
 
 export interface LocalCreditRecord {
@@ -66,9 +89,9 @@ export function normalizePersonName(name: string): string {
   return (name || '')
     .toLowerCase()
     .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]/g, '')
-    .trim();
+    .replace(/(\p{Script=Latin})\p{Mark}+/gu, '$1')
+    .normalize('NFC')
+    .replace(/[^\p{Letter}\p{Mark}\p{Number}]/gu, '');
 }
 
 /**
@@ -113,6 +136,9 @@ export function classifyTmdbPeople(
     const norm = normalizePersonName(p.name);
     if (p.tmdb_id !== null && p.tmdb_id !== undefined) {
       localByTmdbId.set(p.tmdb_id, p);
+    }
+    if (!norm) return;
+    if (p.tmdb_id !== null && p.tmdb_id !== undefined) {
       const list = linkedByNormName.get(norm) || [];
       list.push(p);
       linkedByNormName.set(norm, list);

@@ -18,5 +18,7 @@ test('existing and in-batch collisions receive deterministic suffixes', () => {
 });
 
 test('invalid TMDB ID is rejected', () => {
-  assert.throws(() => reserveTmdbPersonSlug('person', 0, new Set()));
+  for (const id of [0, -1, 1.5, NaN, Infinity, Number.MAX_SAFE_INTEGER + 1]) {
+    assert.throws(() => reserveTmdbPersonSlug('person', id, new Set()));
+  }
 });

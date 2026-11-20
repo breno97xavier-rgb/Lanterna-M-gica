@@ -5,6 +5,7 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { getPersonDetails, choosePersonDisplayName } from './tmdbClient.js';
 import { AppError } from './errors.js';
 import { slugifyText } from './movieImporter.js';
+import { reserveTmdbPersonSlug } from './personSlug.js';
 import { preparePersonProfileImage, compensateStorageUploads, PreparedStorageImage } from './storageImageService.js';
 import type { TmdbPersonImportResult } from './types.js';
 
@@ -43,17 +44,18 @@ export function mapTmdbDepartmentToPrimaryRoles(department?: string | null): str
 }
 
 async function generateUniquePersonSlug(supabase: SupabaseClient, name: string, tmdbId: number): Promise<string> {
-  // Evita rejeitar nomes inteiramente escritos em alfabetos não latinos.
-  const base = slugifyText(name) || `pessoa-tmdb-${tmdbId}`;
-  const { data: existing } = await supabase.from('pessoas').select('id').eq('slug', base).maybeSingle();
-  if (!existing) return base;
-  const withTmdb = `${base}-tmdb-${tmdbId}`;
-  const { data: existingTmdb } = await supabase.from('pessoas').select('id').eq('slug', withTmdb).maybeSingle();
-  return existingTmdb ? `${withTmdb}-${Date.now().toString(36)}` : withTmdb;
+  const normalizedName = slugifyText(name);
+  const reserved = new Set<string>();
+  while (true) {
+    const slug = reserveTmdbPersonSlug(normalizedName, tmdbId, reserved);
+    const { data, error } = await supabase.from('pessoas').select('id').eq('slug', slug).maybeSingle();
+    if (error) throw new AppError(500, 'INTERNAL_ERROR', 'Falha ao verificar disponibilidade do slug da pessoa.');
+    if (!data) return slug;
+  }
 }
 
 export async function importTmdbPersonServerSide(tmdbId: number, req: any): Promise<TmdbPersonImportResult> {
-  if (!Number.isInteger(tmdbId) || tmdbId <= 0) throw new AppError(400, 'INVALID_PARAMS', 'Identificador TMDB inválido para importação.');
+  if (!Number.isSafeInteger(tmdbId) || tmdbId <= 0) throw new AppError(400, 'INVALID_PARAMS', 'Identificador TMDB inválido para importação.');
 
   const supabase = getServerSupabaseClient(req);
   const { data: existing, error: existingError } = await supabase
@@ -82,7 +84,8 @@ export async function importTmdbPersonServerSide(tmdbId: number, req: any): Prom
     }
 
     // Terceira barreira imediatamente antes do INSERT.
-    const { data: raced } = await supabase.from('pessoas').select('id, name, slug, tmdb_id, tmdb_synced_at').eq('tmdb_id', tmdbId).maybeSingle();
+    const { data: raced, error: racedError } = await supabase.from('pessoas').select('id, name, slug, tmdb_id, tmdb_synced_at').eq('tmdb_id', tmdbId).maybeSingle();
+    if (racedError) throw new AppError(500, 'INTERNAL_ERROR', 'Falha ao verificar vínculo existente da pessoa.');
     if (raced) {
       await compensateStorageUploads(supabase, preparedImages);
       return { success: true, alreadyExists: true, personId: raced.id, slug: raced.slug, name: raced.name, tmdbId, tmdbSyncedAt: raced.tmdb_synced_at, message: 'Pessoa já cadastrada no acervo.' };

@@ -352,7 +352,7 @@ export function choosePersonDisplayName(name: string, aliases: string[] = []): s
   if (!original) return '';
   const nonLatinLetter = /[^\p{Script=Latin}\p{Mark}\p{Number}\p{Punctuation}\p{Separator}]/u;
   if (!nonLatinLetter.test(original)) return original;
-  const latinAliases = [...new Set(aliases.map(a => (a || '').trim()).filter(a =>
+  const latinAliases = [...new Set(aliases.map(a => (a || '').trim().normalize('NFC')).filter(a =>
     a.length > 1 && /\p{Script=Latin}/u.test(a) && !nonLatinLetter.test(a)
   ))];
   // Múltiplas grafias possíveis exigem escolha editorial; nenhuma é inventada.
